@@ -1,0 +1,143 @@
+<html>
+  <head>
+    <title>Isla del Barco Pirata con JavaScript</title>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+  </head>
+  <body>
+    <a-scene fog="type: exponential; color: #87CEEB; density: 0.02;">
+
+      <a-assets>
+        <a-asset-item id="barco-pirata-modelo" src="3d-models/pirate_ship.glb"></a-asset-item>
+        <a-asset-item id="cofre-tesoro-modelo" src="3d-models/treasure_chest.glb"></a-asset-item>
+        <a-asset-item id="palmera-modelo" src="3d-models/palm_tree.glb"></a-asset-item>
+        <a-asset-item id="espada-modelo" src="3d-models/miraz_sword.glb"></a-asset-item>
+        <a-asset-item id="canon-modelo" src="3d-models/pirate_cannon.glb"></a-asset-item>
+        <a-asset-item id="calavera-modelo" src="3d-models/skull_downloadable.glb"></a-asset-item>
+        <a-asset-item id="mesa-madera-modelo" src="3d-models/wood_table.glb"></a-asset-item>
+        <a-asset-item id="fogata-modelo" src="3d-models/campfire.glb"></a-asset-item>
+        <a-asset-item id="arbusto-modelo" src="3d-models/bush.glb"></a-asset-item>
+        <a-asset-item id="mesa-madera-modelo" src="3d-models/wood_table.glb"></a-asset-item>
+        <a-asset-item id="barril-modelo" src="3d-models/barrel.glb"></a-asset-item>
+        
+        <img id="tex-arena" src="3d-models/sand.jpg">
+        <img id="tex-cesped" src="3d-models/grass.jpg">
+        <img id="tex-agua" src="3d-models/sea.jpg">
+      </a-assets>
+
+      <a-gltf-model src="#barco-pirata-modelo" position="-5 5 -40" rotation="0 90 0" scale="0.01 0.01 0.01"></a-gltf-model>
+
+      <!-- Sección "mesa con objetos" -->
+      <a-entity id="grupo-mesa" position="9.5 0 -5" rotation="0 0 0">
+        
+        <a-gltf-model src="#mesa-madera-modelo" 
+                      position="0 0.5 0" 
+                      rotation="0 240 0" 
+                      scale="1.7 0.95 0.95">
+        </a-gltf-model>
+
+        <a-gltf-model src="#espada-modelo" 
+                      position="-0.55 0.8 1.05" 
+                      rotation="0 300 0" 
+                      scale="1 1 1">
+        </a-gltf-model>
+
+        <a-gltf-model src="#calavera-modelo" 
+                      position="0.25 1 -0.75" 
+                      rotation="0 270 90" 
+                      scale="0.35 0.35 0.35">
+        </a-gltf-model>
+
+      </a-entity>
+
+      <!-- Sección "campamento"-->
+      <a-entity id="grupo-campamento" position="9 0 -18" rotation="0 0 0">
+
+        <a-gltf-model src="#fogata-modelo" 
+                      position="0 0 0" 
+                      rotation="0 -27.5 0" 
+                      scale="0.1 0.1 0.1">
+        </a-gltf-model>
+
+        <a-gltf-model src="#palmera-modelo" 
+                      position="1 0 -2" 
+                      rotation="0 150 0" 
+                      scale="0.03 0.03 0.03">
+        </a-gltf-model>
+
+        <a-gltf-model src="#cofre-tesoro-modelo" 
+                      position="-2 0 0" 
+                      rotation="0 -45 0" 
+                      scale="0.01 0.01 0.01">
+        </a-gltf-model>
+
+      </a-entity>
+
+      <!-- Sección cañon-->
+      <a-entity id="grupo-canon" position="-11.5 0 -16" rotation="0 0 0">
+
+        <a-gltf-model src="#canon-modelo" 
+                      position="0 0 0" 
+                      rotation="0 -27.5 0" 
+                      scale="0.005 0.005 0.005">
+        </a-gltf-model>
+
+        <a-gltf-model src="#barril-modelo" 
+                      position="2.5 0.5 3.5" 
+                      rotation="0 0 0" 
+                      scale="0.01 0.01 0.01"> 
+        </a-gltf-model>
+
+        <a-entity id="pila-balas" position="3.5 0 -0.5" rotation="0 -30 0">
+          <a-sphere position="0 0.15 0" radius="0.15" color="#2c2c2c" roughness="0.7" metalness="0.6"></a-sphere>
+          <a-sphere position="0.25 0.15 0.15" radius="0.15" color="#2c2c2c" roughness="0.7" metalness="0.6"></a-sphere>
+          <a-sphere position="-0.25 0.15 0.15" radius="0.15" color="#2c2c2c" roughness="0.7" metalness="0.6"></a-sphere>
+          <a-sphere position="0 0.38 0.1" radius="0.15" color="#2c2c2c" roughness="0.7" metalness="0.6"></a-sphere>
+        </a-entity>
+
+      </a-entity>
+
+      <!-- Sección decorados(arbustos,palmeras)-->
+      <a-gltf-model src="#arbusto-modelo" position="0 0 -10" rotation="0 0 0" scale="0.75 0.75 0.75"></a-gltf-model>
+      <a-gltf-model src="#palmera-modelo" position="-8 0 -5" rotation="0 60 0" scale="0.03 0.03 0.03"></a-gltf-model>
+
+      <a-plane id="suelo-cesped" 
+               src="#tex-cesped"
+               position="0 0 -3.75" 
+               rotation="-90 0 0" 
+               width="30" 
+               height="12.5"
+               repeat="10 4"
+               roughness="1">
+      </a-plane>
+
+      <a-plane id="suelo-arena" 
+               src="#tex-arena"
+               position="0 0 -16.25" 
+               rotation="-90 0 0" 
+               width="30" 
+               height="12.5"
+               repeat="10 4"
+               roughness="1"> 
+      </a-plane>
+
+      <a-circle src="#tex-agua"
+               position="0 -0.2 0" 
+               rotation="-90 0 0" 
+               radius="500" 
+               opacity="0.8"
+               repeat="50 50">
+      </a-circle>
+
+      <a-sky color="#87CEEB"></a-sky>
+      <a-entity light="type: ambient; color: #BBB; intensity: 0.8"></a-entity>
+      <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-1 1 1"></a-entity>
+
+      <a-entity id="cameraRig" position="0 0 -10" movement-controls boundary-checker>
+        <a-camera wasd-controls="enabled: false"></a-camera>
+      </a-entity>
+
+    </a-scene>
+    <script src="script.js"></script>
+  </body>
+</html>
