@@ -72,3 +72,55 @@ AFRAME.registerComponent('boundary-checker', {
     }
   }
 });
+
+AFRAME.registerComponent('captura-escena', {
+  init: function () {
+    this.scene = this.el.sceneEl;
+    
+    const btn = document.getElementById('btn-captura');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        this.tomarFoto("manual");
+      });
+    }
+  },
+
+  remove: function() {
+    if (this.intervalo) clearInterval(this.intervalo);
+  },
+
+  tomarFoto: function (origen) {
+    const screenshotComponent = this.scene.components.screenshot;
+    if (!screenshotComponent) return;
+
+    // 1. Obtener caputra de la escena
+    const canvas = screenshotComponent.getCanvas('perspective');
+
+    // 2. Convertir a Base64
+    const dataURL = canvas.toDataURL('image/jpeg', 0.8);
+    
+    // 3. Generar nombre de archivo
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const nombreArchivo = `captura_${origen}_${timestamp}.jpg`;
+
+    // 4. Se envía imagen al backend de python que se encargará de procesarlo
+    fetch('http://localhost:3000/api/guardar-captura', { 
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            imagen: dataURL,
+            nombre: nombreArchivo
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log(`📡 Enviada al servidor: ${nombreArchivo}`);
+        } else {
+            console.error("Error al guardar en servidor");
+        }
+    })
+    .catch(error => console.error("Error de conexión:", error));
+  }
+});

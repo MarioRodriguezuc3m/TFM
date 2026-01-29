@@ -1,1 +1,4 @@
 3d-models/
+venv/
+*.pyc
+__pycache__/
