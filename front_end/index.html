@@ -28,10 +28,19 @@
         <img id="tex-agua" src="3d-models/sea.jpg">
       </a-assets>
 
-      <a-gltf-model src="#barco-pirata-modelo" position="-5 5 -40" rotation="0 90 0" scale="0.01 0.01 0.01"></a-gltf-model>
+      <a-gltf-model src="#barco-pirata-modelo" 
+                    position="-5 5 -40" 
+                    rotation="0 90 0" 
+                    scale="0.01 0.01 0.01" 
+                    data-label="Barco Pirata"
+                    data-desc="Galeón grande de velas oscuras anclado en el mar al fondo."></a-gltf-model>
 
       <!-- Sección "mesa con objetos" -->
-      <a-entity id="grupo-mesa" position="9.5 0 -5" rotation="0 0 0">
+      <a-entity id="grupo-mesa" 
+                position="9.5 0 -5" 
+                rotation="0 0 0"
+                data-label="Mesa con objetos"
+                data-desc="Mesa de madera con una espada y una calavera situados sobre la mesa.">
         
         <a-gltf-model src="#mesa-madera-modelo" 
                       class="obstaculo" data-radio="1.5"
@@ -55,7 +64,11 @@
       </a-entity>
 
       <!-- Sección "campamento"-->
-      <a-entity id="grupo-campamento" position="9 0 -18" rotation="0 0 0">
+      <a-entity id="grupo-campamento" 
+                position="9 0 -18" 
+                rotation="0 0 0"
+                data-label="Campamento descanso"
+                data-desc="Un pequeño campamento con una hoguera y un tesoro situados junto a una palmera">
 
         <a-gltf-model src="#fogata-modelo" 
                       class="obstaculo" data-radio="0.6"
@@ -81,7 +94,11 @@
       </a-entity>
 
       <!-- Sección cañon-->
-      <a-entity id="grupo-canon" position="-11.5 0 -16" rotation="0 0 0">
+      <a-entity id="grupo-canon"
+                position="-11.5 0 -16" 
+                rotation="0 0 0"
+                data-label="Cañón pirata"
+                data-desc="Un cañón pirata apuntando al barco listo para disparar. Junto al cañón hay un barril y una pila de balas del cañón.">
 
         <a-gltf-model src="#canon-modelo" 
                       class="obstaculo" data-radio="1.0"
@@ -107,7 +124,11 @@
       </a-entity>
       
       <!-- Sección "almacén"-->
-      <a-entity id="grupo-almacen" position="-4 0 -2" rotation="0 20 0">
+      <a-entity id="grupo-almacen"
+                position="-4 0 -2"
+                rotation="0 20 0"
+                data-label="Pequeño almacén de suministros"
+                data-desc="Un pequeño almacén con varias cajas apiladas entre sí y dos barriles proximos a las cajas. Sobre las cajas y los barriles se encuentran algunas botellas esparcidas sobre ellos.">
 
         <a-gltf-model src="#cajas-pila-modelo" 
                       class="obstaculo" data-radio="0.8"

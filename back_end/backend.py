@@ -5,13 +5,9 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+import json
 
 app = FastAPI()
-
-# Definimos el modelo de datos que esperamos recibir del Javascript
-class Captura(BaseModel):
-    imagen: str
-    nombre: str
 
 origins = ["*"] 
 
@@ -23,33 +19,42 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 1. API para guardar la imagen
+class Captura(BaseModel):
+    imagen: str
+    nombre: str
+    metadatos: list = []
+
 @app.post("/api/guardar-captura")
 async def guardar_captura(datos: Captura):
     try:
-        # Crear carpeta 'capturas' si no existe
-        folder = "capturas"
+        folder = "current_input"
         os.makedirs(folder, exist_ok=True)
 
-        # La imagen viene con un encabezado tipo "data:image/jpeg;base64,..."
-        # Necesitamos separar el encabezado de los datos reales
+        # 1. Se guarda la imagen
         if "," in datos.imagen:
             header, encoded = datos.imagen.split(",", 1)
         else:
             encoded = datos.imagen
-
-        # Decodificar el base64 a bytes
+        
         image_data = base64.b64decode(encoded)
-
-        # Ruta completa del archivo
-        file_path = os.path.join(folder, datos.nombre)
-
-        # Escribir el archivo en disco
-        with open(file_path, "wb") as f:
+        file_path_img = os.path.join(folder, datos.nombre)
+        
+        with open(file_path_img, "wb") as f:
             f.write(image_data)
 
-        print(f"✅ Imagen guardada: {datos.nombre}")
-        return {"mensaje": "Imagen guardada correctamente", "archivo": datos.nombre}
+        # 2. Se guardan los metadatos de la escena en un archivo JSON
+        nombre_json = datos.nombre.replace(".jpg", ".json").replace(".png", ".json")
+        file_path_json = os.path.join(folder, nombre_json)
+
+        # Guardamos la lista de objetos en un archivo de texto
+        with open(file_path_json, "w", encoding="utf-8") as f:
+            json.dump({
+                "imagen": datos.nombre,
+                "objetos_visibles": datos.metadatos
+            }, f, indent=4, ensure_ascii=False)
+
+        print(f"✅ Guardado: {datos.nombre} + JSON descriptivo")
+        return {"mensaje": "OK"}
 
     except Exception as e:
         print(f"❌ Error: {e}")

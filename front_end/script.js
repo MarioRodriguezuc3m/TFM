@@ -15,16 +15,15 @@ AFRAME.registerComponent('boundary-checker', {
     els.forEach(el => {
       this.obstacles.push({
         object3D: el.object3D, 
-        radius: parseFloat(el.getAttribute('data-radio')) || 1.0 
+        radius: parseFloat(el.getAttribute('data-radio')) || 1.0  // Radio por defecto: 1.0
       });
     });
 
     this.lastGoodPosition = new THREE.Vector3();
-
-    // Inicialmente, guardamos la posición de inicio como válida
     this.lastGoodPosition.copy(this.el.object3D.position);
   },
 
+  // Cada frame: valida límites y colisiones, restaura posición si falla alguna
   tick: function () {
     // 1. OBTENEMOS LA POSICIÓN ACTUAL DEL RIG
     const currentPosition = this.el.object3D.position;
@@ -73,14 +72,16 @@ AFRAME.registerComponent('boundary-checker', {
   }
 });
 
+// Captura la escena, detecta objetos visibles y envía imagen + metadatos al servidor.
 AFRAME.registerComponent('captura-escena', {
   init: function () {
     this.scene = this.el.sceneEl;
     
+    // Enlaza el botón de captura con tomarFoto()
     const btn = document.getElementById('btn-captura');
     if (btn) {
       btn.addEventListener('click', () => {
-        this.tomarFoto("manual");
+        this.tomarFoto();
       });
     }
   },
@@ -89,38 +90,88 @@ AFRAME.registerComponent('captura-escena', {
     if (this.intervalo) clearInterval(this.intervalo);
   },
 
-  tomarFoto: function (origen) {
+  tomarFoto: function () {
     const screenshotComponent = this.scene.components.screenshot;
     if (!screenshotComponent) return;
 
-    // 1. Obtener caputra de la escena
-    const canvas = screenshotComponent.getCanvas('perspective');
-
-    // 2. Convertir a Base64
-    const dataURL = canvas.toDataURL('image/jpeg', 0.8);
+    const camera = this.scene.camera;
     
-    // 3. Generar nombre de archivo
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const nombreArchivo = `captura_${origen}_${timestamp}.jpg`;
+    camera.updateMatrix();
+    camera.updateMatrixWorld();
 
-    // 4. Se envía imagen al backend de python que se encargará de procesarlo
+    const frustum = new THREE.Frustum();
+    
+    const projScreenMatrix = new THREE.Matrix4();
+    projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+    
+    frustum.setFromProjectionMatrix(projScreenMatrix);
+
+
+    // A continuación se filtran los objetos etiquetados que están visibles en la imagen con un bucle for ---
+    const elementosEtiquetados = document.querySelectorAll('[data-label]');
+    const infoEscena = [];
+
+    const cameraPosWorld = new THREE.Vector3();
+    camera.getWorldPosition(cameraPosWorld);
+
+    elementosEtiquetados.forEach(el => {
+        const object3D = el.object3D;
+        const worldPos = new THREE.Vector3();
+        object3D.getWorldPosition(worldPos);
+
+        // Verifica si el objeto está dentro del angulo de visión de la cámara
+        const estaEnVision = frustum.containsPoint(worldPos);
+
+        // Distancia entre la cámara y el objeto
+        const distancia = worldPos.distanceTo(cameraPosWorld);
+        
+        // Umbral de distancia por defecto (25 m)
+        let distanciaMaxima = 25;
+        
+        // Se permite una mayor distancia al barco ya que es el elemento más grande de la escena
+        if (el.dataset.label === "Barco Pirata") {
+            distanciaMaxima = 40;
+        }
+
+        // Se incluye el bojeto en los metadatos solo si está en visión y dentro de la distancia máxima
+        if (estaEnVision && distancia < distanciaMaxima) {
+            
+            infoEscena.push({
+                etiqueta: el.dataset.label,
+                descripcion: el.dataset.desc,
+                posicion: {
+                    x: worldPos.x.toFixed(2),
+                    y: worldPos.y.toFixed(2),
+                    z: worldPos.z.toFixed(2)
+                },
+                distancia: distancia.toFixed(1) + "m"
+            });
+        }
+    });
+
+    console.log(`👁️ Objetos visibles detectados: ${infoEscena.length}`);
+
+
+    // Se envía al backend la imagen en base64 + metadatos de objetos visibles
+    const canvas = screenshotComponent.getCanvas('perspective');
+    const dataURL = canvas.toDataURL('image/jpeg', 0.8);
+    const nombreArchivo = `captura_escena.jpg`;
+    console.log('Nombre archivo:', nombreArchivo);
+
+    
     fetch('http://localhost:3000/api/guardar-captura', { 
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             imagen: dataURL,
-            nombre: nombreArchivo
+            nombre: nombreArchivo,
+            metadatos: infoEscena
         })
     })
-    .then(response => {
-        if (response.ok) {
-            console.log(`📡 Enviada al servidor: ${nombreArchivo}`);
-        } else {
-            console.error("Error al guardar en servidor");
-        }
+    .then(res => {
+        if(res.ok) console.log("✅ Imagen y datos filtrados enviados.");
+        else console.error("❌ Error en servidor.");
     })
-    .catch(error => console.error("Error de conexión:", error));
+    .catch(err => console.error("❌ Error conexión:", err));
   }
 });
