@@ -15,7 +15,7 @@ AFRAME.registerComponent('boundary-checker', {
     els.forEach(el => {
       this.obstacles.push({
         object3D: el.object3D, 
-        radius: parseFloat(el.getAttribute('data-radio')) || 1.0  // Radio por defecto: 1.0
+        radius: parseFloat(el.getAttribute('data-radio')) || 1.0
       });
     });
 
@@ -106,71 +106,148 @@ AFRAME.registerComponent('captura-escena', {
     
     frustum.setFromProjectionMatrix(projScreenMatrix);
 
-
-    // A continuación se filtran los objetos etiquetados que están visibles en la imagen con un bucle for ---
-    const elementosEtiquetados = document.querySelectorAll('[data-label]');
-    const infoEscena = [];
-
+    // Obtener posición mundial de la cámara
     const cameraPosWorld = new THREE.Vector3();
     camera.getWorldPosition(cameraPosWorld);
 
-    elementosEtiquetados.forEach(el => {
-        const object3D = el.object3D;
-        const worldPos = new THREE.Vector3();
-        object3D.getWorldPosition(worldPos);
+    // Obtener rotación y dirección mundial
+    const worldQuaternion = new THREE.Quaternion();
+    camera.getWorldQuaternion(worldQuaternion);
+    
+    const worldRotation = new THREE.Euler();
+    worldRotation.setFromQuaternion(worldQuaternion, 'YXZ');
+    
+    const cameraDirection = new THREE.Vector3(0, 0, -1);
+    cameraDirection.applyQuaternion(worldQuaternion);
+    cameraDirection.normalize();
+    
+    // Lista de objetos visibles
+    const objetosVisibles = [];
 
-        // Verifica si el objeto está dentro del angulo de visión de la cámara
-        const estaEnVision = frustum.containsPoint(worldPos);
+    // 1. PROCESAR GRUPOS (entidades con data-tipo="grupo")
+    const gruposEtiquetados = document.querySelectorAll('[data-tipo="grupo"]');
+    
+    gruposEtiquetados.forEach(grupo => {
+        const objWorldPos = new THREE.Vector3();
+        grupo.object3D.getWorldPosition(objWorldPos);
 
-        // Distancia entre la cámara y el objeto
-        const distancia = worldPos.distanceTo(cameraPosWorld);
+        // Transformar posición del mundo a posición LOCAL respecto a la cámara
+        const localPos = objWorldPos.clone();
+        camera.worldToLocal(localPos);
+
+        const estaEnVision = frustum.containsPoint(objWorldPos);
+        const distancia = objWorldPos.distanceTo(cameraPosWorld);
         
-        // Umbral de distancia por defecto (25 m)
+        // Umbral de distancia para grupos
         let distanciaMaxima = 25;
-        
-        // Se permite una mayor distancia al barco ya que es el elemento más grande de la escena
-        if (el.dataset.label === "Barco Pirata") {
-            distanciaMaxima = 40;
-        }
 
-        // Se incluye el bojeto en los metadatos solo si está en visión y dentro de la distancia máxima
         if (estaEnVision && distancia < distanciaMaxima) {
+            // Procesar sub-objetos
+            const subObjetos = [];
+            const hijosConSubLabel = grupo.querySelectorAll('[data-sublabel]');
             
-            infoEscena.push({
-                etiqueta: el.dataset.label,
-                descripcion: el.dataset.desc,
-                posicion: {
-                    x: worldPos.x.toFixed(2),
-                    y: worldPos.y.toFixed(2),
-                    z: worldPos.z.toFixed(2)
+            hijosConSubLabel.forEach(hijo => {
+                subObjetos.push({
+                    etiqueta: hijo.dataset.sublabel,
+                    descripcion: hijo.dataset.subdesc
+                });
+            });
+
+            objetosVisibles.push({
+                etiqueta: grupo.dataset.label,
+                descripcion: grupo.dataset.desc,
+                posicion_relativa: {
+                    x: parseFloat(localPos.x.toFixed(2)),
+                    y: parseFloat(localPos.y.toFixed(2)),
+                    z: parseFloat(localPos.z.toFixed(2)) 
                 },
-                distancia: distancia.toFixed(1) + "m"
+                objetos_contenidos: subObjetos.length > 0 ? subObjetos : undefined
             });
         }
     });
 
-    console.log(`👁️ Objetos visibles detectados: ${infoEscena.length}`);
+    // 2. PROCESAR OBJETOS INDIVIDUALES (Decorados, elementos sueltos)
+    const objetosIndividuales = document.querySelectorAll('[data-label]:not([data-tipo="grupo"])');
 
+    objetosIndividuales.forEach(obj => {
+        const objWorldPos = new THREE.Vector3();
+        obj.object3D.getWorldPosition(objWorldPos);
 
-    // Se envía al backend la imagen en base64 + metadatos de objetos visibles
+        const localPos = objWorldPos.clone();
+        camera.worldToLocal(localPos);
+
+        const estaEnVision = frustum.containsPoint(objWorldPos);
+        const distancia = objWorldPos.distanceTo(cameraPosWorld);
+        
+        // Criterio de distancia para objetos pequeños (Arbustos/Rocas)
+        let distanciaMaxima = 15; // Más pequeño para no saturar con decorados innecesarios
+        if (obj.dataset.label === "Barco Pirata") {
+            distanciaMaxima = 40; 
+        }
+
+        // Se incluye el bojeto en los metadatos solo si está en visión y dentro de la distancia máxima
+        if (estaEnVision && distancia < distanciaMaxima) {
+            objetosVisibles.push({
+                etiqueta: obj.dataset.label,
+                descripcion: obj.dataset.desc,
+                posicion_relativa: {
+                    x: parseFloat(localPos.x.toFixed(2)),
+                    y: parseFloat(localPos.y.toFixed(2)),
+                    z: parseFloat(localPos.z.toFixed(2))
+                }
+            });
+        }
+    });
+
+    // Logs de debug
+    console.log(`👁️ Objetos visibles detectados: ${objetosVisibles.length}`);
+    console.log('📍 Posición cámara:', {
+        x: cameraPosWorld.x.toFixed(2),
+        y: cameraPosWorld.y.toFixed(2),
+        z: cameraPosWorld.z.toFixed(2)
+    });
+    console.log('🔄 Rotación (grados):', {
+        x: THREE.MathUtils.radToDeg(worldRotation.x).toFixed(1),
+        y: THREE.MathUtils.radToDeg(worldRotation.y).toFixed(1),
+        z: THREE.MathUtils.radToDeg(worldRotation.z).toFixed(1)
+    });
+    
+    const yRotation = THREE.MathUtils.radToDeg(worldRotation.y);
+    let orientacion = '';
+    if (yRotation > -45 && yRotation <= 45) orientacion = 'Norte';
+    else if (yRotation > 45 && yRotation <= 135) orientacion = 'Este';
+    else if (yRotation > 135 || yRotation <= -135) orientacion = 'Sur';
+    else orientacion = 'Oeste';
+    console.log(`🧭 Mirando hacia: ${orientacion} (${yRotation.toFixed(1)}°)`);
+
+    console.log('📦 Objetos detectados:', JSON.stringify(objetosVisibles, null, 2));
+
+    // Enviar al backend
     const canvas = screenshotComponent.getCanvas('perspective');
     const dataURL = canvas.toDataURL('image/jpeg', 0.8);
     const nombreArchivo = `captura_escena.jpg`;
-    console.log('Nombre archivo:', nombreArchivo);
 
-    
     fetch('http://localhost:3000/api/guardar-captura', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             imagen: dataURL,
             nombre: nombreArchivo,
-            metadatos: infoEscena
+            objetos_visibles: objetosVisibles
         })
     })
     .then(res => {
-        if(res.ok) console.log("✅ Imagen y datos filtrados enviados.");
+        if(res.ok) {
+            console.log("✅ Imagen y datos enviados.");
+            return res.json();
+        }
         else console.error("❌ Error en servidor.");
+    })
+    .then(data => {
+        if(data && data.descripcion) {
+            console.log("📢 Descripción generada:");
+            console.log(data.descripcion);
+        }
     })
     .catch(err => console.error("❌ Error conexión:", err));
   }

@@ -18,7 +18,6 @@
         <a-asset-item id="mesa-madera-modelo" src="3d-models/wood_table.glb"></a-asset-item>
         <a-asset-item id="fogata-modelo" src="3d-models/campfire.glb"></a-asset-item>
         <a-asset-item id="arbusto-modelo" src="3d-models/bush.glb"></a-asset-item>
-        <a-asset-item id="mesa-madera-modelo" src="3d-models/wood_table.glb"></a-asset-item>
         <a-asset-item id="barril-modelo" src="3d-models/barrel.glb"></a-asset-item>
         <a-asset-item id="cajas-pila-modelo" src="3d-models/boxes_pile.glb"></a-asset-item>
         <a-asset-item id="botella-modelo" src="3d-models/bottle.glb"></a-asset-item>
@@ -40,25 +39,32 @@
                 position="9.5 0 -5" 
                 rotation="0 0 0"
                 data-label="Mesa con objetos"
-                data-desc="Mesa de madera con una espada y una calavera situados sobre la mesa.">
+                data-desc="Mesa de madera con una espada y una calavera sobre ella."
+                data-tipo="grupo">
         
         <a-gltf-model src="#mesa-madera-modelo" 
                       class="obstaculo" data-radio="1.5"
                       position="0 0.5 0" 
                       rotation="0 240 0" 
-                      scale="1.7 0.95 0.95">
+                      scale="1.7 0.95 0.95"
+                      data-sublabel="Mesa de madera"
+                      data-subdesc="Mesa de madera robusta con tablones oscuros">
         </a-gltf-model>
 
         <a-gltf-model src="#espada-modelo" 
                       position="-0.55 0.8 1.05" 
                       rotation="0 300 0" 
-                      scale="1 1 1">
+                      scale="1 1 1"
+                      data-sublabel="Espada"
+                      data-subdesc="Espada medieval con empuñadura metálica">
         </a-gltf-model>
 
         <a-gltf-model src="#calavera-modelo" 
                       position="0.25 1 -0.75" 
                       rotation="0 270 90" 
-                      scale="0.35 0.35 0.35">
+                      scale="0.35 0.35 0.35"
+                      data-sublabel="Calavera"
+                      data-subdesc="Calavera humana blanquecina">
         </a-gltf-model>
 
       </a-entity>
@@ -67,28 +73,35 @@
       <a-entity id="grupo-campamento" 
                 position="9 0 -18" 
                 rotation="0 0 0"
-                data-label="Campamento descanso"
-                data-desc="Un pequeño campamento con una hoguera y un tesoro situados junto a una palmera">
+                data-label="Campamento de descanso"
+                data-desc="Pequeño campamento con hoguera, cofre y palmera."
+                data-tipo="grupo">
 
         <a-gltf-model src="#fogata-modelo" 
                       class="obstaculo" data-radio="0.6"
                       position="0 0 0" 
                       rotation="0 -27.5 0" 
-                      scale="0.1 0.1 0.1">
+                      scale="0.1 0.1 0.1"
+                      data-sublabel="Hoguera"
+                      data-subdesc="Hoguera con llamas y troncos ardiendo">
         </a-gltf-model>
 
         <a-gltf-model src="#palmera-modelo" 
                       class="obstaculo" data-radio="0.5"
                       position="1 0 -2" 
                       rotation="0 150 0" 
-                      scale="0.03 0.03 0.03">
+                      scale="0.03 0.03 0.03"
+                      data-sublabel="Palmera"
+                      data-subdesc="Palmera tropical con hojas largas en forma de abanico">
         </a-gltf-model>
 
         <a-gltf-model src="#cofre-tesoro-modelo" 
                       class="obstaculo" data-radio="0.6"
                       position="-2 0 0" 
                       rotation="0 -45 0" 
-                      scale="0.01 0.01 0.01">
+                      scale="0.01 0.01 0.01"
+                      data-sublabel="Cofre del tesoro"
+                      data-subdesc="Cofre de madera con herrajes metálicos dorados">
         </a-gltf-model>
 
       </a-entity>
@@ -98,23 +111,32 @@
                 position="-11.5 0 -16" 
                 rotation="0 0 0"
                 data-label="Cañón pirata"
-                data-desc="Un cañón pirata apuntando al barco listo para disparar. Junto al cañón hay un barril y una pila de balas del cañón.">
+                data-desc="Cañón pirata con barril y munición."
+                data-tipo="grupo">
 
         <a-gltf-model src="#canon-modelo" 
                       class="obstaculo" data-radio="1.0"
                       position="0 0 0" 
                       rotation="0 -27.5 0" 
-                      scale="0.005 0.005 0.005">
+                      scale="0.005 0.005 0.005"
+                      data-sublabel="Cañón"
+                      data-subdesc="Cañón de hierro negro apuntando al mar">
         </a-gltf-model>
 
         <a-gltf-model src="#barril-modelo" 
                       class="obstaculo" data-radio="0.5"
                       position="2.5 0.5 3.5" 
                       rotation="0 0 0" 
-                      scale="0.01 0.01 0.01"> 
+                      scale="0.01 0.01 0.01"
+                      data-sublabel="Barril"
+                      data-subdesc="Barril de madera con aros metálicos"> 
         </a-gltf-model>
 
-        <a-entity id="pila-balas" position="3.5 0 -0.5" rotation="0 -30 0">
+        <a-entity id="pila-balas" 
+                  position="3.5 0 -0.5" 
+                  rotation="0 -30 0"
+                  data-sublabel="Pila de balas de cañón"
+                  data-subdesc="Varias balas de cañón esféricas de hierro negro apiladas">
           <a-sphere position="0 0.15 0" radius="0.15" color="#2c2c2c" roughness="0.7" metalness="0.6"></a-sphere>
           <a-sphere position="0.25 0.15 0.15" radius="0.15" color="#2c2c2c" roughness="0.7" metalness="0.6"></a-sphere>
           <a-sphere position="-0.25 0.15 0.15" radius="0.15" color="#2c2c2c" roughness="0.7" metalness="0.6"></a-sphere>
@@ -128,66 +150,162 @@
                 position="-4 0 -2"
                 rotation="0 20 0"
                 data-label="Pequeño almacén de suministros"
-                data-desc="Un pequeño almacén con varias cajas apiladas entre sí y dos barriles proximos a las cajas. Sobre las cajas y los barriles se encuentran algunas botellas esparcidas sobre ellos.">
+                data-desc="Almacén con cajas, barriles y botellas."
+                data-tipo="grupo">
 
         <a-gltf-model src="#cajas-pila-modelo" 
                       class="obstaculo" data-radio="0.8"
                       position="0 0.4 0" 
                       rotation="0 0 0" 
-                      scale="1 1 1"> 
+                      scale="1 1 1"
+                      data-sublabel="Pila de cajas"
+                      data-subdesc="Varias cajas de madera apiladas de forma irregular"> 
         </a-gltf-model>
 
         <a-gltf-model src="#barril-modelo" 
                       class="obstaculo" data-radio="0.5"
                       position="-1.1 0.5 2" 
                       rotation="0 0 0" 
-                      scale="0.01 0.01 0.01">
+                      scale="0.01 0.01 0.01"
+                      data-sublabel="Barril vertical"
+                      data-subdesc="Barril de madera en posición vertical">
         </a-gltf-model>
         
         <a-gltf-model src="#barril-modelo" 
                       class="obstaculo" data-radio="0.5"
                       position="1.3 0.3 0.5" 
                       rotation="90 45 0" 
-                      scale="0.01 0.01 0.01">
+                      scale="0.01 0.01 0.01"
+                      data-sublabel="Barril tumbado"
+                      data-subdesc="Barril de madera tumbado de lado">
         </a-gltf-model>
 
         <a-gltf-model src="#botella-modelo" 
                       position="-0.9 0.8 0.5" 
                       rotation="0 45 0" 
-                      scale="1.3 1.3 1.3">
+                      scale="1.3 1.3 1.3"
+                      data-sublabel="Botella"
+                      data-subdesc="Botella de vidrio vacía">
         </a-gltf-model>
 
         <a-gltf-model src="#botella-modelo" 
                       position="-0.65 1.45 -0.6" 
                       rotation="0 15 0" 
-                      scale="1.3 1.3 1.3">
+                      scale="1.3 1.3 1.3"
+                      data-sublabel="Botella"
+                      data-subdesc="Botella de vidrio vacía">
         </a-gltf-model>
 
         <a-gltf-model src="#botella-modelo" 
                       position="0 0.05 0.9" 
                       rotation="90 120 0" 
-                      scale="1.3 1.3 1.3">
+                      scale="1.3 1.3 1.3"
+                      data-sublabel="Botella"
+                      data-subdesc="Botella de vidrio vacía">
         </a-gltf-model>
 
       </a-entity>
-      <!-- Decorados varios (arbustos,palmeras,rocas,...) -->
-      <a-gltf-model src="#arbusto-modelo" position="5 0 -4" rotation="0 0 0" scale="0.75 0.75 0.75"></a-gltf-model>
+
+      <!-- Decorados varios (arbustos, palmeras, rocas,...) -->
+      <a-gltf-model src="#arbusto-modelo" 
+                    position="5 0 -4" 
+                    rotation="0 0 0" 
+                    scale="0.75 0.75 0.75"
+                    data-label="Arbusto"
+                    data-desc="Arbusto verde bajo con hojas redondas"></a-gltf-model>
       
-      <a-gltf-model src="#palmera-modelo" class="obstaculo" data-radio="0.5" position="-8 0 -5" rotation="0 60 0" scale="0.03 0.03 0.03"></a-gltf-model>
+      <a-gltf-model src="#palmera-modelo" 
+                    class="obstaculo" data-radio="0.5" 
+                    position="-8 0 -5" 
+                    rotation="0 60 0" 
+                    scale="0.03 0.03 0.03"
+                    data-label="Palmera"
+                    data-desc="Palmera tropical alta con hojas en forma de abanico"></a-gltf-model>
 
-      <a-gltf-model src="#palmera-modelo" class="obstaculo" data-radio="0.5" position="-14 0 -5" rotation="0 90 0" scale="0.025 0.025 0.025"></a-gltf-model>
-      <a-gltf-model src="#arbusto-modelo" position="3 0 -1" rotation="0 0 0" scale="0.8 0.8 0.8"></a-gltf-model>
+      <a-gltf-model src="#palmera-modelo" 
+                    class="obstaculo" data-radio="0.5" 
+                    position="-14 0 -5" 
+                    rotation="0 90 0" 
+                    scale="0.025 0.025 0.025"
+                    data-label="Palmera"
+                    data-desc="Palmera tropical alta con hojas en forma de abanico"></a-gltf-model>
 
-      <a-dodecahedron class="obstaculo" data-radio="1" position="-2 0 -12" color="#707070" radius="1" scale="1.2 0.5 1.2" rotation="0 45 0" roughness="1"></a-dodecahedron>
-      <a-gltf-model src="#arbusto-modelo" position="-1 0 -11.5" rotation="0 180 0" scale="0.4 0.4 0.4"></a-gltf-model>
+      <a-gltf-model src="#arbusto-modelo" 
+                    position="3 0 -1" 
+                    rotation="0 0 0" 
+                    scale="0.8 0.8 0.8"
+                    data-label="Arbusto"
+                    data-desc="Arbusto verde bajo con hojas redondas"></a-gltf-model>
 
-      <a-dodecahedron  position="12 0 -3" color="#808080" radius="0.3" scale="1 0.5 1" roughness="1"></a-dodecahedron>
-      <a-dodecahedron  position="11.5 0 -3.2" color="#696969" radius="0.2" scale="1 0.4 1" roughness="1"></a-dodecahedron>
-      <a-gltf-model src="#arbusto-modelo" position="11 0 -10" rotation="0 45 0" scale="0.6 0.6 0.6"></a-gltf-model>
+      <a-dodecahedron class="obstaculo" data-radio="1" 
+                      position="-2 0 -12" 
+                      color="#707070" 
+                      radius="1" 
+                      scale="1.2 0.5 1.2" 
+                      rotation="0 45 0" 
+                      roughness="1"
+                      data-label="Roca grande"
+                      data-desc="Roca gris irregular de tamaño mediano"></a-dodecahedron>
 
-      <a-dodecahedron class="obstaculo" data-radio="1.5" position="0 -0.2 -21" color="#5c5c5c" radius="1.5" scale="1.5 0.6 1" rotation="0 15 5" roughness="0.9"></a-dodecahedron>
-      <a-dodecahedron class="obstaculo" data-radio="1.5" position="9 -0.2 0" color="#5c5c5c" radius="1.5" scale="1 0.6 1" rotation="0 75 5" roughness="0.9"></a-dodecahedron>
-      <a-dodecahedron class="obstaculo" data-radio="1" position="-10 0 0" color="#707070" radius="1" scale="1.2 0.5 1.2" rotation="0 45 0" roughness="1"></a-dodecahedron>
+      <a-gltf-model src="#arbusto-modelo" 
+                    position="-1 0 -11.5" 
+                    rotation="0 180 0" 
+                    scale="0.4 0.4 0.4"
+                    data-label="Arbusto pequeño"
+                    data-desc="Arbusto verde pequeño"></a-gltf-model>
+
+      <a-dodecahedron position="12 0 -3" 
+                      color="#808080" 
+                      radius="0.3" 
+                      scale="1 0.5 1" 
+                      roughness="1"
+                      data-label="Piedra"
+                      data-desc="Piedra gris pequeña"></a-dodecahedron>
+
+      <a-dodecahedron position="11.5 0 -3.2" 
+                      color="#696969" 
+                      radius="0.2" 
+                      scale="1 0.4 1" 
+                      roughness="1"
+                      data-label="Piedra pequeña"
+                      data-desc="Piedra gris muy pequeña"></a-dodecahedron>
+
+      <a-gltf-model src="#arbusto-modelo" 
+                    position="11 0 -10" 
+                    rotation="0 45 0" 
+                    scale="0.6 0.6 0.6"
+                    data-label="Arbusto"
+                    data-desc="Arbusto verde mediano"></a-gltf-model>
+
+      <a-dodecahedron class="obstaculo" data-radio="1.5" 
+                      position="0 -0.2 -21" 
+                      color="#5c5c5c" 
+                      radius="1.5" 
+                      scale="1.5 0.6 1" 
+                      rotation="0 15 5" 
+                      roughness="0.9"
+                      data-label="Roca grande"
+                      data-desc="Roca gris oscuro grande e irregular"></a-dodecahedron>
+
+      <a-dodecahedron class="obstaculo" data-radio="1.5" 
+                      position="9 -0.2 0" 
+                      color="#5c5c5c" 
+                      radius="1.5" 
+                      scale="1 0.6 1" 
+                      rotation="0 75 5" 
+                      roughness="0.9"
+                      data-label="Roca"
+                      data-desc="Roca gris oscuro mediana"></a-dodecahedron>
+
+      <a-dodecahedron class="obstaculo" data-radio="1" 
+                      position="-10 0 0" 
+                      color="#707070" 
+                      radius="1" 
+                      scale="1.2 0.5 1.2" 
+                      rotation="0 45 0" 
+                      roughness="1"
+                      data-label="Roca"
+                      data-desc="Roca gris mediana"></a-dodecahedron>
       
       <!-- Suelos, mar y cielo -->
       <a-plane id="suelo-cesped" 
