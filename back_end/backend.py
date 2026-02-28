@@ -7,11 +7,28 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import json
 import ollama
+from transformers import pipeline, AutoTokenizer, AutoModelForSeq2SeqLM
 
 app = FastAPI()
 origins = ["*"] 
 
 MODELO_OLLAMA = "qwen2.5vl:latest"
+
+# Initialize Helsinki-NLP translator (loaded once at startup)
+print("🔄 Loading translation model Helsinki-NLP/opus-mt-en-es...")
+model_checkpoint = "Helsinki-NLP/opus-mt-en-es"
+
+# Cargamos el tokenizador y el modelo de forma explícita
+tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
+model = AutoModelForSeq2SeqLM.from_pretrained(model_checkpoint)
+
+translator = pipeline(
+    "translation_en_to_es",           # Usamos el nombre de tarea genérico
+    model=model,             # Pasamos el objeto del modelo
+    tokenizer=tokenizer,     # Pasamos el objeto del tokenizador
+    device=0                # IMPORTANTE: -1 es CPU, 0 es GPU
+)
+print("✅ Translation model loaded successfully")
 
 app.add_middleware(
     CORSMiddleware,
@@ -27,86 +44,137 @@ class Captura(BaseModel):
     objetos_visibles: list = [] 
     camara: dict = {}
 
+def traducir_a_espanol(texto_ingles):
+    """
+    Translate English text to Spanish using Helsinki-NLP model
+    Fast and accurate translation (~50-200ms)
+    """
+    try:
+        # Split long texts into chunks if needed (max 512 tokens per chunk)
+        if len(texto_ingles) > 2000:
+            # Split by sentences for long texts
+            sentences = texto_ingles.split('. ')
+            translated_sentences = []
+            
+            for sentence in sentences:
+                if sentence.strip():
+                    result = translator(sentence + '.', max_length=512)
+                    translated_sentences.append(result[0]['translation_text'])
+            
+            return ' '.join(translated_sentences)
+        else:
+            # Translate directly for short texts
+            result = translator(texto_ingles, max_length=512)
+            return result[0]['translation_text']
+            
+    except Exception as e:
+        print(f"⚠️ Translation error: {e}")
+        print("📝 Returning original text as fallback")
+        return texto_ingles
+
 def consultar_ia(ruta_imagen, metadatos_lista):
     """
-    Consulta optimizada - prioriza la imagen sobre los metadatos
+    Optimized query - prioritizes image over metadata
+    Generates description in English, then translates to Spanish
     """
-    print(f"🧠 Analizando escena con {MODELO_OLLAMA}...")
+    print(f"🧠 Analyzing scene with {MODELO_OLLAMA}...")
     
-    # Convertimos la lista de objetos a texto para el prompt
+    # Convert object list to text for prompt
     contexto_json = json.dumps(metadatos_lista, indent=2, ensure_ascii=False)
     
-    prompt = f"""Eres un asistente de accesibilidad enfocado en la descripción accesible de escenar para personas ciegas que usan realidad virtual.
+    # PROMPT IN ENGLISH (better model performance)
+    prompt = f"""You are an accessibility assistant focused on describing VR scenes for blind users.
 
-Tu tarea es describir lo que ves en la IMAGEN usando con el objetivo de que una persona ciega inmersa en la escena pueda interpretar la escena con claridad.
+Your task is to describe what you see in the IMAGE so that a blind person immersed in the scene can clearly understand it.
 
-INFORMACIÓN AUXILIAR (úsala para complementar lo que ves):
+AUXILIARY INFORMATION (use to complement what you see):
 {contexto_json}
 
-Nota: Los objetos tienen "posicion_relativa" al usuario en formato (x, y, z):
-- X: negativo = izquierda, positivo = derecha
-- Y: negativo = abajo, positivo = arriba  
-- Z: negativo = delante, positivo = detrás
+Note: Objects have "relative_position" to the user in (x, y, z) format:
+- X: negative = left, positive = right
+- Y: negative = down, positive = up  
+- Z: negative = in front, positive = behind
 
-Algunos objetos incluyen "objetos_contenidos" que son sub-elementos dentro de ellos.
-REGLAS CRÍTICAS:
+Some objects include "contained_objects" which are sub-elements within them.
 
-1. USA LOS OBJETOS DETECTADOS COMO BASE
-   - Los objetos que aparecen en el JSON son inequívocamente confiables, están realmente en la escena
-   - MENCIONA SOLO los objetos que aparecen en el JSON
-   - NO inventes ni añadas objetos que no estén en la lista
-   - NO confundas objetos - usa exactamente las etiquetas del JSON
+CRITICAL RULES:
 
-2. USA LA IMAGEN SOLO PARA DETALLES VISUALES. Añade detalles que no estén presentes en el JSON, si transmiten información relevante para describir la escena a la persona ciega:
-   - Añade colores específicos que veas en la escena : "marrón oscuro", "verde brillante", "azul celeste"
-   - Describe texturas: "madera envejecida", "metal oxidado"
-   - Menciona iluminación: "bien iluminado", "sombras suaves", "luz brillante"
-   - Describe el ambiente general: cielo, terreno, atmósfera
+1. USE DETECTED OBJECTS AS YOUR BASE
+   - Objects appearing in the JSON are unequivocally reliable, they are really in the scene
+   - MENTION ONLY objects that appear in the JSON
+   - DO NOT invent or add objects not in the list
+   - DO NOT confuse objects - use exactly the labels from the JSON
 
-3. NUNCA menciones:
-   - Términos como:  "videojuego", "escenario virtual", "escena de juego"
-   - El usuario YA SABE que está en inmerso VR, no hace falta recordárselo
+2. USE THE IMAGE ONLY FOR VISUAL DETAILS. Add details not present in the JSON, if they convey relevant information to describe the scene to the blind person:
+   - Add specific colors you see in the scene: "dark brown", "bright green", "sky blue"
+   - Describe textures: "aged wood", "rusty metal"
+   - Mention lighting: "well lit", "soft shadows", "bright light"
+   - Describe the general environment: sky, terrain, atmosphere
 
-4. Orientación espacial clara (basada en posicion_relativa):
-   - X negativo grande (< -5): "bastante a tu izquierda"
-   - X negativo pequeño (-5 a -1): "a tu izquierda"
-   - X casi cero (-1 a 1): "frente a ti" o "delante de ti"
-   - X positivo pequeño (1 a 5): "a tu derecha"
-   - X positivo grande (> 5): "bastante a tu derecha"
+3. NEVER mention:
+   - Terms like: "video game", "virtual scenario", "game scene"
+   - The user ALREADY KNOWS they are immersed in VR, no need to remind them
+
+4. Clear spatial orientation (based on relative_position):
+   - Large negative X (< -5): "well to your left"
+   - Small negative X (-5 to -1): "to your left"
+   - Nearly zero X (-1 to 1): "in front of you" or "ahead of you"
+   - Small positive X (1 to 5): "to your right"
+   - Large positive X (> 5): "well to your right"
    
-   - Z negativo: "delante", más negativo = "más cerca"
-   - Z positivo: "detrás"
+   - Negative Z: "in front", more negative = "closer"
+   - Positive Z: "behind"
    
-   - Usa expresiones como "muy cerca", "cerca", "a media distancia", "lejos", "al fondo"
-   - NO uses números ni metros exactos
+   - Use expressions like "very close", "close", "at medium distance", "far", "in the background"
+   - DO NOT use numbers or exact meters
 
-5. Estructura de la descripción:
-   - Primera frase: Contexto general (dónde estás, ambiente)
-   - Segunda frase: Objetos principales más cercanos
-   - Tercera frase: Objetos secundarios o más lejanos
-   - Cuarta frase (opcional): Detalles del entorno general
-   - Máximo 4 oraciones, lenguaje natural y fluido
+5. Description structure:
+   - First sentence: General context (where you are, atmosphere)
+   - Second sentence: Main closest objects
+   - Third sentence: Secondary or more distant objects
+   - Fourth sentence (optional): General environment details
+   - Maximum 4 sentences, natural and fluid language
 
-6. ORDEN de prioridad en la descripción:
-   - Prioriza objetos más cercanos al usuario
-   - Luego por relevancia o tamaño
-   - Menciona la posición de cada objeto (izquierda/derecha/frente)
+6. Priority ORDER in description:
+   - Prioritize objects closest to the user
+   - Then by relevance or size
+   - Mention the position of each object (left/right/front)
 
-7. Tono: Descriptivo, directo y útil. Recuerda que estás generando una descripción para una persona ciega."""
+7. Tone: Descriptive, direct and useful. Remember you are generating a description for a blind person.
+
+CRITICAL: Output your description in ENGLISH. The translation to Spanish will be done automatically."""
 
     try:
+        # Generate description in English
+        print("🎨 Generating English description...")
         response = ollama.chat(
             model=MODELO_OLLAMA,
             messages=[{
                 'role': 'user',
                 'content': prompt,
                 'images': [ruta_imagen]
-            }]
+            }],
+            options={
+                'temperature': 0.2,
+                'top_p': 0.9,
+                'top_k': 40,
+                'repeat_penalty': 1.1,
+            }
         )
-        return response['message']['content']
+        
+        descripcion_ingles = response['message']['content']
+        print("📝 English description generated")
+        print(f"   Length: {len(descripcion_ingles)} characters")
+        
+        # Translate to Spanish using Helsinki-NLP
+        print("🌐 Translating to Spanish with Helsinki-NLP...")
+        descripcion_espanol = traducir_a_espanol(descripcion_ingles)
+        print("✅ Translation complete")
+        
+        return descripcion_espanol
         
     except Exception as e:
-        print(f"⚠️ Error en Ollama: {e}")
+        print(f"⚠️ Error in Ollama: {e}")
         return "Error al generar la descripción."
 
 @app.post("/api/guardar-captura")
@@ -115,7 +183,7 @@ async def guardar_captura(datos: Captura):
         folder = "current_input"
         os.makedirs(folder, exist_ok=True)
 
-        # 1. Guardar la imagen
+        # 1. Save the image
         if "," in datos.imagen:
             header, encoded = datos.imagen.split(",", 1)
         else:
@@ -127,7 +195,7 @@ async def guardar_captura(datos: Captura):
         with open(file_path_img, "wb") as f:
             f.write(image_data)
 
-        # 2. Guardar los metadatos completos de la escena
+        # 2. Save complete scene metadata
         nombre_json = datos.nombre.replace(".jpg", ".json").replace(".png", ".json")
         file_path_json = os.path.join(folder, nombre_json)
 
@@ -136,13 +204,13 @@ async def guardar_captura(datos: Captura):
                 "objetos_visibles": datos.objetos_visibles 
             }, f, indent=4, ensure_ascii=False)
 
-        print(f"✅ Guardado: {datos.nombre} + JSON con info de cámara")
+        print(f"✅ Saved: {datos.nombre} + JSON with camera info")
 
-        # Generar descripción optimizada
+        # Generate optimized description (English -> Spanish)
         descripcion_generada = consultar_ia(file_path_img, datos.objetos_visibles)
 
         print("-" * 80)
-        print("📢 DESCRIPCIÓN DE AUDIO:\n")
+        print("📢 AUDIO DESCRIPTION (Spanish):\n")
         print(descripcion_generada)
         print("-" * 80)
         
@@ -155,14 +223,10 @@ async def guardar_captura(datos: Captura):
         print(f"❌ Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/api/health")
-async def health_check():
-    """Endpoint para verificar que el servidor está funcionando"""
-    return {"status": "ok", "modelo": MODELO_OLLAMA}
-
 if __name__ == "__main__":
-    print("🚀 Servidor de Asistencia VR para Ciegos")
-    print("📍 http://localhost:3000")
-    print(f"🤖 Modelo: {MODELO_OLLAMA}")
+    print("🚀 VR Assistance Server for Blind Users")
+    print("🌐 http://localhost:3000")
+    print(f"🤖 Vision Model: {MODELO_OLLAMA}")
+    print(f"🌍 Translation: Helsinki-NLP/opus-mt-en-es")
     print("-" * 50)
     uvicorn.run(app, host="0.0.0.0", port=3000)

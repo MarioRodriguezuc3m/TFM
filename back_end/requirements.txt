@@ -1,0 +1,18 @@
+# Backend dependencies for VR Accessibility Assistant
+
+# Web framework
+fastapi
+uvicorn
+websockets
+
+# Ollama client
+ollama
+
+# Translation model
+transformers
+torch
+sentencepiece
+sacremoses
+
+# Speech-To-Text (STT)
+faster-whisper

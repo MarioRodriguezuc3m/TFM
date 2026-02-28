@@ -148,20 +148,20 @@ AFRAME.registerComponent('captura-escena', {
             
             hijosConSubLabel.forEach(hijo => {
                 subObjetos.push({
-                    etiqueta: hijo.dataset.sublabel,
-                    descripcion: hijo.dataset.subdesc
+                    label: hijo.dataset.sublabel,
+                    description: hijo.dataset.subdesc
                 });
             });
 
             objetosVisibles.push({
-                etiqueta: grupo.dataset.label,
-                descripcion: grupo.dataset.desc,
-                posicion_relativa: {
+                label: grupo.dataset.label,
+                description: grupo.dataset.desc,
+                relative_position: {
                     x: parseFloat(localPos.x.toFixed(2)),
                     y: parseFloat(localPos.y.toFixed(2)),
                     z: parseFloat(localPos.z.toFixed(2)) 
                 },
-                objetos_contenidos: subObjetos.length > 0 ? subObjetos : undefined
+                contained_objects: subObjetos.length > 0 ? subObjetos : undefined
             });
         }
     });
@@ -180,17 +180,17 @@ AFRAME.registerComponent('captura-escena', {
         const distancia = objWorldPos.distanceTo(cameraPosWorld);
         
         // Criterio de distancia para objetos pequeños (Arbustos/Rocas)
-        let distanciaMaxima = 15; // Más pequeño para no saturar con decorados innecesarios
-        if (obj.dataset.label === "Barco Pirata") {
+        let distanciaMaxima = 15; // Smaller to avoid unnecessary decoration clutter
+        if (obj.dataset.label === "Pirate Ship") {
             distanciaMaxima = 40; 
         }
 
-        // Se incluye el bojeto en los metadatos solo si está en visión y dentro de la distancia máxima
+        // Include object in metadata only if in vision and within max distance
         if (estaEnVision && distancia < distanciaMaxima) {
             objetosVisibles.push({
-                etiqueta: obj.dataset.label,
-                descripcion: obj.dataset.desc,
-                posicion_relativa: {
+                label: obj.dataset.label,
+                description: obj.dataset.desc,
+                relative_position: {
                     x: parseFloat(localPos.x.toFixed(2)),
                     y: parseFloat(localPos.y.toFixed(2)),
                     z: parseFloat(localPos.z.toFixed(2))
