@@ -8,7 +8,7 @@ AFRAME.registerComponent('boundary-checker', {
     };
     
     // DETECCIÓN DE OBSTÁCULOS
-    this.obstacles = [];
+    this.obstacles =[];
     // Se seleccionan todos los elementos con clase 'obstaculo'
     const els = document.querySelectorAll('.obstaculo');
     
@@ -78,19 +78,15 @@ AFRAME.registerComponent('captura-escena', {
     this.scene = this.el.sceneEl;
     
     // Enlaza el botón de captura con tomarFoto()
-    const btn = document.getElementById('btn-captura');
-    if (btn) {
-      btn.addEventListener('click', () => {
-        this.tomarFoto();
-      });
-    }
+    // (Mantenemos el comentario original, pero el código del botón manual ha sido retirado 
+    // para que se ejecute automáticamente desde la voz)
   },
 
   remove: function() {
     if (this.intervalo) clearInterval(this.intervalo);
   },
 
-  tomarFoto: function () {
+  procesar: function (textoUsuario) {
     const screenshotComponent = this.scene.components.screenshot;
     if (!screenshotComponent) return;
 
@@ -122,7 +118,7 @@ AFRAME.registerComponent('captura-escena', {
     cameraDirection.normalize();
     
     // Lista de objetos visibles
-    const objetosVisibles = [];
+    const objetosVisibles =[];
 
     // 1. PROCESAR GRUPOS (entidades con data-tipo="grupo")
     const gruposEtiquetados = document.querySelectorAll('[data-tipo="grupo"]');
@@ -227,10 +223,11 @@ AFRAME.registerComponent('captura-escena', {
     const dataURL = canvas.toDataURL('image/jpeg', 0.8);
     const nombreArchivo = `captura_escena.jpg`;
 
-    fetch('http://localhost:3000/api/guardar-captura', { 
+    fetch('http://localhost:3000/api/procesar-consulta', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+            texto: textoUsuario,
             imagen: dataURL,
             nombre: nombreArchivo,
             objetos_visibles: objetosVisibles
@@ -247,8 +244,153 @@ AFRAME.registerComponent('captura-escena', {
         if(data && data.descripcion) {
             console.log("📢 Descripción generada:");
             console.log(data.descripcion);
+            
+            // Leemos la respuesta con TTS
+            const utterance = new SpeechSynthesisUtterance(data.descripcion);
+            utterance.lang = 'es-ES';
+            window.speechSynthesis.speak(utterance);
         }
     })
     .catch(err => console.error("❌ Error conexión:", err));
   }
 });
+
+// --- FUNCIONALIDAD DE STT CON WEB SPEECH API (PUSH-TO-TALK) ---
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (!SpeechRecognition) {
+  console.warn("⚠️ Este navegador no soporta la Web Speech API.");
+} else {
+  const recognition = new SpeechRecognition();
+  recognition.lang = 'es-ES';        
+  
+  // CRÍTICO PARA PTT: continuous = true. 
+  // Esto evita que el navegador corte el micro si el usuario hace una pausa mientras mantiene el botón pulsado.
+  recognition.continuous = true;     
+  recognition.interimResults = true; 
+
+  let isListening = false;
+  let finalTranscript = ''; 
+
+  const btn = document.getElementById('btn-stt');
+  
+  // Función para la síntesis de voz (TTS)
+  const speak = (text) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'es-ES'; 
+    window.speechSynthesis.speak(utterance);
+  };
+
+  // --- LÓGICA DE INICIO (PULSAR) ---
+  const startListening = (e) => {
+    // Evitar múltiples activaciones si ya está pulsado
+    if (e) e.preventDefault(); 
+    if (isListening) return;
+
+    finalTranscript = ''; // Limpiamos la frase anterior
+    try {
+      recognition.start();
+    } catch(err) {
+      // Ignorar error si el reconocimiento ya estaba iniciado internamente
+    }
+    
+    btn.innerHTML = "🎙️ ESCUCHANDO... (Suelta para enviar)";
+    btn.style.backgroundColor = "#ffcccc";
+    btn.style.transform = "scale(0.95)"; // Efecto visual de pulsado
+  };
+
+  // --- LÓGICA DE FIN (SOLTAR) ---
+  const stopListening = (e) => {
+    if (e) e.preventDefault();
+    if (!isListening) return;
+
+    recognition.stop(); // Detenemos el micro al soltar
+    btn.innerHTML = "🎙️ Mantén pulsado para hablar";
+    btn.style.backgroundColor = "#ffffff";
+    btn.style.transform = "scale(1)"; // Restaurar tamaño original
+  };
+
+  // 1. Eventos de Ratón
+  btn.addEventListener('mousedown', startListening);
+  btn.addEventListener('mouseup', stopListening);
+  btn.addEventListener('mouseleave', stopListening); // Por si el ratón sale del botón mientras pulsa
+
+  // 2. Eventos Táctiles (Móviles / Tablets)
+  btn.addEventListener('touchstart', startListening, {passive: false});
+  btn.addEventListener('touchend', stopListening);
+
+  // 3. Evento de Teclado (Barra Espaciadora) para accesibilidad web
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && !e.repeat) {
+      startListening();
+    }
+  });
+  document.addEventListener('keyup', (e) => {
+    if (e.code === 'Space') {
+      stopListening();
+    }
+  });
+
+  // --- EVENTOS DEL RECONOCIMIENTO ---
+  recognition.onstart = () => {
+    isListening = true;
+    console.log("✅ Micrófono abierto. Mantén pulsado para hablar.");
+    // Opcional: speak("Escuchando"); // Podría pisar la voz del usuario, mejor un sonido corto (beep) si lo tienes
+  };
+
+  recognition.onend = () => {
+    isListening = false;
+    console.log("🛑 Micrófono cerrado.");
+    
+    // Al soltar el botón y cerrarse el micro, procesamos todo el texto acumulado
+    let textoProcesado = finalTranscript.trim();
+    
+    if (textoProcesado.length > 0) {
+      console.log(`%c🗣️ Consulta finalizada: "${textoProcesado}"`,
+        'color: #0088cc; font-size: 16px; font-weight: bold; background-color: #f0f8ff; padding: 4px; border-radius: 4px;'
+      );
+      
+      speak("Procesando tu consulta...");
+      
+      // AQUÍ ES DONDE LLAMARÍAS A TU BACKEND (ROUTER DE INTENCIONES)
+      // fetch('http://localhost:3000/api/intencion', { ... body: { texto: textoProcesado } })
+      
+      // Capturamos y procesamos automáticamente usando la frase dicha
+      const camara = document.querySelector('[captura-escena]');
+      if (camara && camara.components['captura-escena']) {
+        camara.components['captura-escena'].procesar(textoProcesado);
+      }
+      
+    } else {
+      console.log("🔇 No se detectó ninguna palabra.");
+    }
+  };
+
+  recognition.onresult = (event) => {
+    let interimTranscript = '';
+    
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const transcript = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        finalTranscript += transcript + ' ';
+      } else {
+        interimTranscript += transcript;
+      }
+    }
+    
+    if (interimTranscript) {
+      console.log(`💬 (parcial): "${interimTranscript.trim()}"`);
+    }
+  };
+
+  recognition.onerror = (event) => {
+    console.error("❌ Error STT:", event.error);
+    if (event.error !== 'no-speech' && event.error !== 'aborted') {
+      speak("Error al escuchar. Por favor, intenta de nuevo.");
+    }
+    stopListening(); // Resetea el botón en caso de error
+  };
+  
+  // Ajuste inicial del texto del botón
+  btn.innerHTML = "🎙️ Mantén pulsado para hablar";
+}

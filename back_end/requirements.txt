@@ -16,3 +16,10 @@ sacremoses
 
 # Speech-To-Text (STT)
 faster-whisper
+
+#finetuning
+pandas
+evaluate
+datasets
+scikit-learn
+accelerate>=0.26.0

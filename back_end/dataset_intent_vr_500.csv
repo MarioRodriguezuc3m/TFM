@@ -1,0 +1,501 @@
+texto,categoria
+¿Qué hay justo delante de mí?,objetos_cercanos
+¿En qué dirección queda el objetivo?,localizacion_objeto
+¿Cómo activo el micrófono?,consulta_general
+¿Dónde se encuentra el NPC?,localizacion_objeto
+Dime qué elementos tengo próximos,objetos_cercanos
+¿Hay paredes cerca de mí?,objetos_cercanos
+¿Cómo es la estantería en detalle?,detalle_objeto
+Sigo sin entender,consulta_general
+¿Qué objetos puedo tocar si extiendo la mano?,objetos_cercanos
+¿Hay cosas cerca de las que tenga que preocuparme?,objetos_cercanos
+¿Qué hay a mi espalda?,objetos_cercanos
+Quiero entender dónde me encuentro,descripcion_escena
+¿Está la escalera a mi derecha?,localizacion_objeto
+Guíame hasta el botón de acción,navegacion
+¿Puedes responder más rápido?,consulta_general
+¿Puedes ser más claro?,consulta_general
+¿Cómo es la decoración del lugar?,detalle_objeto
+¿Qué puedo encontrar cerca de aquí?,objetos_cercanos
+Guíame hacia la puerta principal,navegacion
+¿Qué hay a mi derecha?,objetos_cercanos
+Guíame hacia la zona de exploración,navegacion
+¿Hay algo que brille cerca de mí?,objetos_cercanos
+¿Puedes repetir la descripción?,consulta_general
+¿El contenedor está lleno o vacío?,detalle_objeto
+¿Por dónde voy para encontrar al NPC?,navegacion
+¿Cómo llego a la plataforma?,navegacion
+¿Hay algún número o código visible?,detalle_objeto
+¿Dónde puedo encontrar el objeto clave?,localizacion_objeto
+Guíame hacia el interruptor,navegacion
+¿Qué opciones tengo disponibles?,consulta_general
+Descríbeme el lugar,descripcion_escena
+¿Dónde puedo encontrar una salida alternativa?,localizacion_objeto
+¿Puedes hablar en otro idioma?,consulta_general
+¿La puerta parece pesada o ligera?,detalle_objeto
+¿Puedes guiarme en general?,consulta_general
+¿Cómo es la arquitectura de este espacio?,descripcion_escena
+¿La caja tiene algún símbolo?,detalle_objeto
+¿Cuánto hay hasta la salida?,localizacion_objeto
+Guíame para llegar al ascensor,navegacion
+¿Dónde se encuentra el acceso principal?,localizacion_objeto
+¿La palanca está a mi izquierda?,localizacion_objeto
+¿Hay algún objeto luminoso cerca?,objetos_cercanos
+No sé qué hacer,consulta_general
+¿Hay algún peligro en los alrededores?,objetos_cercanos
+¿Dónde puedo encontrar la llave roja?,localizacion_objeto
+¿Me puedes dar una pista?,consulta_general
+¿Hay algún NPC a mi alrededor?,objetos_cercanos
+¿Hay fuentes de luz aquí?,descripcion_escena
+¿La superficie donde está el objeto es plana?,detalle_objeto
+Cuéntame cómo es este espacio,descripcion_escena
+¿Estoy en un espacio amplio o reducido?,descripcion_escena
+¿Dónde está el objeto mágico?,localizacion_objeto
+¿Tengo objetos detrás de mí?,objetos_cercanos
+¿Dónde estoy?,descripcion_escena
+¿Para qué sirves?,consulta_general
+¿Hay ventanas o puertas a mi alrededor?,objetos_cercanos
+¿Está el cofre abierto cerca de mí?,localizacion_objeto
+¿El portal emite alguna luz?,detalle_objeto
+¿Qué objetos puedo ver sin girarme?,objetos_cercanos
+Tengo una duda,consulta_general
+¿Cómo es la profundidad de este espacio?,descripcion_escena
+¿Me puedes describir el sitio donde estoy?,descripcion_escena
+¿El objeto es metálico o de madera?,detalle_objeto
+Quiero ir hasta la zona de recompensas,navegacion
+¿Hay coleccionables cerca?,objetos_cercanos
+¿Puedes ayudarme con algo?,consulta_general
+¿La fuente de luz es brillante o tenue?,detalle_objeto
+¿Cómo es la textura del objeto que describiste?,detalle_objeto
+¿Todo está bien?,consulta_general
+¿Qué tipo de lugar es este?,descripcion_escena
+¿De qué color es el traje del enemigo?,detalle_objeto
+¿De qué color es la ropa del NPC?,detalle_objeto
+Quiero ir hasta la puerta de salida,navegacion
+¿Qué tipo de construcción es esta?,descripcion_escena
+Estoy perdido,consulta_general
+¿Qué hay en las paredes?,descripcion_escena
+¿De qué color es la puerta?,detalle_objeto
+¿Qué hay justo a mi lado?,objetos_cercanos
+Gracias por la ayuda,consulta_general
+¿Qué es lo más cercano a mí?,objetos_cercanos
+¿Cuáles son tus funciones?,consulta_general
+¿Hay señales o indicaciones visibles?,descripcion_escena
+¿Qué hay a mi izquierda?,objetos_cercanos
+Quiero ir hacia la escalera más cercana,navegacion
+¿Hay alguien ahí?,consulta_general
+¿Hay ventanas en este lugar?,descripcion_escena
+¿La estatua es alta o baja?,detalle_objeto
+¿Hay algo relevante cerca de donde estoy parado?,objetos_cercanos
+Dime todo lo que hay a mi alrededor,objetos_cercanos
+Llévame a la salida,navegacion
+Enumera los objetos cercanos,objetos_cercanos
+Quiero ir al punto de extracción,navegacion
+¿Puedes bajar el volumen?,consulta_general
+Ayúdame,consulta_general
+¿Cómo de alto es el techo?,detalle_objeto
+¿Por dónde empiezo?,consulta_general
+¿Qué me has contado hasta ahora?,consulta_general
+¿El cofre tiene cerradura?,detalle_objeto
+¿La rampa tiene algún pasamanos?,detalle_objeto
+¿Es de día o de noche aquí?,descripcion_escena
+¿Dónde se encuentra la caja?,localizacion_objeto
+¿Qué me rodea en este instante?,objetos_cercanos
+¿Qué muebles hay alrededor?,objetos_cercanos
+¿Dónde está el objeto de mayor tamaño?,localizacion_objeto
+¿Tienes alguna limitación?,consulta_general
+Para un momento,consulta_general
+¿Hay zonas de sombra o de luz intensa?,descripcion_escena
+¿Cómo es la sala donde me encuentro?,descripcion_escena
+¿Cómo es el paisaje a mi alrededor?,descripcion_escena
+¿De qué color es el objeto brillante?,detalle_objeto
+¿Hay alguna plataforma cerca?,objetos_cercanos
+¿Cómo de gruesa es la puerta?,detalle_objeto
+¿Puedes hablar de forma más sencilla?,consulta_general
+¿Hay alguna misión que deba cumplir?,consulta_general
+¿Me puedes ayudar?,consulta_general
+¿Qué hay en esta zona?,descripcion_escena
+¿Cómo es la textura de la pared?,detalle_objeto
+¿El ordenador tiene pantalla encendida?,detalle_objeto
+¿Cómo es la iluminación aquí?,descripcion_escena
+¿Puedo interactuar con algo que esté cerca?,objetos_cercanos
+¿Dónde está el objeto que mencionaste?,localizacion_objeto
+¿Por dónde voy para encontrar el ítem?,navegacion
+Localiza el siguiente elemento interactivo,localizacion_objeto
+¿Qué puedes hacer tú?,consulta_general
+¿Cómo llego a la habitación bloqueada?,navegacion
+¿Qué hay frente a mí en este momento?,objetos_cercanos
+¿Estoy en el interior o el exterior?,descripcion_escena
+¿Cuál es tu función principal?,consulta_general
+¿El cristal es transparente o traslúcido?,detalle_objeto
+Quiero llegar al área de inicio,navegacion
+¿Qué tipo de preguntas puedo hacerte?,consulta_general
+¿Cómo funciona este sistema?,consulta_general
+¿A qué distancia está el personaje principal?,localizacion_objeto
+¿Cómo llego al punto de encuentro?,navegacion
+¿Por dónde se sale de aquí?,navegacion
+¿Qué personajes están cerca de mí?,objetos_cercanos
+¿Cómo de grande es este espacio?,descripcion_escena
+¿Está la ventana cerca de mí?,localizacion_objeto
+¿Qué botones o controles tengo cerca?,objetos_cercanos
+¿Dónde está el objeto brillante?,localizacion_objeto
+Guíame hasta el punto más alejado,navegacion
+Llévame al inicio de la misión,navegacion
+¿Dónde está el pomo de la puerta?,localizacion_objeto
+Necesito ayuda en general,consulta_general
+¿Qué hay a nivel del suelo cerca de mí?,descripcion_escena
+¿Cuántos pasos hay hasta el punto de inicio?,localizacion_objeto
+Quiero pausar,consulta_general
+Quiero llegar al punto marcado,navegacion
+¿Cómo llego al final del pasillo?,navegacion
+¿Cómo de ancho es el pasillo?,detalle_objeto
+¿El objeto mágico brilla o no?,detalle_objeto
+¿Cómo es el botón que tengo que pulsar?,detalle_objeto
+Llévame al origen del mapa,navegacion
+¿Dónde está la pantalla que vi antes?,localizacion_objeto
+¿El lugar está desordenado o ordenado?,descripcion_escena
+¿A qué distancia está el personaje?,localizacion_objeto
+¿Qué hay aquí?,descripcion_escena
+¿Por dónde voy para llegar al nivel siguiente?,navegacion
+¿Puedes darme una descripción general?,consulta_general
+¿Hay fuego o agua en los alrededores?,objetos_cercanos
+Descríbeme lo que ves,descripcion_escena
+¿Qué me topo si doy un paso adelante?,objetos_cercanos
+¿Cuánto hay hasta el altar?,localizacion_objeto
+¿Hay algún elemento destacable en el suelo?,descripcion_escena
+¿La lámpara da mucha o poca luz?,detalle_objeto
+¿Qué tipo de escena es esta?,descripcion_escena
+¿Hay algo útil a mi alcance?,objetos_cercanos
+¿Qué hay inmediatamente a mi alrededor?,objetos_cercanos
+No me queda claro,consulta_general
+Necesito ir al punto de inicio,navegacion
+¿Cómo llego al punto de activación?,navegacion
+¿Cuánto hay hasta el objetivo principal?,localizacion_objeto
+¿Dónde se encuentra el portal?,localizacion_objeto
+¿Cuál es el camino más seguro hacia la salida?,navegacion
+¿Cuánto me falta para llegar al checkpoint?,localizacion_objeto
+Llévame hacia la señal más cercana,navegacion
+¿La herramienta parece usada o nueva?,detalle_objeto
+¿Hay obstáculos cerca?,objetos_cercanos
+¿Cómo puedo llegar a la zona norte?,navegacion
+¿Hay elementos que pueda activar cerca?,objetos_cercanos
+Llévame al área más cercana sin explorar,navegacion
+¿Por qué dirección voy para salir?,navegacion
+¿Qué hago ahora?,consulta_general
+¿Este sitio parece seguro?,descripcion_escena
+¿Qué hay en mi entorno inmediato?,objetos_cercanos
+¿Hay algún enemigo cerca?,objetos_cercanos
+¿A mi derecha hay algún objeto importante?,localizacion_objeto
+¿La puerta tiene ventana?,detalle_objeto
+¿Cómo puedo llegar al cofre más cercano?,navegacion
+¿De qué color es la llave?,detalle_objeto
+No entendí lo que dijiste,consulta_general
+¿De qué color es el suelo aquí?,detalle_objeto
+Guíame hacia el objetivo secundario,navegacion
+¿El suelo está mojado o seco?,detalle_objeto
+¿Qué se supone que tengo que hacer?,consulta_general
+¿En qué posición está la cámara secreta?,localizacion_objeto
+¿Cómo es el interruptor que vi antes?,detalle_objeto
+Descríbeme la estancia actual,descripcion_escena
+¿Cómo es la lámpara que hay cerca?,detalle_objeto
+¿De qué material parece hecha la estatua?,detalle_objeto
+¿Hay objetos cerca de donde estoy?,objetos_cercanos
+¿Está la plataforma frente a mí?,localizacion_objeto
+Llévame al área de combate final,navegacion
+¿Hay ítems encima de la superficie más próxima?,objetos_cercanos
+Describe lo que hay justo a mi alrededor en detalle,objetos_cercanos
+¿A cuánta distancia está el ítem brillante?,localizacion_objeto
+Llévame al siguiente punto de interés,navegacion
+¿Qué hay alrededor mío ahora?,objetos_cercanos
+¿Cuánto hay hasta el punto de control?,localizacion_objeto
+¿De qué material es la palanca?,detalle_objeto
+Guíame hasta el objetivo,navegacion
+¿Qué veo si miro hacia abajo?,objetos_cercanos
+Dime qué tengo cerca en este momento,objetos_cercanos
+¿Por dónde puedo avanzar sin peligro?,navegacion
+¿Cómo es la entrada de este lugar?,descripcion_escena
+¿Cómo llego al altar desde aquí?,navegacion
+¿Dónde está el personaje no jugador?,localizacion_objeto
+Quiero empezar de nuevo,consulta_general
+¿Qué tengo cerca?,objetos_cercanos
+Dime dónde está la puerta secreta,localizacion_objeto
+¿Es un entorno natural o urbano?,descripcion_escena
+¿Cómo es el arma que hay aquí?,detalle_objeto
+¿La caja fuerte es grande o pequeña?,detalle_objeto
+¿Cómo es el color de la llave que necesito?,detalle_objeto
+¿Cómo es el aspecto del enemigo?,detalle_objeto
+Llévame a la zona de combate,navegacion
+¿Dónde se encuentra la habitación oculta?,localizacion_objeto
+¿Qué tengo al frente?,objetos_cercanos
+¿Qué me rodea a pocos pasos?,objetos_cercanos
+¿Es un lugar muy concurrido o solitario?,descripcion_escena
+¿Qué hay encima de la superficie más próxima?,objetos_cercanos
+¿Puedes hablar más despacio?,consulta_general
+Cuéntame algo interesante,consulta_general
+¿Estoy dentro o fuera de un edificio?,descripcion_escena
+¿Está la pared más cercana a mi izquierda?,localizacion_objeto
+¿Cuánto hay entre yo y la salida?,localizacion_objeto
+¿Cómo sé si lo estoy haciendo bien?,consulta_general
+Llévame hacia el área de tutorial,navegacion
+¿Cómo llego al siguiente marcador?,navegacion
+¿Hay alguna característica especial en este lugar?,descripcion_escena
+¿Dónde está la puerta?,localizacion_objeto
+¿De qué color es el traje del personaje?,detalle_objeto
+Guíame hasta la palanca de apertura,navegacion
+¿Cómo llego al lugar de recompensa?,navegacion
+¿Cómo llego al pasadizo secreto?,navegacion
+Explícame mejor,consulta_general
+¿Hay escaleras cerca?,descripcion_escena
+¿Hay personas cerca de mí?,descripcion_escena
+¿Está la puerta delante o detrás de mí?,localizacion_objeto
+¿Hay algún interactivo cerca?,objetos_cercanos
+Quiero encontrar el camino hacia el portal,navegacion
+¿Hay algún daño visible en el objeto?,detalle_objeto
+¿Es un lugar tranquilo o con movimiento?,descripcion_escena
+¿La caja es de cartón o de metal?,detalle_objeto
+¿Por dónde avanzo para completar la misión?,navegacion
+¿Existe algún pasillo o corredor cerca?,descripcion_escena
+¿Dónde se encuentra el mecanismo?,localizacion_objeto
+No sé a dónde ir,consulta_general
+¿El libro está abierto o cerrado?,detalle_objeto
+Quiero saber dónde estoy,descripcion_escena
+¿En qué ambiente me encuentro?,descripcion_escena
+¿Por dónde voy para encontrar la salida?,navegacion
+Llévame hasta la meta,navegacion
+¿Dónde está el ítem que necesito?,localizacion_objeto
+¿Cuántos pasos hasta la puerta?,localizacion_objeto
+¿Qué hay a pocos metros de mí?,objetos_cercanos
+¿Me puedes recordar dónde estoy?,consulta_general
+¿El objeto tiene alguna inscripción?,detalle_objeto
+¿Puedes ayudarme a entender mejor el entorno?,consulta_general
+Guíame para evitar los obstáculos,navegacion
+¿Cuánto espacio tengo alrededor?,descripcion_escena
+¿Qué ambiente tiene este lugar?,descripcion_escena
+¿Qué elementos forman parte de esta escena?,descripcion_escena
+¿De qué color es la pared?,detalle_objeto
+Quiero llegar al área de misión,navegacion
+¿Eres capaz de ver lo que yo veo?,consulta_general
+¿Cómo voy hacia donde está la llave?,navegacion
+¿Cómo puedo interactuar con los objetos?,consulta_general
+¿Qué objetos destacan en esta zona?,descripcion_escena
+¿A cuánta distancia está el objetivo?,localizacion_objeto
+¿Eres una inteligencia artificial?,consulta_general
+¿El mecanismo parece complicado de usar?,detalle_objeto
+¿La estantería está llena o vacía?,detalle_objeto
+¿Hay ítems cerca de mí?,objetos_cercanos
+¿De qué material es el suelo?,detalle_objeto
+¿Puedes callarte un momento?,consulta_general
+Llévame a donde está el objeto clave,navegacion
+¿Cómo puedo desactivarte?,consulta_general
+¿El objeto parece antiguo o moderno?,detalle_objeto
+¿Dónde está la zona de descanso?,localizacion_objeto
+¿El cristal está roto o intacto?,detalle_objeto
+¿El objeto es grande comparado con los demás?,detalle_objeto
+¿El personaje lleva algo en la mano?,detalle_objeto
+¿Cuánto hay hasta la zona segura?,localizacion_objeto
+¿Cómo avanzo desde aquí?,navegacion
+¿Cuántos objetos puedo ver aproximadamente?,descripcion_escena
+Guíame hacia el enemigo principal,navegacion
+¿Dónde está la fuente de luz?,localizacion_objeto
+Quiero desplazarme hasta el portal,navegacion
+¿La silla es grande o pequeña?,detalle_objeto
+¿Qué comandos puedo usar?,consulta_general
+¿Dónde está el enemigo más cercano?,localizacion_objeto
+¿Qué debería explorar primero?,consulta_general
+¿Cómo es la forma del altar?,detalle_objeto
+¿Cuántos objetos hay a menos de dos metros?,objetos_cercanos
+¿Dónde está el objeto más cercano a mí?,localizacion_objeto
+¿La estatua está entera o rota?,detalle_objeto
+¿Parece un lugar real o fantástico?,descripcion_escena
+¿Dónde está la fuente de energía?,localizacion_objeto
+¿Qué hay al fondo pero todavía cerca?,objetos_cercanos
+¿Dónde está la zona de combate?,localizacion_objeto
+¿Tengo algo a mi derecha ahora mismo?,objetos_cercanos
+¿Este lugar parece antiguo o moderno?,descripcion_escena
+¿Puedes resumir lo que has dicho?,consulta_general
+¿Qué hay a mi alrededor?,descripcion_escena
+¿Dónde está el ordenador?,localizacion_objeto
+¿Cómo es el ambiente sonoro que imaginas aquí?,descripcion_escena
+¿Por dónde accedo al área restringida?,navegacion
+¿Cómo es el diseño del interactivo?,detalle_objeto
+¿La plataforma parece estable?,detalle_objeto
+¿Cómo llego a la cámara secreta?,navegacion
+¿Hay algo importante cerca?,objetos_cercanos
+Quiero desplazarme al extremo opuesto,navegacion
+Guíame hasta la trampa para evitarla,navegacion
+¿Puedes indicarme la posición de la estatua?,localizacion_objeto
+¿De qué color es el ítem que buscaba?,detalle_objeto
+¿Qué objetos tengo alrededor?,objetos_cercanos
+¿Qué tipo de terreno hay aquí?,descripcion_escena
+¿Cómo llego a la entrada principal?,navegacion
+Guíame hacia la zona de tutorial,navegacion
+¿El objeto clave tiene algún símbolo?,detalle_objeto
+¿La puerta está pintada de colores llamativos?,detalle_objeto
+¿Estás ahí?,consulta_general
+¿El punto de guardado tiene alguna luz?,detalle_objeto
+¿De qué color es la plataforma?,detalle_objeto
+¿Dónde se encuentra la mesa?,localizacion_objeto
+¿Dónde está el pasadizo?,localizacion_objeto
+¿Qué colores predominan en el entorno?,descripcion_escena
+Dime los tres objetos más próximos,objetos_cercanos
+¿Hay alguna escalera o rampa próxima?,objetos_cercanos
+¿La pantalla está encendida?,detalle_objeto
+¿Puedes darme más detalles en general?,consulta_general
+Localiza el interruptor,localizacion_objeto
+¿La ventana es grande o pequeña?,detalle_objeto
+¿Dónde está el ítem que describiste antes?,localizacion_objeto
+¿Qué podría recoger en esta zona?,objetos_cercanos
+¿Hay alguna herramienta cerca?,objetos_cercanos
+Explícame el entorno que me rodea,descripcion_escena
+¿Cuánto hay hasta el final del pasillo?,localizacion_objeto
+¿Hay trampas o zonas peligrosas cerca?,objetos_cercanos
+¿Hay algún objeto importante a mi lado?,objetos_cercanos
+Silencio por favor,consulta_general
+¿Cuál es el aspecto general de este sitio?,descripcion_escena
+¿Qué tengo detrás?,objetos_cercanos
+¿Por dónde voy para rodear el obstáculo?,navegacion
+¿Es un espacio con mucho o poco mobiliario?,descripcion_escena
+¿La caja está detrás de mí?,localizacion_objeto
+Quiero llegar a la habitación siguiente,navegacion
+Necesito orientación,consulta_general
+¿La pared tiene alguna textura especial?,detalle_objeto
+¿Puedo rodearme de objetos interesantes aquí?,objetos_cercanos
+"No escuché bien, ¿puedes repetir?",consulta_general
+Cuéntame qué hay en esta escena,descripcion_escena
+¿Hay escritura en las paredes?,detalle_objeto
+¿Hay algún camino visible desde aquí?,descripcion_escena
+Cuéntame más cosas,consulta_general
+¿Hay algo a mi alrededor que deba saber?,objetos_cercanos
+¿Cómo llego a la siguiente área?,navegacion
+¿La herramienta está cerca o lejos?,localizacion_objeto
+¿Hay muchos elementos en esta zona?,descripcion_escena
+¿Cómo es el mecanismo que describiste?,detalle_objeto
+Cuéntame todo sobre este lugar,descripcion_escena
+¿Estoy en un lugar abierto o cerrado?,descripcion_escena
+¿Cómo es la escalera que hay cerca?,detalle_objeto
+Quiero ir a explorar la zona norte,navegacion
+¿Hay algún sonido que indique un objeto cercano?,objetos_cercanos
+¿Hay señales o letreros cercanos?,objetos_cercanos
+¿Cómo está el cielo en esta escena?,descripcion_escena
+¿La trampa es visible o está oculta?,detalle_objeto
+Guíame hasta el personaje principal,navegacion
+¿La pared es de ladrillo o de piedra?,detalle_objeto
+¿Cómo es el suelo donde piso?,descripcion_escena
+¿Cómo es el lugar donde estoy?,descripcion_escena
+¿Dónde está el elemento interactivo?,localizacion_objeto
+¿Qué elementos tengo al alcance de la mano?,objetos_cercanos
+¿La palanca parece nueva o antigua?,detalle_objeto
+Dame una descripción del lugar,descripcion_escena
+¿Qué hay justo a mi derecha en este instante?,objetos_cercanos
+¿Cómo es el tamaño de la habitación?,detalle_objeto
+¿Por dónde voy para alcanzar el objetivo marcado?,navegacion
+¿Cuántos pasos hay hasta el interruptror?,localizacion_objeto
+¿Hay inscripciones en el altar?,detalle_objeto
+¿Dónde está el arma?,localizacion_objeto
+¿Puedes describir todo de nuevo?,consulta_general
+¿Dónde está el objeto más grande de la sala?,localizacion_objeto
+¿Cómo es el techo de este lugar?,descripcion_escena
+¿Qué hay en el suelo justo aquí?,objetos_cercanos
+¿Qué puedo encontrar en este lugar?,descripcion_escena
+¿A qué distancia está la sala del jefe?,localizacion_objeto
+¿Está la escalera cerca de mí?,localizacion_objeto
+¿Hay algo encima de mí cerca?,objetos_cercanos
+¿Qué hay en el área inmediata a mis pies?,objetos_cercanos
+¿Qué puedo coger de aquí?,objetos_cercanos
+¿A qué distancia está el cristal?,localizacion_objeto
+Menciona los objetos que me rodean,objetos_cercanos
+¿Qué sensación da este lugar?,descripcion_escena
+¿En qué tipo de espacio estoy?,descripcion_escena
+Localiza la salida de emergencia,localizacion_objeto
+¿Puedes resumir lo que acabas de decir?,consulta_general
+¿Puedes localizarme el libro?,localizacion_objeto
+¿De qué color es el techo?,detalle_objeto
+¿Hay algo que no puedas hacer?,consulta_general
+Dime qué hay en los alrededores,objetos_cercanos
+¿Qué puedo pedirte que hagas?,consulta_general
+Dime los objetos más cercanos,objetos_cercanos
+¿Qué tengo a mi alcance?,objetos_cercanos
+¿El personaje no jugador es alto o bajo?,detalle_objeto
+¿Está la salida frente a mí?,localizacion_objeto
+¿Cómo llego a donde está el NPC?,navegacion
+Guíame hacia la palanca,navegacion
+¿Hay objetos en el suelo cerca de mí?,objetos_cercanos
+¿Puedes repetir todo desde el principio?,consulta_general
+¿Cómo de grande es el objeto que describiste?,detalle_objeto
+¿Qué hay justo a mis pies?,objetos_cercanos
+¿Qué hay tanto a mi derecha como a mi izquierda?,objetos_cercanos
+¿El NPC lleva algún accesorio visible?,detalle_objeto
+Dame contexto sobre mi ubicación actual,descripcion_escena
+Llévame hasta el punto de guardado,navegacion
+¿Cómo puedo ir hacia la zona segura?,navegacion
+Repite por favor,consulta_general
+¿Cómo es la forma del portal?,detalle_objeto
+¿Puedes hablar más rápido?,consulta_general
+¿Por dónde avanzo en esta zona?,navegacion
+¿El altar tiene objetos encima?,detalle_objeto
+¿Qué objetos hay en un radio cercano?,objetos_cercanos
+¿En qué zona me encuentro?,descripcion_escena
+¿El personaje tiene expresión amigable o hostil?,detalle_objeto
+¿Qué elementos decorativos hay?,descripcion_escena
+¿Dónde puedo encontrar el siguiente ítem?,localizacion_objeto
+¿Qué puedo ver a mi alrededor?,descripcion_escena
+¿Dónde se encuentra el punto de guardado?,localizacion_objeto
+No te entendí bien,consulta_general
+Dame algún consejo,consulta_general
+¿Por dónde accedo a la siguiente sala?,navegacion
+¿Está el portal a mi derecha o a mi izquierda?,localizacion_objeto
+¿La lámpara está lejos o cerca?,localizacion_objeto
+¿A qué distancia está la estantería?,localizacion_objeto
+¿Cómo llego al punto de control más cercano?,navegacion
+¿Puedo preguntarte cualquier cosa?,consulta_general
+¿Este sitio parece abandonado?,descripcion_escena
+¿Puedo alcanzar algo con la mano desde aquí?,objetos_cercanos
+¿Dónde está el botón que tengo que pulsar?,localizacion_objeto
+Dime la posición de la caja fuerte,localizacion_objeto
+Descríbeme el entorno,descripcion_escena
+¿Cómo llego a la sala del jefe?,navegacion
+Llévame hacia la zona iluminada,navegacion
+¿Por qué camino se accede a la sala oculta?,navegacion
+¿Qué más debería saber?,consulta_general
+¿Hay algún cofre o contenedor cerca?,objetos_cercanos
+Llévame a donde debo pulsar el botón,navegacion
+¿Cómo te llamas?,consulta_general
+¿Cómo llego hasta el interactivo principal?,navegacion
+¿Hay vegetación en este lugar?,descripcion_escena
+¿Cómo llego al siguiente objetivo?,navegacion
+¿A qué distancia tengo la trampa?,localizacion_objeto
+¿Cómo es la mesa que hay aquí?,detalle_objeto
+Me siento desorientado,consulta_general
+¿Dónde está el pasillo principal?,localizacion_objeto
+¿Cómo describirías este sitio?,descripcion_escena
+¿Dónde se encuentra la salida más próxima?,localizacion_objeto
+¿Se puede ver el techo desde aquí?,descripcion_escena
+¿Por dónde voy al siguiente nivel?,navegacion
+¿Puedes hablar más alto?,consulta_general
+¿Dónde está la llave?,localizacion_objeto
+¿Este lugar parece habitado?,descripcion_escena
+¿La caja está pintada o sin pintar?,detalle_objeto
+Guíame hacia el checkpoint,navegacion
+¿Qué tipo de habitación es esta?,descripcion_escena
+¿Qué es lo más importante que debo saber?,consulta_general
+¿Por dónde voy para avanzar?,navegacion
+¿Cómo llego a la puerta?,navegacion
+¿Cómo es la atmósfera general de este entorno?,descripcion_escena
+¿Dónde está la palanca?,localizacion_objeto
+¿A qué distancia está la silla?,localizacion_objeto
+¿A cuánta distancia está el punto de recompensa?,localizacion_objeto
+¿Está el cofre a mi izquierda?,localizacion_objeto
+Guíame hasta la zona de descanso,navegacion
+¿Está el botón detrás de mí?,localizacion_objeto
+¿Qué hay cerca que pueda usar?,objetos_cercanos
+¿Cómo se ve el horizonte desde aquí?,descripcion_escena
+¿Hay alguna puerta o salida visible?,descripcion_escena
+¿Qué hay cerca de mí?,objetos_cercanos
+¿Hay algo importante a mi izquierda?,objetos_cercanos
+¿Está la trampa visible desde aquí?,localizacion_objeto
+¿Hay objetos interactivos visibles?,descripcion_escena
+¿Qué hay en el fondo del escenario?,descripcion_escena
+No entiendo nada,consulta_general
+¿Por dónde llego al centro del mapa?,navegacion
+¿El ítem tiene partes móviles?,detalle_objeto
+¿Qué me rodea ahora mismo?,descripcion_escena
