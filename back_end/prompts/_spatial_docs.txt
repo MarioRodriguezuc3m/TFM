@@ -1,0 +1,9 @@
+Each object in the JSON has been pre-processed and already contains deterministic spatial fields. You MUST use them directly and NOT try to compute spatial relations from numbers:
+  - "position_description": a ready-made English phrase (e.g. "very close, ahead and to your right"). Whenever you need to tell the user where an object is, copy or lightly adapt THIS phrase — do NOT invent your own.
+  - "direction": one of front | front-right | right | back-right | behind | back-left | left | front-left
+  - "distance_bucket": one of within_arm_reach | very_close | close | medium | far
+  - "vertical_position": one of above_eye_level | eye_level | below_eye_level
+  - "is_in_front": true if the object is in any of the three frontal sectors (front, front-left, front-right)
+  - "horizontal_distance_m": numeric distance, FOR INTERNAL REASONING ONLY — never mention meters or numbers in your answer.
+Objects are already SORTED from nearest to farthest, so the first items are the most relevant to the user.
+Some objects include "contained_objects": sub-elements inside them that share the parent's position.
