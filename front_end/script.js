@@ -15,12 +15,35 @@ AFRAME.registerComponent('boundary-checker', {
     els.forEach(el => {
       this.obstacles.push({
         object3D: el.object3D, 
-        radius: parseFloat(el.getAttribute('data-radio')) || 1.0
+        radius: parseFloat(el.getAttribute('data-radio')) || 1.0,
+        el: el  // Guardamos referencia al elemento para acceder a data-label
       });
     });
 
     this.lastGoodPosition = new THREE.Vector3();
     this.lastGoodPosition.copy(this.el.object3D.position);
+
+    // Control de cooldown para no repetir el aviso de colisión constantemente
+    this.lastCollisionTime = 0;
+    this.collisionCooldown = 2000; // ms entre avisos de colisión
+    this.lastCollidedLabel = '';   // Último label anunciado
+  },
+
+  // Anuncia por TTS el nombre del objeto con el que se colisiona
+  announceCollision: function (label) {
+    const now = Date.now();
+    // Solo anuncia si ha pasado el cooldown O si es un objeto diferente al último anunciado
+    if (now - this.lastCollisionTime > this.collisionCooldown || label !== this.lastCollidedLabel) {
+      this.lastCollisionTime = now;
+      this.lastCollidedLabel = label;
+
+      const utterance = new SpeechSynthesisUtterance(`Colisión con ${label}`);
+      utterance.lang = 'es-ES';
+      utterance.rate = 1.1;
+      // Cancelamos cualquier TTS en curso para que el aviso de colisión sea inmediato
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+    }
   },
 
   // Cada frame: valida límites y colisiones, restaura posición si falla alguna
@@ -43,6 +66,7 @@ AFRAME.registerComponent('boundary-checker', {
 
     // 3. COMPROBCIÓN CHOQUE CON OBSTÁCULOS
     let hitObstacle = false;
+    let collidedLabel = '';
 
     for (let i = 0; i < this.obstacles.length; i++) {
       const obs = this.obstacles[i];
@@ -58,11 +82,28 @@ AFRAME.registerComponent('boundary-checker', {
       // Si la distancia es menor que el radio del objeto + un margen se considera un choque
       if (distance < (obs.radius + 0.3)) {
         hitObstacle = true;
+
+        // Obtener el label en español: se busca primero data-sublabel-es / data-label-es
+        // (atributos en español definidos en el HTML), con fallback al inglés si no existen.
+        // También se sube al padre por si el obstáculo es hijo de un grupo etiquetado.
+        const el = obs.el;
+        const parent = el.parentElement;
+        collidedLabel =
+          el.dataset.sublabelEs ||                               // sub-label ES del propio elemento
+          el.dataset.labelEs    ||                               // label ES del propio elemento
+          (parent && parent.dataset.labelEs) ||                  // label ES del grupo padre
+          el.dataset.sublabel   ||                               // fallback: sub-label EN
+          el.dataset.label      ||                               // fallback: label EN
+          (parent && parent.dataset.label)   ||                  // fallback: label EN del grupo padre
+          'objeto desconocido';
+
         break; // Choque detectado
       }
     }
 
     if (hitObstacle) {
+      // Anunciamos la colisión por voz
+      this.announceCollision(collidedLabel);
       // Si el usuario choca con algo, el usuario no avanza
       currentPosition.copy(this.lastGoodPosition);
     } else {
@@ -351,9 +392,6 @@ if (!SpeechRecognition) {
       );
       
       speak("Procesando tu consulta...");
-      
-      // AQUÍ ES DONDE LLAMARÍAS A TU BACKEND (ROUTER DE INTENCIONES)
-      // fetch('http://localhost:3000/api/intencion', { ... body: { texto: textoProcesado } })
       
       // Capturamos y procesamos automáticamente usando la frase dicha
       const camara = document.querySelector('[captura-escena]');

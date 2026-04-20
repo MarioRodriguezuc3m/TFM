@@ -4,3 +4,4 @@ venv/
 __pycache__/
 current_input/
 modelo_vr_guardado/
+resultados/
