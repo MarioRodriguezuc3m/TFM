@@ -1,0 +1,901 @@
+texto,categoria
+Necesito que me lleves a la posición de la palmera.,navegacion
+Descríbeme la escena.,descripcion_escena
+"Por favor, lista lo que tengo cerca de mí ahora.",objetos_cercanos
+Hazme un retrato de la escena.,descripcion_escena
+Cuéntame algún hecho curioso e interesante sobre la historia de la humanidad que no mucha gente conozca.,fuera_dominio
+Quiero saber cómo es esto.,descripcion_escena
+"Me podrías ubicar la puerta, no consigo saber dónde está.",localizacion_objeto
+Me ayudaría que me describas la escena entera antes de moverme.,descripcion_escena
+Detalla eso de la derecha.,detalle_objeto
+"Antes de nada, dame una descripción general del entorno.",descripcion_escena
+"Para hacerme una idea, ¿cómo es el entorno en su conjunto?",descripcion_escena
+Dime cómo moverme para alcanzar ese item.,navegacion
+¿Cómo es la botella?,detalle_objeto
+¿Sabes dónde puedo encontrar el libro ahora mismo?,localizacion_objeto
+Háblame del aspecto físico del reloj en concreto.,detalle_objeto
+Hazme una descripción tranquila y completa de la escena.,descripcion_escena
+Recuérdame qué tengo que hacer esta tarde.,fuera_dominio
+"Dime la posición de lo que hay enfrente, necesito orientarme.",localizacion_objeto
+¿Qué tengo que hacer?,fuera_dominio
+¿Podrías describirme el cuadro como si yo no pudiera verlo?,detalle_objeto
+Localiza la alfombra.,localizacion_objeto
+"Cuéntame qué tengo cerca, sin entrar en detalle de cada cosa.",objetos_cercanos
+¿En qué lado de la escena se encuentra ese elemento?,localizacion_objeto
+"Quiero localizar la espada, ¿en qué dirección está?",localizacion_objeto
+"Quería pedirte que me explicaras, con cierto detalle, cómo funciona el sistema inmunitario humano.",fuera_dominio
+Cómo voy a la estantería.,navegacion
+¿En qué parte del entorno está la puerta?,localizacion_objeto
+¿Qué tengo en mi proximidad sin tener que andar?,objetos_cercanos
+¿Qué tengo a mano?,objetos_cercanos
+Búscame en Google.,fuera_dominio
+"Quiero desplazarme hasta la botella, ¿me ayudas?",navegacion
+"Por favor, qué tengo cerca, una lista corta es suficiente.",objetos_cercanos
+¿En qué parte del entorno está esa cosa?,localizacion_objeto
+Dime dónde está el cofre.,localizacion_objeto
+"Es importante para mí saber dónde está eso de la izquierda, ¿podrías localizármelo y describirme su posición con detalle?",localizacion_objeto
+Dirígeme a la silla.,navegacion
+¿Puedes localizar ese objeto?,localizacion_objeto
+"Como no veo bien, agradecería que me hicieras una descripción amplia del entorno antes de empezar a hacer cosas.",descripcion_escena
+Recítame algún soneto famoso de Quevedo.,fuera_dominio
+"Necesito que me describas la escena completa, sin entrar en detalles.",descripcion_escena
+Dame una idea aproximada de cómo es el sitio en el que estoy.,descripcion_escena
+"Si no es molestia, ¿me cuentas qué tipo de cosas puedo pedirte y cuáles no podrías ayudarme?",fuera_dominio
+¿Qué tengo a poca distancia ahora mismo?,objetos_cercanos
+Dirígeme a lo que hay enfrente.,navegacion
+"Quería pedirte que me guiaras hasta el barril, no me ubico bien y necesito ayuda.",navegacion
+Háblame del entorno como si yo fuese un visitante nuevo.,descripcion_escena
+¿Cómo funciona?,fuera_dominio
+Necesitaría que me dieras una lista rápida y concisa de lo que tengo a mi alrededor.,objetos_cercanos
+¿Cómo puedo llegar al espejo desde donde estoy?,navegacion
+Ir a la silla.,navegacion
+"Necesito saber la ubicación de la botella, ¿puedes decírmela?",localizacion_objeto
+"Sin entrar en detalles del objeto, lo único que quiero saber es dónde está la puerta.",localizacion_objeto
+"A ver, llevo dando vueltas un buen rato y no sé qué hacer, ¿me das alguna pista sobre cómo avanzar?",fuera_dominio
+"No sé cómo continuar, ¿me orientas?",fuera_dominio
+Dime las cosas que tengo accesibles desde aquí sin moverme.,objetos_cercanos
+"Eh, escucha, necesito que me lleves hasta ese elemento, paso a paso si hace falta, no consigo ubicarme.",navegacion
+"A ver, llevo dándole vueltas un rato y no me oriento, ¿dónde está exactamente la alfombra?",localizacion_objeto
+Cuéntame todo lo relevante de este entorno.,descripcion_escena
+¿Puedo deshacer mi última acción?,fuera_dominio
+"Por favor, lista los objetos próximos a mi posición.",objetos_cercanos
+Por dónde empezamos: descríbeme el lugar.,descripcion_escena
+"Cuéntame cómo es la alfombra con detalle, no me importa que sea largo.",detalle_objeto
+"Sin tener que avanzar ni nada, ¿qué objetos están en mi entorno inmediato?",objetos_cercanos
+"Eh, escucha, ¿me guías hasta el reloj? Llevo dando vueltas sin llegar.",navegacion
+Cómo voy a ese elemento.,navegacion
+Dame instrucciones.,fuera_dominio
+"Resúmeme lo que hay aquí, sin describir objeto por objeto.",descripcion_escena
+¿Qué tipo de lugar es?,descripcion_escena
+¿Qué día es hoy?,fuera_dominio
+"Quiero saber qué pinta tiene la planta, descríbemelo.",detalle_objeto
+Dime una receta sencilla para hacer paella.,fuera_dominio
+"Me gustaría que me hicieras una descripción ambiental, sin entrar en detalle de cada objeto.",descripcion_escena
+"Por favor, indícame el recorrido completo desde aquí hasta lo que hay enfrente, despacio si hace falta.",navegacion
+Dame una descripción minuciosa de la caja.,detalle_objeto
+Necesito ubicarme: descríbeme dónde estoy.,descripcion_escena
+¿Qué se aprecia?,descripcion_escena
+Localiza el reloj.,localizacion_objeto
+Busca el espejo.,localizacion_objeto
+Ubicación del barril.,localizacion_objeto
+"Antes de seguir, ¿podrías hacerme una descripción detallada de eso de la izquierda? Me interesa especialmente su aspecto.",detalle_objeto
+Indícame el camino para llegar a la roca.,navegacion
+¿Voy bien?,fuera_dominio
+"Si me dices paso a paso cómo llegar a la caja, lo intento.",navegacion
+"Si pudieras orientarme un poco sobre cómo continuar, te lo agradecería mucho, porque ahora mismo estoy perdido.",fuera_dominio
+Localiza el cofre.,localizacion_objeto
+¿Cómo se ve el sitio en general? Cuéntamelo.,descripcion_escena
+Cosas a mi alrededor.,objetos_cercanos
+Algo cerca de mí?,objetos_cercanos
+"Por favor, dame paso a paso las indicaciones para alcanzar el cuadro desde mi posición actual.",navegacion
+"Por favor, indícame la ubicación de lo que tengo delante con precisión.",localizacion_objeto
+"Por favor, dime cómo puedo guardar el progreso de mi sesión actual y volver a retomarla más tarde.",fuera_dominio
+Resúmeme el entorno.,descripcion_escena
+"Me gustaría que me hablaras de algún tema interesante de filosofía, lo que tú prefieras, para entretenerme un rato.",fuera_dominio
+Dime qué hay cerca.,objetos_cercanos
+"Háblame del decorado, del ambiente, de lo que se percibe.",descripcion_escena
+Ir al reloj.,navegacion
+"Si no te importa, dime qué objetos están próximos a mí, así puedo decidir con qué interactuar primero.",objetos_cercanos
+Descríbeme el sitio.,descripcion_escena
+"Necesito que me lleves al barril, por favor.",navegacion
+Me gustaría conocer la posición exacta de la botella.,localizacion_objeto
+"Por favor, enumérame las cosas cercanas a mí.",objetos_cercanos
+"Llévame poco a poco hasta lo que mencionaste antes, por favor.",navegacion
+"Me apetece que me cuentes una historia larga, inventada, con dragones, princesas y un final inesperado.",fuera_dominio
+Dime dónde está la roca.,localizacion_objeto
+"Necesito ir a eso de la izquierda, ¿me indicas cómo?",navegacion
+¿Podrías describirme la hoguera como si yo no pudiera verlo?,detalle_objeto
+Indícame las cosas accesibles desde aquí.,objetos_cercanos
+¿Podrías decirme la localización del reloj?,localizacion_objeto
+"Me gustaría saber qué tengo accesible sin tener que desplazarme, ¿podrías listarme las cosas cercanas, por favor?",objetos_cercanos
+Dame una descripción minuciosa de eso de la izquierda.,detalle_objeto
+Camino hasta el sofá.,navegacion
+¿Cuáles son los objetos próximos a mí ahora mismo?,objetos_cercanos
+Me gustaría conocer la posición exacta de la espada.,localizacion_objeto
+¿Puedes guiarme hacia la botella?,navegacion
+"Me gustaría que me dieras una descripción rica y completa de lo que mencionaste antes, sin escatimar en detalles visuales.",detalle_objeto
+"Necesitaría llegar a la mesa, ¿me podrías dar indicaciones claras de cómo hacerlo?",navegacion
+¿Hacia dónde tendría que mirar para ver la espada?,localizacion_objeto
+"Cuéntame cómo es el lugar de forma general, lo justo para hacerme una idea.",descripcion_escena
+Indícame el camino para llegar a la botella.,navegacion
+"Si no es molestia, me gustaría que me indicases en qué dirección y a qué distancia queda la botella desde mi posición.",localizacion_objeto
+"Mira, voy un poco perdido, necesito que me cuentes qué tipo de lugar es este antes de moverme a ningún sitio.",descripcion_escena
+"Dame por favor un resumen de las posibilidades que tengo aquí, no sé muy bien qué se puede hacer y qué no.",fuera_dominio
+¿Puedo guardar la partida?,fuera_dominio
+"Dime qué clase de espacio es este, si es grande o pequeño, qué ambiente tiene.",descripcion_escena
+"Antes de tomar una decisión, necesito saber cómo es eso de la derecha en detalle, ¿me lo describes?",detalle_objeto
+Dirígeme a la hoguera.,navegacion
+¿Cuándo es Navidad?,fuera_dominio
+"Quería pedirte una descripción larga y detallada del cofre, sin prisa.",detalle_objeto
+"Quiero saber el aspecto exacto de la hoguera, cuéntamelo.",detalle_objeto
+Te pido por favor que me indiques cómo llegar al sofá con instrucciones bien claras.,navegacion
+Objetos cercanos.,objetos_cercanos
+Ir a la estantería.,navegacion
+"Solo necesito saber qué objetos están cerca, sin detalles.",objetos_cercanos
+"Acompáñame hasta la planta, indícame la dirección.",navegacion
+Indícame qué objetos están en mi entorno inmediato.,objetos_cercanos
+Léeme las noticias.,fuera_dominio
+"No tengo claro dónde me has puesto, ¿me cuentas con detalle pero en general cómo es el sitio?",descripcion_escena
+"Te pido por favor que me localices la puerta con precisión, lo necesito para orientarme.",localizacion_objeto
+"Necesitaría saber, lo más preciso que puedas, la posición de eso de la derecha en el entorno donde me encuentro.",localizacion_objeto
+¿De qué color es el cañón?,detalle_objeto
+Dime cómo es la alfombra.,detalle_objeto
+"Quería pedirte si fueras tan amable de describirme la escena en la que estoy inmerso, con calma y de manera narrativa.",descripcion_escena
+"Necesito ir a la ventana, ¿me indicas cómo?",navegacion
+"Me gustaría que me explicaras qué es la mecánica cuántica, en términos que un no físico pueda entender.",fuera_dominio
+"Por favor, condúceme hasta la puerta, ve dándome indicaciones de qué hacer en cada momento.",navegacion
+Eres un crack.,fuera_dominio
+"Por favor, indícame la ubicación de lo que está ahí con precisión.",localizacion_objeto
+"Indícame, si puedes, dónde está la silla en relación a mi posición.",localizacion_objeto
+¿Qué se espera de mí?,fuera_dominio
+"Llévame poco a poco hasta la palmera, por favor.",navegacion
+"Sólo dime qué tengo a mano, no necesito más.",objetos_cercanos
+Posición de la botella.,localizacion_objeto
+"Si pudieras describir la botella como si fueras un perito tasador, te lo agradecería.",detalle_objeto
+"Quiero saber qué tengo cerca, una enumeración rápida.",objetos_cercanos
+"Si fueras tan amable de hacerme una descripción visual completa de la botella, te lo agradezco.",detalle_objeto
+Recítame el alfabeto.,fuera_dominio
+Dame una panorámica.,descripcion_escena
+"Hazme una descripción exhaustiva de ese item, por favor, tómate tu tiempo si hace falta.",detalle_objeto
+"Sólo dime los nombres de los objetos cercanos, sin describirlos, por favor.",objetos_cercanos
+Indícame dónde está situado el libro en la escena.,localizacion_objeto
+¿Cuál es la capital de Francia?,fuera_dominio
+Necesito que me lleves a la posición del barril.,navegacion
+¿Cómo es la caja?,detalle_objeto
+"Dime la posición de ese objeto, necesito orientarme.",localizacion_objeto
+"Si no te importa, ¿podrías describirme con bastante detalle cómo es la puerta? Estoy intentando hacerme una imagen mental clara.",detalle_objeto
+"Hazme una descripción detallada de la estantería, por favor.",detalle_objeto
+"Háblame del aspecto, color y forma de la palmera, por favor.",detalle_objeto
+¿Qué tal está hoy el mercado de valores?,fuera_dominio
+Dime las cosas próximas a mi posición.,objetos_cercanos
+"Necesito una lista breve de lo que tengo en mi proximidad inmediata, gracias.",objetos_cercanos
+"Necesito saber qué tengo cerca, una lista corta basta.",objetos_cercanos
+"Por favor, dame las instrucciones de navegación hasta la roca, con calma y detalle.",navegacion
+"Si tuvieras que resumir la escena en dos frases, ¿cómo lo harías?",descripcion_escena
+"Por favor, llévame con cuidado hasta la planta, indicando cada giro y cada paso si hace falta.",navegacion
+Llévame a la alfombra.,navegacion
+Necesito orientarme: ¿puedes describirme lo que ves en general?,descripcion_escena
+"Necesito ir a la planta, ¿me indicas cómo?",navegacion
+Necesito que me lleves a la posición de la roca.,navegacion
+Indícame los elementos que están a mi vera.,objetos_cercanos
+Cuéntame qué tipo de espacio es y cómo está organizado.,descripcion_escena
+Dime qué tengo al alcance.,objetos_cercanos
+Describe el libro.,detalle_objeto
+¿Qué tipo de escena tengo delante? Hazme una descripción.,descripcion_escena
+¿Y ahora qué?,fuera_dominio
+"Antes de pensar a dónde voy, necesito saber qué tengo cerca, ¿podrías hacerme una lista rápida?",objetos_cercanos
+¿Dónde se encuentra eso de la izquierda?,localizacion_objeto
+Cómo voy a la caja.,navegacion
+"Por favor, indícame qué tengo a mi alrededor inmediato.",objetos_cercanos
+"A ver, llévame hasta el barril pero con tranquilidad, indícame cada movimiento.",navegacion
+"Lista rápida de lo próximo, gracias.",objetos_cercanos
+¿Qué hay junto a mí?,objetos_cercanos
+¿Cómo funcionan los controles?,fuera_dominio
+¿En qué estado está lo que mencionaste antes? Descríbemelo.,detalle_objeto
+¿Cuál es la diferencia entre Python y JavaScript?,fuera_dominio
+"Quiero un retrato detallado de la hoguera, descríbemelo.",detalle_objeto
+"Por favor, descríbeme el escenario en términos amplios.",descripcion_escena
+"Estoy un poco desorientado, ¿podrías decirme dónde se encuentra la botella con respecto a mi posición actual?",localizacion_objeto
+"Detállame el lugar, sin entrar en cada objeto concreto.",descripcion_escena
+"Cuéntame cómo es la palmera con detalle, no me importa que sea largo.",detalle_objeto
+"Necesito orientarme respecto a ese item, ¿me indicas su localización con la mayor precisión posible?",localizacion_objeto
+Guíame hasta la botella.,navegacion
+¿Me puedes describir el lugar en el que estoy ahora mismo?,descripcion_escena
+Dime las cosas que están junto a mí ahora.,objetos_cercanos
+¿Cómo puedo llegar a la mesa desde donde estoy?,navegacion
+¿Qué objetos están en mi proximidad?,objetos_cercanos
+"A ver, cuéntame, ¿cuál crees que es el mejor sistema operativo para programar, Linux, Windows o Mac, y por qué?",fuera_dominio
+"Quiero saber qué pinta tiene el sofá, descríbemelo.",detalle_objeto
+Dime qué clase de lugar es este y qué destaca a primera vista.,descripcion_escena
+"Quiero saber dónde se halla lo que tengo delante, por favor.",localizacion_objeto
+"Imagina que tengo que dibujar la ventana sin verlo, ¿cómo me lo describirías para que pueda hacerlo?",detalle_objeto
+Camino hasta ese elemento.,navegacion
+"Tengo interés en saber la posición exacta de lo que hay enfrente en relación al entorno, ¿podrías indicármela?",localizacion_objeto
+Necesito que me hables del aspecto físico del cañón.,detalle_objeto
+¿Cómo es la mesa?,detalle_objeto
+Guíame hasta el cuadro.,navegacion
+"Si pudieras decirme en qué dirección está el barril desde mi posición, me harías un favor enorme.",localizacion_objeto
+Dame una primera impresión del entorno.,descripcion_escena
+Dime qué hay aquí.,descripcion_escena
+Cómo voy a la silla.,navegacion
+"Llévame poco a poco hasta la hoguera, por favor.",navegacion
+"Por favor, dime qué cosas hay a mi alrededor en este momento.",objetos_cercanos
+"Lista los objetos a mi alrededor, en un radio cercano.",objetos_cercanos
+Dime dónde está la hoguera.,localizacion_objeto
+"Cuéntame cómo es lo que hay enfrente con detalle, no me importa que sea largo.",detalle_objeto
+Es la primera vez que estoy aquí y me gustaría que me orientaras describiéndome cómo es el lugar a nivel general.,descripcion_escena
+Guíame hasta la palmera.,navegacion
+Camino hasta la alfombra.,navegacion
+¿Cómo describirías lo que hay enfrente? Quiero hacerme una idea precisa.,detalle_objeto
+¿Cómo se ve la palmera?,detalle_objeto
+¿En qué parte del entorno está la botella?,localizacion_objeto
+"Descripción general, por favor.",descripcion_escena
+Necesito un listado breve de lo cercano.,objetos_cercanos
+¿Qué es este lugar?,descripcion_escena
+"Mira, llevo un par de minutos aquí y todavía no tengo claro cómo es este sitio, ¿me lo describes en general?",descripcion_escena
+"Llévame poco a poco hasta el reloj, por favor.",navegacion
+Ir a la espada.,navegacion
+"Necesito moverme hacia la caja, indícame con claridad cómo proceder.",navegacion
+A ver si me puedes ayudar a decidir: ¿qué cosas tengo cerca y a las que podría llegar sin esfuerzo?,objetos_cercanos
+Cuéntame qué ves.,descripcion_escena
+¿Qué hago aquí?,fuera_dominio
+Necesito que me digas dónde está la ventana en el escenario.,localizacion_objeto
+Encuentra la estantería.,localizacion_objeto
+"Quiero saber dónde se halla lo que está ahí, por favor.",localizacion_objeto
+Dime qué hay a mi vera.,objetos_cercanos
+Cuéntame qué hay cerca.,objetos_cercanos
+Dame una pista de lo que tengo que hacer ahora.,fuera_dominio
+"Por favor, qué objetos tengo a un par de pasos.",objetos_cercanos
+Detalla ese objeto.,detalle_objeto
+"Si no es molestia, me vendría bien que me describieras la escena entera para hacerme una composición mental.",descripcion_escena
+Ir a la silla.,navegacion
+"Quería pedirte que me llevaras a la lámpara, indicándome con precisión hacia dónde tengo que ir.",navegacion
+"A ver, te explico: necesito saber dónde está la alfombra para poder decidir hacia dónde me muevo.",localizacion_objeto
+"Por favor, dame una descripción rica y detallada de la espada.",detalle_objeto
+Buenos días.,fuera_dominio
+¿Qué tengo en mi entorno inmediato?,objetos_cercanos
+Me caes bien.,fuera_dominio
+Dime dónde está la lámpara.,localizacion_objeto
+Háblame de Napoleón.,fuera_dominio
+Dame una descripción minuciosa de lo que hay enfrente.,detalle_objeto
+¿Cómo se juega?,fuera_dominio
+¿Qué botones puedo pulsar?,fuera_dominio
+"Quería preguntarte si me puedes describir la roca a fondo, todos los detalles que captes.",detalle_objeto
+"Perdona, ¿podrías hacerme una descripción completa de la escena para que pueda imaginarme bien el entorno?",descripcion_escena
+Dime cómo es lo que tengo delante.,detalle_objeto
+"Quiero saber cómo es la escena en general, no me importan los detalles.",descripcion_escena
+Me gustaría conocer la posición exacta de ese item.,localizacion_objeto
+"Por favor, cuéntame qué tipo de escenario es este y dame una visión amplia antes de que me ponga a moverme.",descripcion_escena
+"Por favor, dime cómo es el sitio donde me encuentro.",descripcion_escena
+Dame las noticias del día.,fuera_dominio
+"No tengo claro qué se supone que tengo que hacer ahora, ¿me lo explicas?",fuera_dominio
+¿Qué hora es?,fuera_dominio
+"Me ayudaría empezar con una descripción general del entorno, ¿la haces?",descripcion_escena
+¿Qué hay junto a mí en este momento?,objetos_cercanos
+¿Hacia dónde tengo que ir para llegar a la botella?,navegacion
+Localiza el cuadro.,localizacion_objeto
+¿Me he atascado?,fuera_dominio
+"Por favor, ponme en situación describiendo el libro con riqueza de detalles.",detalle_objeto
+¿Cómo describirías la lámpara? Quiero hacerme una idea precisa.,detalle_objeto
+"Quería preguntarte por las opciones de accesibilidad de este sistema, ¿hay algún modo especial para personas ciegas?",fuera_dominio
+"Eh, antes de avanzar, ¿qué objetos tengo cerca de mí ahora mismo? Solo dime los nombres, sin descripciones.",objetos_cercanos
+¿Qué tengo en mi proximidad inmediata?,objetos_cercanos
+"Por favor, indícame la ubicación de lo que mencionaste antes con precisión.",localizacion_objeto
+¿Hacia dónde tendría que mirar para ver la lámpara?,localizacion_objeto
+Enuméralo cercano.,objetos_cercanos
+¿Cómo se ve la palmera?,detalle_objeto
+Necesito saber si puedo cambiar la voz del asistente o el idioma en el que me hablas.,fuera_dominio
+¿Qué tengo en mis inmediaciones ahora mismo?,objetos_cercanos
+"Dime los objetos cercanos a mi posición, sin detalles, solo nombres por favor.",objetos_cercanos
+¿Podrías describirme la mesa como si yo no pudiera verlo?,detalle_objeto
+¿Qué aspecto tiene el cuadro?,detalle_objeto
+"Detállame el color, la forma y el material de la ventana.",detalle_objeto
+"Antes de seguir, ¿me dices dónde está el espejo? Es lo primero que necesito saber ahora mismo.",localizacion_objeto
+"Hazme una descripción detallada del cuadro, por favor.",detalle_objeto
+Reiniciar.,fuera_dominio
+¿Puedes localizar la puerta?,localizacion_objeto
+Gracias.,fuera_dominio
+¿Hacia dónde tengo que ir para llegar a la caja?,navegacion
+¿Me puedes detallar el aspecto y características de la hoguera?,detalle_objeto
+"Por favor, dime en qué dirección queda eso de la izquierda desde donde estoy.",localizacion_objeto
+"Quería preguntarte por la historia de la música clásica, desde Bach hasta Beethoven, en líneas generales.",fuera_dominio
+"Quiero saber el aspecto exacto del libro, cuéntamelo.",detalle_objeto
+"Para tomar una decisión, me ayudaría saber qué tengo cerca, ¿me lo enumeras?",objetos_cercanos
+"Detállame el color, la forma y el material de ese objeto.",detalle_objeto
+"Si no es molestia, explícame cómo se calcula el IRPF en España, porque siempre me lío con eso.",fuera_dominio
+Necesito que me cuentes el aspecto general del lugar.,descripcion_escena
+¿Qué hay a mi alrededor que merezca la pena mencionar?,objetos_cercanos
+"Mira, llevo un rato perdido, ¿me puedes guiar hasta la alfombra con calma y detalle?",navegacion
+¿Qué objetos están en mi entorno próximo?,objetos_cercanos
+¿Tienes nombre?,fuera_dominio
+¿Cómo es la alfombra?,detalle_objeto
+Cuéntame el entorno.,descripcion_escena
+¿Qué puedo hacer?,fuera_dominio
+Cuéntame las últimas noticias de tecnología.,fuera_dominio
+¿Qué se espera que haga en este punto de la experiencia?,fuera_dominio
+Recítame un poema.,fuera_dominio
+Dame los nombres de los objetos cercanos.,objetos_cercanos
+¿Cuánto es 2+2?,fuera_dominio
+"Resume la escena en términos amplios, sin entrar en detalles concretos.",descripcion_escena
+¿Qué tengo que conseguir?,fuera_dominio
+¿Qué tengo aquí?,objetos_cercanos
+"Tengo que llegar a eso de la izquierda, pero antes necesito saber dónde está exactamente, ¿me lo puedes indicar?",localizacion_objeto
+"Tengo interés especial en el barril, ¿podrías describírmelo con todo el detalle que puedas?",detalle_objeto
+"Cuéntame algo curioso sobre los pulpos, por favor.",fuera_dominio
+Hazme una descripción visual concreta de lo que hay enfrente.,detalle_objeto
+Me gustaría conocer la posición exacta de esa cosa.,localizacion_objeto
+"Quería pedirte que me hicieras una descripción global de la escena, porque me cuesta hacerme una idea.",descripcion_escena
+Camino hasta la palmera.,navegacion
+"Dime qué tipo de escenario tengo a mi alrededor, en términos generales.",descripcion_escena
+Salir del juego.,fuera_dominio
+Encuentra el reloj.,localizacion_objeto
+¿Cuánto me queda?,fuera_dominio
+Necesito un listado de lo que tengo al lado.,objetos_cercanos
+"Por favor, sin tener que moverme, dime qué objetos tengo en mi entorno inmediato.",objetos_cercanos
+A ver si me puedes ayudar: ¿cómo describirías esto a alguien que entra por primera vez y no puede ver?,descripcion_escena
+¿Podrías indicarme la ruta hasta la palmera?,navegacion
+Cuéntame el aspecto general de este sitio.,descripcion_escena
+"Antes de moverme, quería saber qué cosas tengo aquí mismo, ¿me las dices?",objetos_cercanos
+"Quiero localizar eso de la derecha, ¿en qué dirección está?",localizacion_objeto
+¿Qué viene después?,fuera_dominio
+¿Qué impresión general tendría alguien al ver este escenario?,descripcion_escena
+Posición de eso de la izquierda.,localizacion_objeto
+Encuentra lo que hay enfrente.,localizacion_objeto
+Describe el cañón.,detalle_objeto
+Marca el camino para que llegue a lo que mencionaste antes.,navegacion
+"Hola, ¿qué tal?",fuera_dominio
+¿Hacia dónde tendría que mirar para ver la planta?,localizacion_objeto
+"A ver, dime, ¿cuál es la mejor manera de empezar a aprender a programar siendo principiante absoluto?",fuera_dominio
+¿Puedes localizar el sofá?,localizacion_objeto
+"Quiero localizar la mesa, ¿en qué dirección está?",localizacion_objeto
+"Para hacerme una idea de mis opciones, ¿podrías decirme qué objetos tengo a mi alrededor en un radio corto?",objetos_cercanos
+Descríbeme la palmera.,detalle_objeto
+"Llévame poco a poco hasta el cuadro, por favor.",navegacion
+Acércame a la silla.,navegacion
+"Por favor, sin moverme y sin describirme el objeto, dime únicamente dónde está lo que está ahí.",localizacion_objeto
+Reproduce música.,fuera_dominio
+Descríbeme la atmósfera y los elementos principales del escenario.,descripcion_escena
+¿Hay alguna misión concreta que tenga que cumplir?,fuera_dominio
+Guíame hasta la silla.,navegacion
+Ubicación del cuadro.,localizacion_objeto
+Cuéntame qué tipo de lugar es y qué ambiente tiene.,descripcion_escena
+Necesito que me digas dónde está el cañón en el escenario.,localizacion_objeto
+Quería preguntarte si hay alguna misión o tarea concreta que deba cumplir o si simplemente puedo explorar libremente.,fuera_dominio
+Descríbeme la sala o el espacio en el que me encuentro.,descripcion_escena
+Cuéntame lo que tengo a la mano sin tener que desplazarme.,objetos_cercanos
+Indica qué objetos están en mi entorno cercano.,objetos_cercanos
+Condúceme a ese elemento.,navegacion
+"Quiero acercarme a la alfombra, ¿me guías?",navegacion
+"Por favor, narra lo que ves a mi alrededor.",descripcion_escena
+¿Puedes localizar lo que tengo delante?,localizacion_objeto
+¿Puedes describirme lo que hay en la escena sin centrarte en ningún objeto en particular?,descripcion_escena
+Pídeme un Uber.,fuera_dominio
+Necesito que me hables del aspecto físico de la mesa.,detalle_objeto
+Necesito que me lleves a la posición del barril.,navegacion
+Ubicación de eso de la derecha.,localizacion_objeto
+"¿Me harías una descripción amplia de la escena, por favor?",descripcion_escena
+"Por favor, enumera lo accesible desde mi sitio.",objetos_cercanos
+"Indícame, si puedes, dónde está la estantería en relación a mi posición.",localizacion_objeto
+¿En qué parte del entorno está la caja?,localizacion_objeto
+Hola.,fuera_dominio
+Encuentra el barril.,localizacion_objeto
+¿En qué parte del entorno está la roca?,localizacion_objeto
+"Háblame de la Segunda Guerra Mundial, por favor.",fuera_dominio
+"A ver, descríbeme la hoguera bien, color, tamaño, forma, lo que sea relevante para entender cómo es.",detalle_objeto
+"Si me dieras instrucciones paso a paso para llegar a la espada, me harías un gran favor.",navegacion
+"Si pudieras guiarme con instrucciones tipo 'gira a la derecha, da tres pasos', llegaría a la palmera mucho más fácil.",navegacion
+"Necesito saber cómo es la lámpara exactamente, descríbemelo.",detalle_objeto
+"¿Qué hay alrededor de mí, en un radio corto?",objetos_cercanos
+Dime cómo es el cuadro.,detalle_objeto
+"Necesito tu ayuda para llegar al reloj, ¿podrías guiarme con instrucciones claras?",navegacion
+Dime objetos próximos.,objetos_cercanos
+"Quiero saber qué pinta tiene el reloj, descríbemelo.",detalle_objeto
+¿Cómo llego al reloj?,navegacion
+"Por favor, dime en qué dirección queda la mesa desde donde estoy.",localizacion_objeto
+¿Qué hay a mano?,objetos_cercanos
+¿Qué se supone que haga?,fuera_dominio
+"Llevo un rato intentando llegar al reloj y no acabo de orientarme, ¿podrías guiarme con instrucciones precisas?",navegacion
+Localiza la silla.,localizacion_objeto
+"Quiero desplazarme hasta el libro, ¿me ayudas?",navegacion
+Cosas próximas.,objetos_cercanos
+¿Quién es el presidente de EE.UU.?,fuera_dominio
+Localiza el cofre.,localizacion_objeto
+"Necesitaría que me describas con bastante profundidad cómo es el libro, todos los detalles que se aprecien me valen.",detalle_objeto
+"Me gustaría saber, con cierta precisión, en qué parte del entorno se encuentra el sofá.",localizacion_objeto
+"Para no perder más tiempo, ¿puedes decirme directamente dónde está el sofá?",localizacion_objeto
+¿Puedes guiarme hacia la estantería?,navegacion
+¿Qué aspecto tiene el barril?,detalle_objeto
+¿Qué tareas tengo pendientes en esta escena?,fuera_dominio
+Buenas tardes.,fuera_dominio
+"Necesito orientarme rápido: ¿qué tengo a mano, cerca de mi posición actual?",objetos_cercanos
+¿Hay algo interesante cerca de mí ahora mismo?,objetos_cercanos
+"Para orientarme rápido, ¿me listas las cosas más cercanas a mi posición?",objetos_cercanos
+¿Puedo subir el volumen?,fuera_dominio
+"Por favor, dame instrucciones claras sobre cómo proceder en este momento, porque me he quedado un poco bloqueado.",fuera_dominio
+"Por favor, indícame con claridad cómo llegar a lo que hay enfrente, dime hacia dónde girar, cuántos pasos dar, todo lo que haga falta.",navegacion
+Indícame dónde está situado ese item en la escena.,localizacion_objeto
+¿En qué estado está lo que tengo delante? Descríbemelo.,detalle_objeto
+¿En qué parte del entorno está la lámpara?,localizacion_objeto
+"Cuéntamelo todo sobre el aspecto del cañón, hasta los detalles más pequeños.",detalle_objeto
+"Hazme una descripción detallada de la planta, por favor.",detalle_objeto
+"Quiero saber dónde se halla el espejo, por favor.",localizacion_objeto
+Quiero ir a eso de la izquierda.,navegacion
+¿Cuál es el mejor método para aprender un idioma?,fuera_dominio
+¿Me puedes explicar qué estoy viendo en términos generales?,descripcion_escena
+¿Hacia dónde tengo que ir para llegar a la hoguera?,navegacion
+"Quiero acercarme a la ventana pero necesito tu ayuda para orientarme, ¿me guías?",navegacion
+"Si no te importa, ¿me podrías explicar las reglas básicas de esta experiencia, qué se puede hacer y qué no?",fuera_dominio
+Busca lo que está ahí.,localizacion_objeto
+"Antes de moverme, quería preguntarte por la ubicación de la ventana, ¿podrías decirme dónde está exactamente?",localizacion_objeto
+Dame una pista.,fuera_dominio
+"Quiero saber qué pinta tiene lo que mencionaste antes, descríbemelo.",detalle_objeto
+Necesito que me hables del aspecto físico de la estantería.,detalle_objeto
+"Quería pedirte un tutorial rápido sobre cómo funciona todo esto, porque es la primera vez que lo uso.",fuera_dominio
+Perfecto.,fuera_dominio
+"Necesito hacerme un mapa mental del entorno antes de avanzar, ¿podrías describirme el sitio completo?",descripcion_escena
+¿En qué parte del entorno está la botella?,localizacion_objeto
+"Lista lo que tengo en un radio corto, por favor.",objetos_cercanos
+"Hazme, por favor, un análisis breve de los pros y contras de vivir en el campo frente a la ciudad.",fuera_dominio
+Háblame de lo que tengo delante.,detalle_objeto
+"Llevo un rato buscando y no consigo dar con ello, ¿me puedes decir dónde está exactamente la planta?",localizacion_objeto
+"Por favor, dame instrucciones sobre cómo proceder a partir de aquí.",fuera_dominio
+¿Qué tipo de objeto es el reloj y cómo se ve?,detalle_objeto
+Me gustaría conocer la posición exacta de lo que mencionaste antes.,localizacion_objeto
+Indícame dónde está situado el cuadro en la escena.,localizacion_objeto
+"Dame una descripción rápida pero completa de la escena, por favor.",descripcion_escena
+¿En qué estado está la palmera? Descríbemelo.,detalle_objeto
+"Cuéntame el escenario en términos generales, después iré preguntando detalles.",descripcion_escena
+"He oído antes que había la puerta por aquí, ¿podrías confirmarme su ubicación exacta?",localizacion_objeto
+¿Me puedes decir dónde se encuentra la espada exactamente?,localizacion_objeto
+"Tengo curiosidad por saber qué tengo justo al lado, ¿me puedes listar las cosas más cercanas?",objetos_cercanos
+Ir al cañón.,navegacion
+"Eh, escucha, ¿puedes repetir lo último que me has dicho? No lo he escuchado bien y necesito que lo vuelvas a decir.",fuera_dominio
+"Por favor, ¿qué hay junto a mí aquí?",objetos_cercanos
+"Si no es molestia, ¿puedes guiarme paso a paso hasta el sofá? No me oriento bien aquí.",navegacion
+Vale.,fuera_dominio
+Ubicación de la hoguera.,localizacion_objeto
+Detalla la ventana.,detalle_objeto
+¿Qué tipo de escena es?,descripcion_escena
+Lista los elementos cercanos a mi posición.,objetos_cercanos
+"Quiero ir andando hasta eso de la derecha, ¿me dices hacia dónde dirigirme primero?",navegacion
+Ubicación de la roca.,localizacion_objeto
+¿Qué se ve?,descripcion_escena
+"Dame una idea aproximada del escenario, por favor.",descripcion_escena
+Dime dónde me encuentro.,descripcion_escena
+Necesito conocer el color y la forma de la alfombra.,detalle_objeto
+¿Cómo se ve la mesa?,detalle_objeto
+Hazme una descripción del lugar como si me estuvieras contando un cuento.,descripcion_escena
+"Descríbeme el entorno con calma, tengo tiempo.",descripcion_escena
+Cuéntame los detalles visuales de lo que está ahí.,detalle_objeto
+Háblame del ambiente.,descripcion_escena
+"Antes de hacer nada más, necesito que me confirmes la ubicación de lo que mencionaste antes en el escenario.",localizacion_objeto
+Resume todo lo que tengo a la vista en una descripción breve.,descripcion_escena
+Cuéntame en qué tipo de sitio me has metido esta vez.,descripcion_escena
+"Si te tomas un momento, describe la caja a fondo: aspecto, color, material, todo lo visible.",detalle_objeto
+¿Me harías el favor de pintar con palabras la escena en la que estoy?,descripcion_escena
+Quería que me hablaras un poco sobre el mercado de criptomonedas y si crees que es una buena inversión a largo plazo.,fuera_dominio
+"Quería saber qué tengo cerca antes de decidir, ¿podrías listármelo?",objetos_cercanos
+Enumera lo cercano.,objetos_cercanos
+"Describe lo que hay enfrente con cierta profundidad, por favor.",detalle_objeto
+"Acompáñame hasta la hoguera, indícame la dirección.",navegacion
+¿Qué tipo de objeto es la hoguera y cómo se ve?,detalle_objeto
+Sólo dime los nombres de las cosas próximas.,objetos_cercanos
+Lista lo próximo.,objetos_cercanos
+¿Cómo es lo que hay enfrente físicamente? Dame todos los detalles.,detalle_objeto
+"A ver, ese eso de la izquierda del que has hablado antes, ¿puedes describírmelo con más detalle, por favor?",detalle_objeto
+Te quiero.,fuera_dominio
+¿Puedes guiarme hacia la silla?,navegacion
+"Imagina que soy un visitante extranjero que nunca ha estado aquí, ¿cómo me describirías la escena?",descripcion_escena
+"Antes de avanzar, ¿podrías decirme en qué punto del escenario está ese elemento?",localizacion_objeto
+"Acompáñame hasta ese item, indícame la dirección.",navegacion
+"Necesito que me ayudes a redactar un correo formal para pedir vacaciones a mi jefe, ¿podrías echarme una mano?",fuera_dominio
+"Quiero hacerme una idea mental del lugar, ¿me lo describes?",descripcion_escena
+"Tengo curiosidad por saber cómo es este sitio, ¿te importaría darme una descripción narrativa de lo que ves?",descripcion_escena
+"Si pudieras llevarme hasta la estantería con indicaciones paso a paso, te lo agradecería mucho.",navegacion
+¿Qué cosas hay próximas a mi ubicación?,objetos_cercanos
+"Por favor, dime cuáles son los principales partidos políticos de España y qué ideología defiende cada uno.",fuera_dominio
+¿Qué libro me recomiendas para leer este verano?,fuera_dominio
+"Quiero desplazarme hasta la mesa, ¿me ayudas?",navegacion
+"Háblame del aspecto, color y forma de la ventana, por favor.",detalle_objeto
+"Quiero los nombres de lo cercano, nada más.",objetos_cercanos
+Dame el contexto.,descripcion_escena
+"Indícame los objetos próximos, sin describirlos.",objetos_cercanos
+"Tengo que ir a lo que está ahí pero no sé por dónde tirar, ¿puedes guiarme con detalle?",navegacion
+Dime cómo es el barril.,detalle_objeto
+Pausa.,fuera_dominio
+Para empezar quería pedirte una cosa: que me cuentes con tus palabras cómo es el sitio en el que me encuentro.,descripcion_escena
+"Por favor, condúceme hasta la caja paso a paso.",navegacion
+Dime objetos en mi vecindad inmediata.,objetos_cercanos
+"Si no te importa, guíame hasta la ventana con calma, paso a paso, sin prisa.",navegacion
+"Indica el camino para alcanzar lo que mencionaste antes, por favor.",navegacion
+Camino hasta el reloj.,navegacion
+¿Qué hay junto a mí que pueda ser útil?,objetos_cercanos
+¿Cómo describirías el sitio?,descripcion_escena
+Llévame a la botella.,navegacion
+Cuéntame un chiste.,fuera_dominio
+Dame instrucciones para llegar al reloj.,navegacion
+"Dame contexto sobre el lugar, sin entrar en cada objeto.",descripcion_escena
+Guíame hasta lo que está ahí.,navegacion
+¿En qué estado está el espejo? Descríbemelo.,detalle_objeto
+"Mira, lo único que necesito ahora es saber qué hay cerca de mí, una lista rápida me basta.",objetos_cercanos
+"Cuéntame cómo es el cañón con detalle, no me importa que sea largo.",detalle_objeto
+¿Me puedes decir dónde se encuentra la ventana exactamente?,localizacion_objeto
+¿Qué tengo al lado?,objetos_cercanos
+"Dirígeme paso a paso hasta el espejo, por favor.",navegacion
+¿Sabrías indicarme dónde se encuentra la silla desde mi posición actual?,localizacion_objeto
+"Por favor, sin describirlas, solo enuméramelas: ¿qué cosas tengo cerca de mí ahora mismo?",objetos_cercanos
+Cuéntame el contexto del lugar como si yo no pudiera verlo.,descripcion_escena
+"Es importante para mí ubicar el barril, ¿podrías decirme su posición exacta dentro de la escena?",localizacion_objeto
+"Si no te importa, hazme un resumen de la trama de El Quijote, para refrescar la memoria, que la tengo oxidada.",fuera_dominio
+"Por favor, indícame el camino para llegar a eso de la izquierda con todo el detalle que puedas.",navegacion
+"Antes de tomar ninguna decisión sobre por dónde ir, ¿podrías describirme cómo es la escena en su conjunto?",descripcion_escena
+¿Qué tiempo hace hoy?,fuera_dominio
+"Por favor, condúceme hasta ese item paso a paso.",navegacion
+"Por favor, descríbeme la roca con todo el detalle visual que puedas, color, forma, textura, todo.",detalle_objeto
+"Háblame del aspecto, color y forma del cañón, por favor.",detalle_objeto
+¿Qué objetos están cerca?,objetos_cercanos
+¿Me puedes detallar el aspecto y características de la botella?,detalle_objeto
+"Por favor, descríbeme el contexto visual del lugar.",descripcion_escena
+¿Cuál es la misión?,fuera_dominio
+Necesito una enumeración corta de las cosas cercanas.,objetos_cercanos
+¿Cuál es el objetivo?,fuera_dominio
+"Lista los objetos a mi alcance, sin contar los lejanos.",objetos_cercanos
+Buenas.,fuera_dominio
+Descríbeme el entorno con cierto detalle pero sin abrumarme.,descripcion_escena
+"Me gustaría una descripción narrativa del entorno, por favor.",descripcion_escena
+"Descríbeme el lugar a grandes rasgos, por favor, sin perderte en cada objeto.",descripcion_escena
+"Si fueras tan amable, me gustaría que me dieras una descripción narrativa y completa del escenario.",descripcion_escena
+¿Hay otros niveles?,fuera_dominio
+¿Me puedes guiar hasta lo que hay enfrente?,navegacion
+"Dime los elementos próximos a mí, por favor.",objetos_cercanos
+¿Cómo describirías el sitio a grandes rasgos?,descripcion_escena
+"Por favor, indícame la ubicación del cofre con precisión.",localizacion_objeto
+Detalla la espada.,detalle_objeto
+¿Podrías darme una visión general de lo que hay aquí?,descripcion_escena
+"¿Podrías decirme qué hay cerca, en un radio corto?",objetos_cercanos
+Muchas gracias.,fuera_dominio
+"Si pudieras tomarte tu tiempo y hacerme una descripción general bonita y narrativa del lugar, te lo agradecería.",descripcion_escena
+Cuéntame los detalles visuales de la palmera.,detalle_objeto
+"Necesito que me expliques cómo cambiar la velocidad a la que me hablas, me cuesta seguirte cuando vas tan rápido.",fuera_dominio
+"Por favor, indícame dónde se encuentra la lámpara y, si puedes, dame también la distancia aproximada.",localizacion_objeto
+"Cuéntame cómo es lo que está ahí con detalle, no me importa que sea largo.",detalle_objeto
+¿Para qué sirve esto?,fuera_dominio
+Dame contexto del lugar.,descripcion_escena
+Dime lo cercano.,objetos_cercanos
+Quiero ir hacia la mesa pero antes de moverme necesito que me digas en qué dirección queda.,localizacion_objeto
+Háblame sobre la teoría de la relatividad de Einstein.,fuera_dominio
+"Por favor, dame una descripción rica y detallada del espejo.",detalle_objeto
+¿Puedo cambiar la velocidad de la voz?,fuera_dominio
+Hasta luego.,fuera_dominio
+¿Podrías describirme la botella como si yo no pudiera verlo?,detalle_objeto
+¿A qué distancia y en qué dirección queda lo que está ahí?,localizacion_objeto
+"Antes de nada, ponme en situación con una descripción amplia del sitio.",descripcion_escena
+"Descríbeme el conjunto, no objeto a objeto.",descripcion_escena
+¿Cómo estás?,fuera_dominio
+"Antes de empezar a hacer preguntas concretas, ¿me haces el favor de describirme el entorno completo?",descripcion_escena
+Dame instrucciones para llegar a la mesa.,navegacion
+"Llevo aquí un rato y no sé muy bien qué se supone que tengo que hacer, ¿me explicas cuál es el objetivo de la experiencia?",fuera_dominio
+Dime qué tengo a corto alcance.,objetos_cercanos
+A ver si me ayudas con esto: necesito saber en qué parte de la escena se encuentra la roca respecto a mí.,localizacion_objeto
+¿Puedes localizar ese objeto?,localizacion_objeto
+Traduce 'hola' al alemán.,fuera_dominio
+Dime los elementos accesibles desde donde estoy.,objetos_cercanos
+¿Hacia dónde tengo que ir para llegar a lo que está ahí?,navegacion
+"Detállame el color, la forma y el material del cuadro.",detalle_objeto
+Quería preguntarte si existe la opción de pausar la experiencia y reanudarla luego sin perder el progreso.,fuera_dominio
+"Háblame del aspecto general del entorno, por favor.",descripcion_escena
+"Por favor, dime en qué dirección queda lo que está ahí desde donde estoy.",localizacion_objeto
+"Acompáñame hasta esa cosa, indícame la dirección.",navegacion
+¿Qué es la fotosíntesis?,fuera_dominio
+Descríbeme la hoguera.,detalle_objeto
+Dime una receta de tortilla.,fuera_dominio
+¿Hacia dónde tengo que ir para llegar a la silla?,navegacion
+"Me gustaría que me explicaras la diferencia entre el comunismo y el socialismo, si tienes tiempo para hacerlo.",fuera_dominio
+¿Podrías describirme el espejo como si yo no pudiera verlo?,detalle_objeto
+"Necesitaría llegar al reloj, ¿me das indicaciones bien claras para hacerlo?",navegacion
+"Hazme una descripción visual general, como si fueras un guía.",descripcion_escena
+¿Qué hay a mi alrededor?,objetos_cercanos
+¿Cómo se ve la espada?,detalle_objeto
+"Si pudieras explicarme con calma qué se espera de mí en este punto de la experiencia, me ayudarías mucho.",fuera_dominio
+"Voy a necesitar que me describas el lugar con un poco de detalle, así me oriento mejor para lo que viene.",descripcion_escena
+"Quisiera hacerme una imagen mental, ¿me describes el entorno?",descripcion_escena
+¿Cómo llego a la puerta?,navegacion
+Ubicación de ese item.,localizacion_objeto
+"Quiero saber dónde se halla la botella, por favor.",localizacion_objeto
+"Hazme una descripción detallada del espejo, por favor.",detalle_objeto
+¿Hacia dónde tendría que mirar para ver eso de la derecha?,localizacion_objeto
+"Por favor, indícame dónde se encuentra la puerta en este preciso instante en relación a donde estoy.",localizacion_objeto
+"Dime las cosas cercanas, en un radio de pocos pasos.",objetos_cercanos
+Quisiera una descripción general antes de empezar a explorar.,descripcion_escena
+"Dirígeme paso a paso hasta la roca, por favor.",navegacion
+Háblame del escenario.,descripcion_escena
+"Eh, espera, ¿me puedes localizar ese elemento primero? Quiero saber dónde está antes de hacer otra cosa.",localizacion_objeto
+¿Podrías describirme ese item como si yo no pudiera verlo?,detalle_objeto
+Cuéntame qué tipo de entorno es este y qué objetos contiene.,descripcion_escena
+Cómo voy a la silla.,navegacion
+Cuéntame sobre la ventana.,detalle_objeto
+¿Qué cosas próximas tengo ahora mismo?,objetos_cercanos
+¿Hacia dónde tengo que ir para llegar a ese elemento?,navegacion
+"Necesito desplazarme hasta donde está el cofre y me cuesta orientarme, ¿podrías guiarme?",navegacion
+"Necesito que me indiques con detalle el camino hasta lo que está ahí, dirección por dirección, despacito.",navegacion
+"Necesito saber la ubicación del reloj, ¿puedes decírmela?",localizacion_objeto
+"Antes de ponerme a buscar nada en particular, prefiero que me sitúes describiéndome el entorno con calma.",descripcion_escena
+Recomiéndame una película.,fuera_dominio
+"Describe la alfombra con cierta profundidad, por favor.",detalle_objeto
+Indícame dónde está situado la puerta en la escena.,localizacion_objeto
+¿Qué aspecto tiene la botella?,detalle_objeto
+Dime cómo moverme para alcanzar la puerta.,navegacion
+"Antes de hacer nada más, ¿podrías subir un poco el volumen de tu voz? Te oigo bastante bajito.",fuera_dominio
+"Necesito una descripción muy precisa de la roca, no escatimes en detalles, por favor.",detalle_objeto
+Dame un consejo para dormir mejor por la noche.,fuera_dominio
+"Antes de moverme, quería pedirte instrucciones precisas para llegar a la espada.",navegacion
+"Tengo que llegar al barril y me cuesta orientarme, ¿me guías hasta allí?",navegacion
+"Por favor, hazme una receta detallada paso a paso de cómo hacer un buen bizcocho casero de limón.",fuera_dominio
+¿Cómo es el escenario? Hazme un resumen visual.,descripcion_escena
+Busca la roca.,localizacion_objeto
+"Dime las cosas que tengo cerca, sin entrar en detalle.",objetos_cercanos
+¿Podrías indicarme la ruta hasta lo que tengo delante?,navegacion
+¿Qué objetos podría tocar sin moverme de aquí?,objetos_cercanos
+¿Cómo es esto?,descripcion_escena
+"Perdona, ¿podrías indicarme la ubicación exacta de lo que está ahí? Necesito saberlo antes de seguir explorando.",localizacion_objeto
+¿Qué objetos tengo cerca de mi posición actual?,objetos_cercanos
+Estoy intentando orientarme y necesito saber con la mayor precisión posible dónde se encuentra el libro en este momento.,localizacion_objeto
+"Por favor, recomiéndame películas de los noventa que merezcan la pena, tengo ganas de ver algo bueno y antiguo.",fuera_dominio
+Localiza para mí la ventana y dime dónde está.,localizacion_objeto
+"Quería preguntarte si me podrías hacer una descripción ambiental del lugar, despacio.",descripcion_escena
+"Por favor, cuéntame brevemente qué objetos están junto a mí.",objetos_cercanos
+Indícame qué cosas tengo en un entorno inmediato a mí.,objetos_cercanos
+¿A qué distancia y en qué dirección queda ese item?,localizacion_objeto
+Cómo voy a la alfombra.,navegacion
+"Por favor, dame una descripción rica y detallada del cañón.",detalle_objeto
+Condúceme al cofre.,navegacion
+"Háblame de la escena, quiero hacerme una imagen mental.",descripcion_escena
+¿Cómo puedo subir el volumen del asistente?,fuera_dominio
+Busca esa cosa.,localizacion_objeto
+Localiza el sofá.,localizacion_objeto
+"Enumera, por favor, los objetos en mi entorno cercano.",objetos_cercanos
+¿Hay alguna pista?,fuera_dominio
+"Si me haces el favor de listar lo que hay cerca, sin más, perfecto.",objetos_cercanos
+"Dime la posición del espejo, necesito orientarme.",localizacion_objeto
+"Cuéntame el aspecto general del escenario, qué tipo de sitio es y qué se aprecia.",descripcion_escena
+"Quisiera una descripción concreta de ese elemento, por favor.",detalle_objeto
+¿Podrías describirme el barril como si yo no pudiera verlo?,detalle_objeto
+"Detállame el color, la forma y el material de la planta.",detalle_objeto
+Descríbeme el cofre.,detalle_objeto
+"Dime cómo es este espacio, qué hay y qué ambiente transmite.",descripcion_escena
+¿Cómo es lo que está ahí?,detalle_objeto
+Dime cómo es visualmente todo lo que tengo delante.,descripcion_escena
+Háblame de la historia del imperio romano.,fuera_dominio
+Cuéntame sobre el cofre.,detalle_objeto
+¿Dónde está eso de la izquierda?,localizacion_objeto
+¿Hay algo cerca?,objetos_cercanos
+¿Cómo puedo llegar a la ventana desde donde estoy?,navegacion
+"Dirígeme paso a paso hasta la hoguera, por favor.",navegacion
+Estoy explorando un escenario nuevo y me ayudaría muchísimo que me hicieras una descripción general inicial.,descripcion_escena
+Cuéntame con precisión cómo se ve la ventana desde mi punto de vista.,detalle_objeto
+"Llevo un rato aquí pero todavía no me ha quedado claro cómo es el entorno, ¿podrías describírmelo en general?",descripcion_escena
+¿Sabes dónde puedo encontrar el espejo ahora mismo?,localizacion_objeto
+¿Cuál es tu opinión sobre la inteligencia artificial?,fuera_dominio
+"Necesito ir a lo que está ahí, ¿me indicas cómo?",navegacion
+"Por favor, indícame la ubicación del reloj con precisión.",localizacion_objeto
+"Hazme una descripción global, no quiero detalles concretos todavía.",descripcion_escena
+Acércame al libro.,navegacion
+¿Cómo describirías la escena a alguien que entra por primera vez?,descripcion_escena
+"Necesito una lista rápida de los objetos cercanos, sin descripciones por favor.",objetos_cercanos
+"Por favor, dime qué objetos puedo encontrar cerca de mí.",objetos_cercanos
+Dirígeme al espejo.,navegacion
+¿Cómo es el libro?,detalle_objeto
+¿Qué tipo de objeto es el barril y cómo se ve?,detalle_objeto
+¿Algo a mi lado?,objetos_cercanos
+Detalla eso de la derecha.,detalle_objeto
+"Me gustaría saber qué comandos de voz puedo usar contigo, ¿hay una lista de cosas que puedo preguntar?",fuera_dominio
+"Quiero acercarme a ese objeto, ¿me guías?",navegacion
+"Por favor, descríbeme la mesa con todo lujo de detalles.",detalle_objeto
+Quiero ir a la palmera.,navegacion
+"Quiero saber qué pinta tiene la lámpara, descríbemelo.",detalle_objeto
+"Si no te importa, ¿me dices dónde está el cofre? Estoy intentando hacerme un mapa mental del sitio.",localizacion_objeto
+¿Qué cosas están próximas a mi posición?,objetos_cercanos
+Pinta el cuadro con palabras: ¿cómo es lo que hay alrededor?,descripcion_escena
+Encuentra el espejo.,localizacion_objeto
+Indícame el camino para llegar a la botella.,navegacion
+"Cuéntame cómo es lo que está ahí en detalle: forma, color, textura, lo que veas, no me importa que te extiendas.",detalle_objeto
+"Si tuvieras que resumirme la escena para alguien que llega de nuevas, ¿cómo lo harías?",descripcion_escena
+¿Qué tengo a mi alrededor?,descripcion_escena
+Dime las tablas de multiplicar.,fuera_dominio
+"Si pudieras decirme qué hay justo a mi alrededor, podría decidir mejor por dónde tirar.",objetos_cercanos
+Indícame el camino para llegar a la puerta.,navegacion
+¿Qué tengo cerca?,objetos_cercanos
+"Necesitaría que me dieras una descripción detallada pero a grandes rasgos del entorno, sin centrarte en objetos concretos.",descripcion_escena
+¿Cómo es la ventana?,detalle_objeto
+Ir a la mesa.,navegacion
+"Antes de moverme, necesito saber qué objetos tengo cerca, ¿me los puedes enumerar sin entrar en detalle de cada uno?",objetos_cercanos
+Describe lo que ves alrededor.,descripcion_escena
+Ayuda.,fuera_dominio
+¿Cómo continúo?,fuera_dominio
+¿Dónde está la silla?,localizacion_objeto
+"Explícame las reglas básicas, por favor.",fuera_dominio
+Marca el camino para que llegue a ese objeto.,navegacion
+¿Cómo describirías el cofre? Quiero hacerme una idea precisa.,detalle_objeto
+Dame una descripción minuciosa de lo que está ahí.,detalle_objeto
+Dime qué objetos puedo encontrar a poca distancia de mí.,objetos_cercanos
+Dime cómo es la estantería.,detalle_objeto
+Cuéntame qué se ve desde mi posición actual.,descripcion_escena
+"Quería preguntarte por eso de la derecha, ¿podrías describírmelo con todo el detalle que puedas captar?",detalle_objeto
+"Por favor, indícame la ubicación del reloj con precisión.",localizacion_objeto
+Cuéntame una historia.,fuera_dominio
+Dime los objetos próximos sin describirlos.,objetos_cercanos
+"Indícame, si puedes, dónde está la ventana en relación a mi posición.",localizacion_objeto
+"Si fueras tan amable, me gustaría que me dieras instrucciones detalladas para llegar a eso de la derecha desde mi posición.",navegacion
+Ubicación del cañón.,localizacion_objeto
+¿Qué aspecto tiene la alfombra?,detalle_objeto
+Lista objetos cercanos.,objetos_cercanos
+¿Podrías describirme la planta como si yo no pudiera verlo?,detalle_objeto
+Lista los elementos accesibles desde mi posición.,objetos_cercanos
+Recomiéndame algún ejercicio para hacer en casa.,fuera_dominio
+Detalla el cuadro.,detalle_objeto
+"Quiero saber qué pinta tiene la roca, descríbemelo.",detalle_objeto
+"Lista lo que hay cerca, no me interesa lo lejano.",objetos_cercanos
+¿Qué tengo al alcance?,objetos_cercanos
+¿Qué objetos tengo cerca?,objetos_cercanos
+Ubicación del libro.,localizacion_objeto
+"Enumérame, por favor, los elementos cercanos.",objetos_cercanos
+Indícame el camino para llegar al barril.,navegacion
+"¿Qué hay cerca? Solo nombres, sin descripción.",objetos_cercanos
+¿Cómo se guarda el progreso?,fuera_dominio
+Cuéntame sobre el cuadro.,detalle_objeto
+"Por favor, condúceme hacia el espejo indicándome la dirección correcta en cada momento.",navegacion
+"Quería pedirte la ubicación concreta de la caja, sin más detalles, simplemente dónde se encuentra.",localizacion_objeto
+¿Qué estoy viendo?,descripcion_escena
+"Quería preguntarte si me podrías ayudar a planear un viaje a Tailandia para el mes que viene, con un presupuesto ajustado.",fuera_dominio
+"Necesitaría que me hagas una lista de los objetos que tengo cerca, no me interesan los que están lejos.",objetos_cercanos
+"Háblame del aspecto, color y forma de la caja, por favor.",detalle_objeto
+"¿Podrías detallarme la espada? Necesito saber colores, materiales, estado de conservación, todo.",detalle_objeto
+"Necesito una ubicación clara de la mesa, lo más exacta posible, en relación a mi posición.",localizacion_objeto
+"Si tuviera que imaginarme la escena, ¿cómo me la describirías?",descripcion_escena
+"Cuéntame cómo es el escenario, atmósfera incluida.",descripcion_escena
+"Por favor, dime qué objetos hay a mi alrededor, los que estén próximos a mi posición actual.",objetos_cercanos
+Ir al libro.,navegacion
+¿En qué lado de la escena se encuentra eso de la izquierda?,localizacion_objeto
+"Describe eso de la derecha con cierta profundidad, por favor.",detalle_objeto
+"Necesito orientarme: descríbeme el sitio en su conjunto, por favor.",descripcion_escena
+¿Cómo activo el modo de alto contraste?,fuera_dominio
+¿Qué tengo accesible?,objetos_cercanos
+Localiza para mí lo que mencionaste antes y dime dónde está.,localizacion_objeto
+"Necesito saber qué tengo cerca, ¿me lo dices?",objetos_cercanos
+¿Qué cosas tengo a poca distancia de mi posición?,objetos_cercanos
+"Eh, ¿te importa describirme la botella con detalle? No me ha quedado claro cómo era.",detalle_objeto
+"Por favor, dame la ubicación de la puerta con el mayor detalle posible, sin describirlo, solo dónde está.",localizacion_objeto
+"Antes de cualquier otra cosa, necesito llegar a la alfombra, ¿me ayudas a desplazarme hasta allí?",navegacion
+"Quería pedirte que me enumeraras los objetos que tengo cerca, en mi entorno inmediato, sin más detalles.",objetos_cercanos
+"Necesito una pista clara sobre la ubicación de lo que mencionaste antes, ¿me la puedes dar?",localizacion_objeto
+"Si fueras tan amable, condúceme hacia lo que mencionaste antes con indicaciones precisas.",navegacion
+"Cuéntame, si puedes, los principales acontecimientos de la guerra civil española, sus causas y sus consecuencias.",fuera_dominio
+Ubicación de la silla.,localizacion_objeto
+Marca el camino para que llegue al cañón.,navegacion
+Cuéntame el ambiente general.,descripcion_escena
+¿Me puedes listar lo que tengo al alcance de la mano?,objetos_cercanos
+"Te agradezco mucho si me puedes describir el sitio en general, no necesito que me cuentes cada objeto.",descripcion_escena
+"Quiero localizar el sofá, ¿en qué dirección está?",localizacion_objeto
+"Eh, espera un momento, necesito orientarme primero: ¿cómo es este lugar en términos generales?",descripcion_escena
+"Tengo curiosidad por saber exactamente cómo es el cañón, ¿podrías hacerme una descripción exhaustiva?",detalle_objeto
+"Enumera lo cercano, por favor, sin describir.",objetos_cercanos
+Describe el escenario.,descripcion_escena
+¿Qué cosas tengo en mi entorno inmediato?,objetos_cercanos
+¿Cómo es la botella?,detalle_objeto
+¿Dónde está el sofá?,localizacion_objeto
+"A ver, necesito moverme hacia la botella, ¿me vas diciendo qué dirección tomar?",navegacion
+¿Hacia dónde tendría que mirar para ver la botella?,localizacion_objeto
+Condúceme a lo que hay enfrente.,navegacion
+Necesito que me lleves a la posición del cuadro.,navegacion
+"Háblame del ambiente: ¿es interior, exterior, qué tipo de sitio?",descripcion_escena
+"Descripción visual, por favor.",descripcion_escena
+¿Me puedes decir qué hay a mi vera?,objetos_cercanos
+"Antes de hacer otra cosa, quiero llegar a eso de la derecha, ¿me puedes ir guiando con indicaciones claras?",navegacion
+"Por favor, ¿podrías repetirme las instrucciones del principio? Se me han olvidado y necesito refrescarlas.",fuera_dominio
+"Mira, voy a necesitar la ubicación de la puerta para poder seguir, ¿puedes dármela con claridad?",localizacion_objeto
+Necesito una primera descripción global antes de explorar más a fondo.,descripcion_escena
+"Por favor, lista los objetos a mi alcance.",objetos_cercanos
+"Por favor, sin moverme yo, ¿puedes indicarme la ubicación del sofá en la escena?",localizacion_objeto
+Necesito que me digas dónde está eso de la izquierda en el escenario.,localizacion_objeto
+"Descríbeme la escena, intenta no dejarte nada importante.",descripcion_escena
+Necesito ayuda.,fuera_dominio
+¿Cuánto tiempo me queda para terminar este nivel?,fuera_dominio
+Condúceme a ese elemento.,navegacion
+¿Qué objetos puedo alcanzar sin moverme del sitio?,objetos_cercanos
+¿Puedes repetir lo último que has dicho?,fuera_dominio
+Cómo voy a la estantería.,navegacion
+"Háblame del aspecto, color y forma de lo que está ahí, por favor.",detalle_objeto
+"Si fueras tan amable de indicarme qué objetos están en mi vecindad inmediata, te lo agradecería.",objetos_cercanos
+Posición de la ventana.,localizacion_objeto
+"Necesito una vista de pájaro del entorno, descríbemela.",descripcion_escena
+"Hazme el favor de describir eso de la derecha con la mayor minuciosidad posible, quiero apreciarlo bien.",detalle_objeto
+Enumérame los objetos que están cerca de mí ahora mismo.,objetos_cercanos
+¿Qué tengo a la mano sin tener que desplazarme?,objetos_cercanos
+Marca el camino para que llegue a ese item.,navegacion
+¿Dónde estoy?,descripcion_escena
+"Para no perder tiempo recorriendo todo el sitio, ¿me dices qué cosas tengo justo aquí?",objetos_cercanos
+"Quería pedirte una descripción minuciosa de la estantería, como si me lo estuvieras enseñando físicamente.",detalle_objeto
+Resuelve esta ecuación de segundo grado por mí.,fuera_dominio
+Estoy intentando hacerme una idea del lugar y agradecería una descripción general bien hecha.,descripcion_escena
+Dime cómo es la puerta.,detalle_objeto
+¿Sabes dónde puedo encontrar el espejo ahora mismo?,localizacion_objeto
+Cuéntame sobre la mesa.,detalle_objeto
+"Acabo de llegar y no termino de hacerme una idea del sitio, ¿me lo puedes describir con calma, por favor?",descripcion_escena
+¿Qué hay próximo a mí?,objetos_cercanos
+Dame una visión panorámica de lo que hay alrededor.,descripcion_escena
+Indícame los elementos próximos a mi posición.,objetos_cercanos
+¿Qué opinas del cambio climático?,fuera_dominio
+"Me gustaría que me hicieras una descripción muy detallada de eso de la izquierda: color, material, forma, tamaño, todo lo que se pueda apreciar.",detalle_objeto
+Necesito que me lleves a la posición de esa cosa.,navegacion
+Adiós.,fuera_dominio
+¿Cuáles son los objetos más cercanos a mí ahora?,objetos_cercanos
+"Necesito que me guíes paso a paso hasta la estantería, porque no consigo llegar por mi cuenta, ¿me ayudas con eso?",navegacion
+"Por favor, dame una descripción detallada y narrativa del sofá, no solo características sueltas.",detalle_objeto
+¿Cómo se ve lo que está ahí?,detalle_objeto
+Posición de la caja.,localizacion_objeto
+"No me hago a la idea del lugar, ¿podrías ser un poco más descriptivo y contarme con calma cómo es todo?",descripcion_escena
+"Quiero desplazarme hasta la planta, ¿me ayudas?",navegacion
+Cuéntame sobre la alfombra.,detalle_objeto
+¿Qué aspecto tiene la caja?,detalle_objeto
+"Si fueras tan amable, me gustaría escuchar una descripción completa y detallada de eso de la derecha.",detalle_objeto
+Me interesa conocer todos los detalles del reloj.,detalle_objeto
+"Necesito ayuda, no sé por dónde seguir.",fuera_dominio
+"No tengo claro cómo continuar a partir de aquí, ¿podrías darme una pista de qué se espera que haga?",fuera_dominio
+¿Qué objetos hay alrededor de mi posición actual?,objetos_cercanos
+¿Puedo descansar?,fuera_dominio
+Marca el camino para que llegue a la lámpara.,navegacion
+"Describe el estado y aspecto de lo que hay enfrente, por favor.",detalle_objeto
+"Dime las cosas cercanas en una frase, por favor.",objetos_cercanos
+Encuentra la botella.,localizacion_objeto
+"Si fueras tan amable, indícame con detalle la ubicación de la espada en este entorno.",localizacion_objeto
+Lista lo cercano.,objetos_cercanos
+"Llévame poco a poco hasta la roca, por favor.",navegacion
+"Antes de explorar más a fondo, ¿me podrías decir qué cosas tengo cerca?",objetos_cercanos
+Cuéntame qué tengo a mi alcance sin necesidad de moverme.,objetos_cercanos
+Localiza ese elemento.,localizacion_objeto
+¿Me puedes recomendar un buen libro de ciencia ficción?,fuera_dominio
+¿Qué países componen actualmente la Unión Europea?,fuera_dominio
+Ponme en situación: dime cómo es el lugar.,descripcion_escena
+"Lista breve de objetos cercanos, por favor.",objetos_cercanos
+¿Sabrías decirme dónde está exactamente ese item? Lo necesito para orientarme mejor.,localizacion_objeto
+¿Lo estoy haciendo bien?,fuera_dominio
+Marca el camino para que llegue a la roca.,navegacion
+¿Sabes algo de poesía contemporánea española?,fuera_dominio
+Hazme una descripción general de todo lo que hay en la escena.,descripcion_escena
+Dirígeme a ese elemento.,navegacion
+"Quiero saber, sin más, qué hay cerca de mí.",objetos_cercanos
+¿Hay configuración de accesibilidad disponible?,fuera_dominio
+¿Cómo puedo llegar al espejo desde donde estoy?,navegacion
+¿Podrías decirme la localización de eso de la derecha?,localizacion_objeto
+"A ver, antes de que empecemos a interactuar con nada, ¿me haces una descripción general del escenario completo?",descripcion_escena
+Resúmeme en pocas frases cómo es el entorno que me rodea.,descripcion_escena
+¿En qué lado de la escena se encuentra la hoguera?,localizacion_objeto
+Quiero ir a la puerta.,navegacion
+Dime cómo es ese item.,detalle_objeto
+¿Quién ganó la Champions?,fuera_dominio
+Detalla todas las características visuales de la caja.,detalle_objeto
+¿Qué tipo de escena es esta? Dame una idea global.,descripcion_escena
+Dirígeme al sofá.,navegacion
+Resume la escena para que me haga una idea rápida.,descripcion_escena
+Háblame de la textura y los detalles de eso de la izquierda.,detalle_objeto
+¿Qué hay próximo? Solo lo que esté cerca de mí.,objetos_cercanos
+¿Hay objetos junto a mí?,objetos_cercanos
+"¿Qué hay aquí mismo, junto a mí?",objetos_cercanos
+"Quería pedirte que me localizaras lo que tengo delante, indicándome dirección y, si puedes, distancia aproximada.",localizacion_objeto
+"Por favor, cuéntame con calma cómo es la botella, dame todos los detalles visuales que puedas apreciar.",detalle_objeto
+"A ver, no consigo orientarme bien, ¿podrías llevarme paso a paso hasta la palmera?",navegacion
+Detalla la palmera.,detalle_objeto
+"Por favor, dime los pasos para llegar a ese item.",navegacion
+Indícame qué objetos tengo en las inmediaciones.,objetos_cercanos
+Ponme en contexto.,descripcion_escena
+"Por favor, dame una descripción exhaustiva del aspecto de lo que hay enfrente.",detalle_objeto
+"Disculpa, ¿podrías volver a indicarme dónde está el cañón? No me ha quedado claro.",localizacion_objeto
+Lista las cosas a mi alcance ahora mismo.,objetos_cercanos
+¿Me puedes explicar cuál es el objetivo de esta experiencia?,fuera_dominio
+Habla en inglés.,fuera_dominio
+Condúceme a lo que está ahí.,navegacion
+¿De qué color es la lámpara?,detalle_objeto
+"Por favor, dame una lista de los mejores restaurantes de Madrid según tu criterio.",fuera_dominio
+Busca la espada.,localizacion_objeto
+"Necesito orientarme en este sitio, ¿me describes lo que hay?",descripcion_escena
+Dime cómo es la escena en su totalidad.,descripcion_escena

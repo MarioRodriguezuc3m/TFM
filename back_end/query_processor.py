@@ -57,8 +57,7 @@ INTENT_TO_PROMPT: Dict[str, str] = {
     "detalle_objeto":      "detalle_objeto",
     "objetos_cercanos":    "objetos_cercanos",
     "navegacion":          "navegacion",
-    # "consulta_general" y cualquier otra -> fallback
-    # "fuera_dominio"      -> short-circuit, no llega a este mapeo
+    # "fuera_dominio"      -> fallback
 }
 
 
