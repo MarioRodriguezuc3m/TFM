@@ -58,9 +58,10 @@ torch.manual_seed(SEED)
 if torch.cuda.is_available():
     torch.cuda.manual_seed_all(SEED)
 
-MODELO_ID = "dccuchile/bert-base-spanish-wwm-uncased"
-DATASET_PATH = "dataset_consultas.csv"
-MODELO_DIR = Path("./modelo_vr_guardado")
+MODELO_ID = "FacebookAI/xlm-roberta-base"
+
+from paths import DATASET_CONSULTAS, MODELO_DIR, CHECKPOINTS_DIR
+DATASET_PATH = str(DATASET_CONSULTAS)
 
 # Categorías operativas válidas (las que sí disparan el pipeline MLLM).
 # Cualquier categoría fuera de este conjunto se reetiqueta como 'fuera_dominio'.
@@ -208,7 +209,7 @@ def compute_metrics(eval_pred):
 # 4. ENTRENAMIENTO CON EARLY STOPPING
 # ---------------------------------------------------------
 args = TrainingArguments(
-    output_dir="./checkpoints",
+    output_dir=str(CHECKPOINTS_DIR),
     learning_rate=2e-5,
     per_device_train_batch_size=16,
     per_device_eval_batch_size=32,

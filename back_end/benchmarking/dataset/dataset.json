@@ -1,0 +1,422 @@
+[
+  {
+    "id": "q01",
+    "query": "¿Me puedes indicar donde se encuentra el tesoro respecto a mí?",
+    "expected_intent": "localizacion_objeto",
+    "image_path": "captura_01.jpg",
+    "objetos_visibles": [
+        {
+            "label": "Table with objects",
+            "description": "Wooden table with a sword and a skull on it.",
+            "relative_position": {
+                "x": 4.91,
+                "y": -2.87,
+                "z": -6.98
+            },
+            "contained_objects": [
+                {
+                    "label": "Wooden table",
+                    "description": "Sturdy wooden table with dark planks"
+                },
+                {
+                    "label": "Sword",
+                    "description": "Medieval sword with metallic hilt"
+                },
+                {
+                    "label": "Skull",
+                    "description": "Whitish human skull"
+                }
+            ]
+        },
+        {
+            "label": "Rest campsite",
+            "description": "Small campsite with campfire, chest and palm tree.",
+            "relative_position": {
+                "x": -7.9,
+                "y": -3.27,
+                "z": -9.22
+            },
+            "contained_objects": [
+                {
+                    "label": "Campfire",
+                    "description": "Campfire with flames and burning logs"
+                },
+                {
+                    "label": "Palm tree",
+                    "description": "Tropical palm tree with long fan-shaped leaves"
+                },
+                {
+                    "label": "Treasure chest",
+                    "description": "Wooden chest with golden metal fittings"
+                }
+            ]
+        },
+        {
+            "label": "Stone",
+            "description": "Small gray stone",
+            "relative_position": {
+                "x": 7.4,
+                "y": -3.22,
+                "z": -8.96
+            }
+        },
+        {
+            "label": "Small stone",
+            "description": "Very small gray stone",
+            "relative_position": {
+                "x": 7.09,
+                "y": -3.14,
+                "z": -8.52
+            }
+        },
+        {
+            "label": "Bush",
+            "description": "Medium green bush",
+            "relative_position": {
+                "x": 0.34,
+                "y": -3.31,
+                "z": -9.47
+            }
+        }
+    ]
+  },
+  {
+    "id": "q02",
+    "query": "¿Me puedes describir la escena que estoy viendo?",
+    "expected_intent": "descripcion_escena",
+    "image_path": "captura_02.jpg",
+    "objetos_visibles": [
+        {
+            "label": "Rest campsite",
+            "description": "Small campsite with campfire, chest and palm tree.",
+            "relative_position": {
+                "x": 8.69,
+                "y": -2.38,
+                "z": -7.54
+            },
+            "contained_objects": [
+                {
+                    "label": "Campfire",
+                    "description": "Campfire with flames and burning logs"
+                },
+                {
+                    "label": "Palm tree",
+                    "description": "Tropical palm tree with long fan-shaped leaves"
+                },
+                {
+                    "label": "Treasure chest",
+                    "description": "Wooden chest with golden metal fittings"
+                }
+            ]
+        },
+        {
+            "label": "Pirate cannon",
+            "description": "Pirate cannon with barrel and ammunition.",
+            "relative_position": {
+                "x": -11.9,
+                "y": -2.3,
+                "z": -6.73
+            },
+            "contained_objects": [
+                {
+                    "label": "Cannon",
+                    "description": "Black iron cannon pointing at the sea"
+                },
+                {
+                    "label": "Barrel",
+                    "description": "Wooden barrel with metal hoops"
+                },
+                {
+                    "label": "Pile of cannonballs",
+                    "description": "Several black iron spherical cannonballs stacked"
+                }
+            ]
+        },
+        {
+            "label": "Pirate Ship",
+            "description": "Large galleon with dark sails anchored in the sea in the background.",
+            "relative_position": {
+                "x": -4.02,
+                "y": 0.28,
+                "z": -30.7
+            }
+        },
+        {
+            "label": "Large rock",
+            "description": "Irregular gray rock of medium size",
+            "relative_position": {
+                "x": -2.64,
+                "y": -1.83,
+                "z": -2.21
+            }
+        },
+        {
+            "label": "Large rock",
+            "description": "Large irregular dark gray rock",
+            "relative_position": {
+                "x": -0.12,
+                "y": -2.94,
+                "z": -11.02
+            }
+        }
+    ]
+  },
+  {
+    "id": "q03",
+    "query": "Dime que objetos tengo a mi alrededor",
+    "expected_intent": "objetos_cercanos",
+    "image_path": "captura_03.jpg",
+    "objetos_visibles": [
+        {
+            "label": "Small supply warehouse",
+            "description": "Warehouse with crates, barrels and bottles.",
+            "relative_position": {
+                "x": -1.53,
+                "y": -1.68,
+                "z": -4.18
+            },
+            "contained_objects": [
+                {
+                    "label": "Pile of crates",
+                    "description": "Several wooden crates stacked irregularly"
+                },
+                {
+                    "label": "Vertical barrel",
+                    "description": "Wooden barrel in vertical position"
+                },
+                {
+                    "label": "Barrel on the ground",
+                    "description": "Wooden barrel on the ground placed on its side"
+                },
+                {
+                    "label": "Bottle",
+                    "description": "Empty glass bottle"
+                },
+                {
+                    "label": "Bottle",
+                    "description": "Empty glass bottle"
+                },
+                {
+                    "label": "Bottle",
+                    "description": "Empty glass bottle"
+                }
+            ]
+        },
+        {
+            "label": "Palm tree",
+            "description": "Tall tropical palm tree with fan-shaped leaves",
+            "relative_position": {
+                "x": 3.43,
+                "y": -1.69,
+                "z": -4.77
+            }
+        },
+        {
+            "label": "Palm tree",
+            "description": "Tall tropical palm tree with fan-shaped leaves",
+            "relative_position": {
+                "x": 7.78,
+                "y": -1.76,
+                "z": -8.91
+            }
+        },
+        {
+            "label": "Rock",
+            "description": "Medium gray rock",
+            "relative_position": {
+                "x": 1.43,
+                "y": -1.78,
+                "z": -9.77
+            }
+        }
+    ]
+  },
+  {
+    "id": "q04",
+    "query": "Me puedes decir que aspecto tiene el cañón.¿Hacia dónde está apuntando?",
+    "expected_intent": "detalle_objeto",
+    "image_path": "captura_04.jpg",
+    "objetos_visibles": [
+        {
+            "label": "Pirate cannon",
+            "description": "Pirate cannon with barrel and ammunition.",
+            "relative_position": {
+                "x": -3.43,
+                "y": -1.76,
+                "z": -4.22
+            },
+            "contained_objects": [
+                {
+                    "label": "Cannon",
+                    "description": "Black iron cannon pointing at the sea"
+                },
+                {
+                    "label": "Barrel",
+                    "description": "Wooden barrel with metal hoops"
+                },
+                {
+                    "label": "Pile of cannonballs",
+                    "description": "Several black iron spherical cannonballs stacked"
+                }
+            ]
+        },
+        {
+            "label": "Pirate Ship",
+            "description": "Large galleon with dark sails anchored in the sea in the background.",
+            "relative_position": {
+                "x": 14.53,
+                "y": 2.58,
+                "z": -21.59
+            }
+        }
+    ]
+  },
+  {
+    "id": "q05",
+    "query": "¿Me puedes decir como puedo moverme para llegar al cañón?",
+    "expected_intent": "navegacion",
+    "image_path": "captura_05.jpg",
+    "objetos_visibles": [
+        {
+            "label": "Table with objects",
+            "description": "Wooden table with a sword and a skull on it.",
+            "relative_position": {
+                "x": 4.94,
+                "y": -2.38,
+                "z": -3.97
+            },
+            "contained_objects": [
+                {
+                    "label": "Wooden table",
+                    "description": "Sturdy wooden table with dark planks"
+                },
+                {
+                    "label": "Sword",
+                    "description": "Medieval sword with metallic hilt"
+                },
+                {
+                    "label": "Skull",
+                    "description": "Whitish human skull"
+                }
+            ]
+        },
+        {
+            "label": "Rest campsite",
+            "description": "Small campsite with campfire, chest and palm tree.",
+            "relative_position": {
+                "x": 9.68,
+                "y": -4.65,
+                "z": -15.88
+            },
+            "contained_objects": [
+                {
+                    "label": "Campfire",
+                    "description": "Campfire with flames and burning logs"
+                },
+                {
+                    "label": "Palm tree",
+                    "description": "Tropical palm tree with long fan-shaped leaves"
+                },
+                {
+                    "label": "Treasure chest",
+                    "description": "Wooden chest with golden metal fittings"
+                }
+            ]
+        },
+        {
+            "label": "Pirate cannon",
+            "description": "Pirate cannon with barrel and ammunition.",
+            "relative_position": {
+                "x": -9.92,
+                "y": -5.84,
+                "z": -22.12
+            },
+            "contained_objects": [
+                {
+                    "label": "Cannon",
+                    "description": "Black iron cannon pointing at the sea"
+                },
+                {
+                    "label": "Barrel",
+                    "description": "Wooden barrel with metal hoops"
+                },
+                {
+                    "label": "Pile of cannonballs",
+                    "description": "Several black iron spherical cannonballs stacked"
+                }
+            ]
+        },
+        {
+            "label": "Small supply warehouse",
+            "description": "Warehouse with crates, barrels and bottles.",
+            "relative_position": {
+                "x": -8.63,
+                "y": -2.88,
+                "z": -6.57
+            },
+            "contained_objects": [
+                {
+                    "label": "Pile of crates",
+                    "description": "Several wooden crates stacked irregularly"
+                },
+                {
+                    "label": "Vertical barrel",
+                    "description": "Wooden barrel in vertical position"
+                },
+                {
+                    "label": "Barrel on the ground",
+                    "description": "Wooden barrel on the ground placed on its side"
+                },
+                {
+                    "label": "Bottle",
+                    "description": "Empty glass bottle"
+                },
+                {
+                    "label": "Bottle",
+                    "description": "Empty glass bottle"
+                },
+                {
+                    "label": "Bottle",
+                    "description": "Empty glass bottle"
+                }
+            ]
+        },
+        {
+            "label": "Bush",
+            "description": "Low green bush with round leaves",
+            "relative_position": {
+                "x": 0.42,
+                "y": -2.55,
+                "z": -4.84
+            }
+        },
+        {
+            "label": "Bush",
+            "description": "Low green bush with round leaves",
+            "relative_position": {
+                "x": -2.61,
+                "y": -2.18,
+                "z": -2.92
+            }
+        },
+        {
+            "label": "Small bush",
+            "description": "Small green bush",
+            "relative_position": {
+                "x": -2.09,
+                "y": -4.28,
+                "z": -13.95
+            }
+        },
+        {
+            "label": "Bush",
+            "description": "Medium green bush",
+            "relative_position": {
+                "x": 8.32,
+                "y": -3.13,
+                "z": -7.89
+            }
+        }
+    ]
+  }
+]

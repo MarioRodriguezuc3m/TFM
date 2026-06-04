@@ -89,8 +89,9 @@ torch.manual_seed(SEED)
 if torch.cuda.is_available():
     torch.cuda.manual_seed_all(SEED)
 
-DATASET_PATH = "dataset_consultas.csv"
-RESULTADOS_DIR = Path("./resultados_comparativa")
+from paths import DATASET_CONSULTAS, RESULTADOS_COMPARATIVA_DIR
+DATASET_PATH = str(DATASET_CONSULTAS)
+RESULTADOS_DIR = RESULTADOS_COMPARATIVA_DIR
 RESULTADOS_DIR.mkdir(parents=True, exist_ok=True)
 
 # Categorías operativas válidas (las 5 que sí disparan el pipeline MLLM).

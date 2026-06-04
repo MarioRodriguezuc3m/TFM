@@ -13,6 +13,8 @@ Ejecutar con:
 
 from transformers import pipeline
 
+from paths import MODELO_DIR
+
 # Debe coincidir con CONFIDENCE_THRESHOLD en query_processor.py
 CONFIDENCE_THRESHOLD = 0.55
 OOD_LABEL = "fuera_dominio"
@@ -20,8 +22,8 @@ OOD_LABEL = "fuera_dominio"
 print("🔄 Cargando tu modelo entrenado...")
 clasificador_vr = pipeline(
     "text-classification",
-    model="./modelo_vr_guardado",
-    tokenizer="./modelo_vr_guardado",
+    model=str(MODELO_DIR),
+    tokenizer=str(MODELO_DIR),
     device=-1,  # CPU es más que suficiente para BETO en inferencia
 )
 print("✅ Modelo cargado y listo.\n")

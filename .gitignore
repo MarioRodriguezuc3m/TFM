@@ -7,3 +7,5 @@ modelo_vr_guardado/
 resultados/
 resultados_comparativa/
 anotaciones/
+checkpoints/
+.env

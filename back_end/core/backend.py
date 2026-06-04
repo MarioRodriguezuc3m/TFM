@@ -8,8 +8,9 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import json
 
-# Importa la nueva clase
-from query_processor import QueryProcessor
+# Importa la clase del pipeline desde el paquete core
+from core.query_processor import QueryProcessor
+from paths import CURRENT_INPUT
 
 app = FastAPI()
 origins = ["*"]
@@ -43,7 +44,7 @@ async def procesar_consulta(datos: Consulta):
         print("=" * 80)
 
         # 1. Guardar archivos (lógica de I/O se queda en la API)
-        folder = "current_input"
+        folder = str(CURRENT_INPUT)
         os.makedirs(folder, exist_ok=True)
 
         if "," in datos.imagen:
