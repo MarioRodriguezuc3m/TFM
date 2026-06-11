@@ -52,17 +52,14 @@ from paths import BENCHMARK_IMAGES_DIR
 def resolve_image(image_path: str) -> str:
     """Resuelve la ruta de imagen contra la carpeta central de benchmarking.
 
-    - Si viene vacía → "".
-    - Si es absoluta o ya existe tal cual → se respeta.
-    - En otro caso (solo nombre de fichero o ruta antigua) → se toma el nombre
-      de fichero y se ancla en BENCHMARK_IMAGES_DIR.
+    Todas las imágenes del benchmark viven en BENCHMARK_IMAGES_DIR, así que esa
+    carpeta es la fuente de verdad: se ignora la ruta que traiga el CSV (puede
+    ser absoluta y obsoleta) y se ancla siempre por nombre de fichero.
     """
     if not image_path:
         return ""
-    p = Path(image_path)
-    if p.is_absolute() or p.exists():
-        return str(p)
-    return str(BENCHMARK_IMAGES_DIR / p.name)
+    return str(BENCHMARK_IMAGES_DIR / Path(image_path).name)
+
 
 
 # =====================================================================

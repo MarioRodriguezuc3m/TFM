@@ -82,6 +82,19 @@ def model_tag(modelo: str) -> str:
     return tag
 
 
+def dataset_tag(dataset_path: Path) -> str:
+    """Convierte el nombre del dataset en un sufijo seguro para fichero.
+
+    Permite distinguir los CSV de salida cuando se corre el benchmark sobre
+    varios datasets (dataset_1, dataset_2, ...), que es justo lo que se hace
+    para repartir las consultas y esquivar el límite diario de la API del juez.
+
+    Ej.: "dataset_1.json" -> "dataset_1"
+         "dataset.json"   -> "dataset"
+    """
+    return re.sub(r"[^A-Za-z0-9_.-]", "_", dataset_path.stem)
+
+
 def resolve_image(image_path: str) -> str:
     """Resuelve la ruta de imagen contra la carpeta central de benchmarking.
 
@@ -162,10 +175,15 @@ def run_one_model(
     out_dir: Path,
     modelo_vision: str,
     levels: List[str],
+    ds_tag: str,
 ) -> Path:
     """Ejecuta el barrido completo (consultas × niveles) para UN modelo
-    y guarda su propio CSV. Devuelve la ruta del CSV generado."""
-    raw_csv = out_dir / f"benchmark1_raw_{model_tag(modelo_vision)}.csv"
+    y guarda su propio CSV. Devuelve la ruta del CSV generado.
+
+    El nombre del CSV crudo incluye el dataset y el modelo
+    (benchmark1_raw_<dataset>_<modelo>.csv) para no pisar resultados al
+    correr el benchmark sobre varios datasets."""
+    raw_csv = out_dir / f"benchmark1_raw_{ds_tag}_{model_tag(modelo_vision)}.csv"
 
     print(f"\n🚀 Cargando QueryProcessor (modelo={modelo_vision})...")
     qp = QueryProcessor(modelo_vision=modelo_vision)
@@ -207,13 +225,15 @@ def run_benchmark(
 
     dataset = load_dataset(dataset_path)
     out_dir.mkdir(parents=True, exist_ok=True)
+    ds_tag = dataset_tag(dataset_path)
 
     print(f"🧪 Modelos a evaluar ({len(modelos_vision)}): "
           f"{', '.join(modelos_vision)}")
+    print(f"📁 Dataset: {dataset_path.name} (tag='{ds_tag}')")
 
     csv_paths: List[Path] = []
     for modelo in modelos_vision:
-        csv_path = run_one_model(dataset, out_dir, modelo, levels)
+        csv_path = run_one_model(dataset, out_dir, modelo, levels, ds_tag)
         csv_paths.append(csv_path)
 
     print("\n🏁 Todos los modelos completados. CSVs generados:")
