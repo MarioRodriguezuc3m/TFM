@@ -29,21 +29,27 @@ AFRAME.registerComponent('boundary-checker', {
     this.lastCollidedLabel = '';   // Último label anunciado
   },
 
-  // Anuncia por TTS el nombre del objeto con el que se colisiona
-  announceCollision: function (label) {
+  // Anuncia un aviso por TTS con cooldown para no repetirlo constantemente.
+  // 'key' identifica el aviso: si cambia respecto al último, se anuncia aunque
+  // no haya pasado el cooldown.
+  announce: function (message, key) {
     const now = Date.now();
-    // Solo anuncia si ha pasado el cooldown O si es un objeto diferente al último anunciado
-    if (now - this.lastCollisionTime > this.collisionCooldown || label !== this.lastCollidedLabel) {
+    if (now - this.lastCollisionTime > this.collisionCooldown || key !== this.lastCollidedLabel) {
       this.lastCollisionTime = now;
-      this.lastCollidedLabel = label;
+      this.lastCollidedLabel = key;
 
-      const utterance = new SpeechSynthesisUtterance(`Colisión con ${label}`);
+      const utterance = new SpeechSynthesisUtterance(message);
       utterance.lang = 'es-ES';
       utterance.rate = 1.1;
-      // Cancelamos cualquier TTS en curso para que el aviso de colisión sea inmediato
+      // Cancelamos cualquier TTS en curso para que el aviso sea inmediato
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(utterance);
     }
+  },
+
+  // Anuncia por TTS el nombre del objeto con el que se colisiona
+  announceCollision: function (label) {
+    this.announce(`Colisión con ${label}`, label);
   },
 
   // Cada frame: valida límites y colisiones, restaura posición si falla alguna
@@ -58,8 +64,9 @@ AFRAME.registerComponent('boundary-checker', {
           currentPosition.z < this.bounds.z_min ||
           currentPosition.z > this.bounds.z_max;
 
-    // Si está fuera de la isla, se regresa a la última posición válida
+    // Si está fuera de la isla, se avisa por voz y se regresa a la última posición válida
     if (isOutOfBounds) {
+      this.announce('Has llegado al límite de la isla', '__limite_isla__');
       currentPosition.copy(this.lastGoodPosition);
       return;
     }
@@ -264,7 +271,14 @@ AFRAME.registerComponent('captura-escena', {
     const dataURL = canvas.toDataURL('image/jpeg', 0.8);
     const nombreArchivo = `captura_escena.jpg`;
 
-    fetch('http://localhost:3000/api/procesar-consulta', { 
+    // Aviso por voz para que la persona no espere en silencio si algo falla
+    const avisar = (texto) => {
+        const utterance = new SpeechSynthesisUtterance(texto);
+        utterance.lang = 'es-ES';
+        window.speechSynthesis.speak(utterance);
+    };
+
+    fetch('/api/procesar-consulta', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -279,20 +293,22 @@ AFRAME.registerComponent('captura-escena', {
             console.log("✅ Imagen y datos enviados.");
             return res.json();
         }
-        else console.error("❌ Error en servidor.");
+        console.error("❌ Error en servidor.");
+        avisar("Ha ocurrido un error al procesar la consulta. Inténtalo de nuevo.");
     })
     .then(data => {
         if(data && data.descripcion) {
             console.log("📢 Descripción generada:");
             console.log(data.descripcion);
-            
+
             // Leemos la respuesta con TTS
-            const utterance = new SpeechSynthesisUtterance(data.descripcion);
-            utterance.lang = 'es-ES';
-            window.speechSynthesis.speak(utterance);
+            avisar(data.descripcion);
         }
     })
-    .catch(err => console.error("❌ Error conexión:", err));
+    .catch(err => {
+        console.error("❌ Error conexión:", err);
+        avisar("No se ha podido conectar con el servidor. Inténtalo de nuevo.");
+    });
   }
 });
 
@@ -401,6 +417,7 @@ if (!SpeechRecognition) {
       
     } else {
       console.log("🔇 No se detectó ninguna palabra.");
+      speak("No se ha detectado ninguna consulta. Mantén pulsado el botón y habla.");
     }
   };
 
@@ -423,7 +440,13 @@ if (!SpeechRecognition) {
 
   recognition.onerror = (event) => {
     console.error("❌ Error STT:", event.error);
-    if (event.error !== 'no-speech' && event.error !== 'aborted') {
+    if (event.error === 'network') {
+      // Brave/Firefox/Safari exponen la API pero no tienen el servicio de
+      // reconocimiento en la nube: start() siempre falla con 'network'.
+      speak("El reconocimiento de voz no está disponible en este navegador. Por favor, abre este enlace en Google Chrome o Microsoft Edge.");
+    } else if (event.error === 'not-allowed') {
+      speak("No hay permiso para usar el micrófono. Actívalo en el navegador y recarga la página.");
+    } else if (event.error !== 'no-speech' && event.error !== 'aborted') {
       speak("Error al escuchar. Por favor, intenta de nuevo.");
     }
     stopListening(); // Resetea el botón en caso de error

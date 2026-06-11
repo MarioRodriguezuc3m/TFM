@@ -29,6 +29,9 @@ RESULTADOS_COMPARATIVA_DIR = ROOT / "resultados_comparativa"
 # I/O temporal del servidor
 CURRENT_INPUT = ROOT / "current_input"
 
+# Frontend (escena A-Frame) servido como estáticos por el backend
+FRONTEND_DIR = ROOT.parent / "front_end"
+
 # Datos de benchmarking
 BENCHMARK_DATASET_DIR = ROOT / "benchmarking" / "dataset"
 BENCHMARK_IMAGES_DIR = BENCHMARK_DATASET_DIR / "images"

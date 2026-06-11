@@ -3,6 +3,7 @@
 import os
 import base64
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
@@ -10,7 +11,7 @@ import json
 
 # Importa la clase del pipeline desde el paquete core
 from core.query_processor import QueryProcessor
-from paths import CURRENT_INPUT
+from paths import CURRENT_INPUT, FRONTEND_DIR
 
 app = FastAPI()
 origins = ["*"]
@@ -85,6 +86,9 @@ async def procesar_consulta(datos: Consulta):
     except Exception as e:
         print(f"❌ Error grave en el endpoint: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+# El mount en "/" debe registrarse después de las rutas /api para no eclipsarlas
+app.mount("/", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
 
 if __name__ == "__main__":
     print("🌐 Servidor disponible en http://localhost:3000")
