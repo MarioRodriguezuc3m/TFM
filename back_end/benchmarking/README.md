@@ -77,8 +77,8 @@ Salidas:
    el juez tiene varianza aunque T=0.
 4. Las consultas OOD y las respuestas vacías se marcan `vie_error=ood_or_empty`
    y NO se puntúan (VIEScore no aplica a la respuesta canned).
-5. `--response-field response_en` evalúa la salida del MLLM antes de traducir,
-   útil para aislar errores de traducción del modelo Helsinki-NLP.
+5. El modelo de visión genera las respuestas directamente en español
+   (`response_es`); no hay paso de traducción.
 
 ## Contraste de hipótesis
 

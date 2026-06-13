@@ -19,11 +19,7 @@ from pathlib import Path
 from typing import Dict, Tuple, List, Any
 
 import ollama
-from transformers import (
-    AutoModelForSeq2SeqLM,
-    AutoTokenizer,
-    pipeline,
-)
+from transformers import pipeline
 
 from core import spatial_enricher
 from core.prompts import PROMPTS, SPATIAL_DOCS
@@ -35,7 +31,6 @@ from paths import MODELO_DIR
 # =====================================================================
 
 MODELO_CLASIFICADOR_DIR = str(MODELO_DIR)
-MODELO_TRADUCTOR_ID = "Helsinki-NLP/opus-mt-tc-big-en-es"
 
 CONFIDENCE_THRESHOLD = 0.15
 OOD_LABEL = "fuera_dominio"
@@ -80,16 +75,6 @@ class QueryProcessor:
             model=MODELO_CLASIFICADOR_DIR,
             tokenizer=MODELO_CLASIFICADOR_DIR,
             device=-1,
-        )
-
-        print(f"🔄 Cargando traductor {MODELO_TRADUCTOR_ID}...")
-        tok = AutoTokenizer.from_pretrained(MODELO_TRADUCTOR_ID)
-        mdl = AutoModelForSeq2SeqLM.from_pretrained(MODELO_TRADUCTOR_ID)
-        self._translator = pipeline(
-            "translation_en_to_es",
-            model=mdl,
-            tokenizer=tok,
-            device=0,
         )
 
         print("🔄 Cargando prompts y docs espaciales...")
@@ -240,18 +225,6 @@ class QueryProcessor:
             return "Error al generar la descripción desde el modelo de visión."
 
     # -----------------------------------------------------------------
-    # PASO 5: TRADUCCIÓN
-    # -----------------------------------------------------------------
-
-    def _translate(self, texto_ingles: str) -> str:
-        print("🌐 Traduciendo al español...")
-        try:
-            return self._translator(texto_ingles, max_length=1024)[0]["translation_text"]
-        except Exception as e:
-            print(f"⚠️  Error en traducción: {e}")
-            return texto_ingles
-
-    # -----------------------------------------------------------------
     # PIPELINE COMPLETO
     # -----------------------------------------------------------------
 
@@ -278,7 +251,6 @@ class QueryProcessor:
             print("🛑 Consulta fuera de dominio. Respuesta canned.")
             return {
                 "descripcion": OOD_RESPONSE_ES,
-                "descripcion_ingles": "",
                 "intencion": intencion,
                 "confianza": confianza,
                 "ood": True,
@@ -291,15 +263,11 @@ class QueryProcessor:
             intencion, texto_usuario, objetos_visibles, context_level
         )
 
-        # 5. MLLM
-        descripcion_ingles = self._query_mllm(prompt, ruta_imagen, temperature, seed)
-
-        # 6. Traducción
-        descripcion_espanol = self._translate(descripcion_ingles)
+        # 5. MLLM (genera la respuesta directamente en español)
+        descripcion = self._query_mllm(prompt, ruta_imagen, temperature, seed)
 
         return {
-            "descripcion": descripcion_espanol,
-            "descripcion_ingles": descripcion_ingles,
+            "descripcion": descripcion,
             "intencion": intencion,
             "confianza": confianza,
             "ood": False,

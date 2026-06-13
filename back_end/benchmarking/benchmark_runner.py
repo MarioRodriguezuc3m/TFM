@@ -141,7 +141,6 @@ def run_one(
     except Exception as e:
         result = {
             "descripcion": "",
-            "descripcion_ingles": "",
             "intencion": "ERROR",
             "confianza": 0.0,
             "ood": False,
@@ -162,7 +161,6 @@ def run_one(
         "intent_confidence":      round(result.get("confianza", 0.0), 4),
         "context_level":          level,
         "prompt_template":        result.get("prompt_template") or "",
-        "response_en":            result.get("descripcion_ingles", ""),
         "response_es":            result["descripcion"],
         "latency_s":              round(elapsed, 3),
         "ood":                    int(bool(result.get("ood", False))),

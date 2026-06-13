@@ -222,7 +222,7 @@ def _summary_row(level, intent, rs, grab, mean):
 # =====================================================================
 
 # Columnas relevantes del CSV de detalle (en este orden). El resto del CSV
-# crudo (latencias, plantilla, confianza, response_en/es completos, etc.) se
+# crudo (latencias, plantilla, confianza, response_es completo, etc.) se
 # conserva aparte en el CSV "_full". Aquí queda lo necesario para leer y
 # analizar VIEScore de un vistazo.
 RELEVANT_COLUMNS = [
@@ -284,9 +284,9 @@ def main():
                         help="Modelo Gemini juez (p.ej. gemini-3.5-flash, "
                              "gemini-3.1-flash-lite).")
     parser.add_argument("--response-field", default="response_es",
-                        choices=["response_es", "response_en"],
-                        help="Qué respuesta evaluar: la final en español (default) "
-                             "o la inglesa pre-traducción.")
+                        choices=["response_es"],
+                        help="Qué respuesta evaluar: la generada por el modelo "
+                             "en español.")
     parser.add_argument("--rpm", type=int, default=5,
                         help="Peticiones por minuto permitidas por el juez "
                              "(free tier gemini-3.5-flash = 5; cada ítem usa 2 "

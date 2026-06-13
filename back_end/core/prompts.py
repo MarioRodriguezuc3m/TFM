@@ -77,7 +77,7 @@ CRITICAL RULES:
    - Coordinates, numbers or meters
    - Do NOT invent objects you cannot clearly see
 
-CRITICAL: Output your response in ENGLISH.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 
     "C2": """You are an accessibility assistant helping a blind user understand their immediate surroundings inside a VR scene.
 
@@ -118,7 +118,7 @@ CRITICAL RULES:
    - Terms like "video game", "virtual scenario", "game scene"
    - Raw JSON field names, numeric coordinates or meters
 
-CRITICAL: Output your response in ENGLISH.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 
     "C3": """You are an accessibility assistant helping a blind user understand their immediate surroundings inside a VR scene.
 
@@ -165,7 +165,7 @@ CRITICAL RULES:
    - Terms like "video game", "virtual scenario", "game scene"
    - Raw JSON field names, numeric coordinates or meters
 
-CRITICAL: Output your response in ENGLISH.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 
     "C4": """You are an accessibility assistant helping a blind user understand their immediate surroundings inside a VR scene.
 
@@ -212,7 +212,7 @@ CRITICAL RULES:
    - Terms like "video game", "virtual scenario", "game scene"
    - Raw JSON field names, numeric coordinates or meters
 
-CRITICAL: Output your response in ENGLISH.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 }
 
 
@@ -256,7 +256,7 @@ CRITICAL RULES:
 
 6. Tone: Descriptive, direct and useful. Communicate directly to the user as if you were answering their question in person.
 
-CRITICAL: Output your description in ENGLISH.""",
+CRITICAL: Output your description in SPANISH (en español).""",
 
     "C2": """You are an accessibility assistant focused on describing VR scenes for blind users.
 
@@ -294,7 +294,7 @@ CRITICAL RULES:
 
 6. Tone: Descriptive, direct and useful. Communicate directly to the user as if you were answering their question in person.
 
-CRITICAL: Output your description in ENGLISH.""",
+CRITICAL: Output your description in SPANISH (en español).""",
 
     "C3": """You are an accessibility assistant focused on describing VR scenes for blind users.
 
@@ -338,7 +338,7 @@ CRITICAL RULES:
 
 7. Tone: Descriptive, direct and useful. Communicate directly to the user as if you were answering their question in person.
 
-CRITICAL: Output your description in ENGLISH.""",
+CRITICAL: Output your description in SPANISH (en español).""",
 
     "C4": """You are an accessibility assistant focused on describing VR scenes for blind users.
 
@@ -383,7 +383,7 @@ CRITICAL RULES:
 
 7. Tone: Descriptive, direct and useful. Communicate directly to the user as if you were answering their question in person.
 
-CRITICAL: Output your description in ENGLISH.""",
+CRITICAL: Output your description in SPANISH (en español).""",
 }
 
 
@@ -427,7 +427,7 @@ CRITICAL RULES:
    - Terms like "video game", "virtual scenario", "game scene"
    - Coordinates, numbers or meters
 
-CRITICAL: Output your response in ENGLISH.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 
     "C2": """You are an accessibility assistant helping a blind user locate specific objects inside a VR scene.
 
@@ -469,7 +469,7 @@ CRITICAL RULES:
    - Terms like "video game", "virtual scenario", "game scene"
    - Raw JSON field names, numeric coordinates or meters
 
-CRITICAL: Output your response in ENGLISH.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 
     "C3": """You are an accessibility assistant helping a blind user locate specific objects inside a VR scene.
 
@@ -515,7 +515,7 @@ CRITICAL RULES:
    - Terms like "video game", "virtual scenario", "game scene"
    - Raw JSON field names, numeric coordinates or meters
 
-CRITICAL: Output your response in ENGLISH.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 
     "C4": """You are an accessibility assistant helping a blind user locate specific objects inside a VR scene.
 
@@ -560,7 +560,7 @@ CRITICAL RULES:
    - Terms like "video game", "virtual scenario", "game scene"
    - Raw JSON field names, numeric coordinates or meters
 
-CRITICAL: Output your response in ENGLISH.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 }
 
 
@@ -604,7 +604,7 @@ CRITICAL RULES:
    - Terms like "video game", "virtual scenario", "game scene"
    - Coordinates, numbers or meters
 
-CRITICAL: Output your response in ENGLISH.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 
     "C2": """You are an accessibility assistant providing detailed information about a specific object to a blind user in a VR scene.
 
@@ -644,7 +644,7 @@ CRITICAL RULES:
    - Terms like "video game", "virtual scenario", "game scene"
    - Raw JSON field names or numeric coordinates
 
-CRITICAL: Output your response in ENGLISH.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 
     "C3": """You are an accessibility assistant providing detailed information about a specific object to a blind user in a VR scene.
 
@@ -688,7 +688,7 @@ CRITICAL RULES:
    - Terms like "video game", "virtual scenario", "game scene"
    - Raw JSON field names or numeric coordinates
 
-CRITICAL: Output your response in ENGLISH""",
+CRITICAL: Output your response in SPANISH (en español).""",
 
     "C4": """You are an accessibility assistant providing detailed information about a specific object to a blind user in a VR scene.
 
@@ -744,7 +744,7 @@ CRITICAL RULES:
    - Terms like "video game", "virtual scenario", "game scene"
    - Raw JSON field names or numeric coordinates
 
-CRITICAL: Output your response in ENGLISH.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 }
 
 
@@ -791,7 +791,7 @@ CRITICAL RULES:
    - Terms like "video game", "virtual scenario", "game scene"
    - Coordinates, numbers or meters
 
-CRITICAL: Output your response in ENGLISH.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 
     "C2": """You are an accessibility assistant helping a blind user move safely through a VR scene.
 
@@ -834,7 +834,7 @@ CRITICAL RULES:
    - Terms like "video game", "virtual scenario", "game scene"
    - Raw JSON field names, numeric coordinates or meters
 
-CRITICAL: Output your response in ENGLISH.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 
     "C3": """You are an accessibility assistant helping a blind user move safely through a VR scene.
 
@@ -882,7 +882,7 @@ CRITICAL RULES:
    - Terms like "video game", "virtual scenario", "game scene"
    - Raw JSON field names, numeric coordinates or meters
 
-CRITICAL: Output your response in ENGLISH.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 
     "C4": """You are an accessibility assistant helping a blind user move safely through a VR scene.
 
@@ -936,7 +936,7 @@ CRITICAL RULES:
    - Terms like "video game", "virtual scenario", "game scene"
    - Raw JSON field names, numeric coordinates or meters
 
-CRITICAL: Output your response in ENGLISH.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 }
 
 
@@ -954,7 +954,7 @@ YOUR TASK: Answer the user's question as best you can using only the IMAGE.
 Describe where things are in natural visual language. Do NOT mention meters or coordinates.
 Do NOT mention "video game", "virtual scenario", or "game scene".
 
-CRITICAL: Output your response in ENGLISH. The translation to Spanish will be done automatically.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 
     "C2": """You are an accessibility assistant helping a blind user in a VR scene.
 
@@ -967,7 +967,7 @@ SCENE OBJECTS (ground truth — list of what exists, WITHOUT position data):
 Use the list for WHAT exists and the IMAGE for WHERE things are. Do NOT mention meters or coordinates.
 Do NOT mention "video game", "virtual scenario", or "game scene".
 
-CRITICAL: Output your response in ENGLISH. The translation to Spanish will be done automatically.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 
     "C3": """You are an accessibility assistant helping a blind user in a VR scene.
 
@@ -980,7 +980,7 @@ SCENE OBJECTS (ground truth — each with a raw (x, y, z) position in meters):
 Reason about direction and distance from the coordinates and express them naturally. Do NOT mention meters or coordinates.
 Do NOT mention "video game", "virtual scenario", or "game scene".
 
-CRITICAL: Output your response in ENGLISH. The translation to Spanish will be done automatically.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 
     "C4": """You are an accessibility assistant helping a blind user in a VR scene.
 
@@ -995,7 +995,7 @@ SCENE OBJECTS (ground truth — fully reliable, sorted nearest first):
 When the user asks where something is relative to themselves, use the "position_description" field directly. For any other kind of question, answer what was asked (reading visual details from the IMAGE) instead of defaulting to a position. Do NOT compute positions from numbers. Do NOT mention meters or coordinates.
 Do NOT mention "video game", "virtual scenario", or "game scene".
 
-CRITICAL: Output your response in ENGLISH. The translation to Spanish will be done automatically.""",
+CRITICAL: Output your response in SPANISH (en español).""",
 }
 
 
