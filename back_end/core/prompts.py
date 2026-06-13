@@ -23,14 +23,16 @@ Placeholders que usa cada nivel:
 # TODO el contenido de prompts esté en un único módulo.
 # =====================================================================
 
-SPATIAL_DOCS = """Each object in the JSON has been pre-processed and already contains deterministic spatial fields. You MUST use them directly and NOT try to compute spatial relations from numbers:
-  - "position_description": a ready-made English phrase (e.g. "very close, ahead and to your right"). Whenever you need to tell the user where an object is, copy or lightly adapt THIS phrase — do NOT invent your own.
+SPATIAL_DOCS = """Each object in the JSON has been pre-processed and comes with some ready-made spatial fields. They are a reliable helper you can lean on instead of computing spatial relations from raw numbers — use them when they fit the user's question:
+  - "position_description": a ready-made English phrase (e.g. "very close, ahead and to your right"). A good default when you need to tell the user where an object is relative to themselves; copy or lightly adapt it. If the user is asking about something else (a relation to another object, how many there are, a visual detail), answer that from the image rather than forcing this phrase.
   - "direction": one of front | front-right | right | back-right | behind | back-left | left | front-left
   - "distance_bucket": one of within_arm_reach | very_close | close | medium | far
   - "vertical_position": one of above_eye_level | eye_level | below_eye_level
   - "is_in_front": true if the object is in any of the three frontal sectors (front, front-left, front-right)
-  - "horizontal_distance_m": numeric distance, FOR INTERNAL REASONING ONLY — never mention meters or numbers in your answer.
-Objects are already SORTED from nearest to farthest, so the first items are the most relevant to the user.
+  - "distance_m": overall straight-line distance to the object. FOR INTERNAL REASONING ONLY (e.g. to compare which objects are nearer or farther when several share the same distance_bucket) — never mention meters or numbers in your answer.
+  - "lateral_distance_m": how far the object is to the side; the "direction" field tells you whether that side is left or right. FOR INTERNAL REASONING ONLY.
+  - "depth_distance_m": how far the object is ahead of or behind you; "direction"/"is_in_front" tell you which. FOR INTERNAL REASONING ONLY.
+Objects are already SORTED from nearest to farthest, so the first items are usually the most relevant to the user.
 Some objects include "contained_objects": sub-elements inside them that share the parent's position."""
 
 # =====================================================================
@@ -189,7 +191,7 @@ CRITICAL RULES:
    - Add one or two visual details from the IMAGE: color, material, size, condition
    - If it has "contained_objects", briefly mention what is inside
 
-3. SPATIAL LANGUAGE: Use the "position_description" field of each object for spatial reference. Never mention meters or numbers.
+3. SPATIAL LANGUAGE: The "position_description" field is your default for spatial reference, but adapt it to the user's question — if they ask about something it does not capture (e.g. which side of another object, how many there are), answer that from the image instead. Never mention meters or numbers.
 
 4. PRIORITIZATION:
    - The first object in the JSON is the closest — mention it first
@@ -366,7 +368,7 @@ CRITICAL RULES:
    - The user ALREADY KNOWS they are immersed in VR
    - Raw coordinates, numbers, meters, or JSON field names
 
-4. SPATIAL LANGUAGE: Use the "position_description" field of each object directly. You may lightly rephrase it to fit the flow of the sentence, but keep the same meaning. Never deduce positions yourself.
+4. SPATIAL LANGUAGE: Use the "position_description" field as your default for an object's location, lightly rephrasing it to fit the flow of the sentence. If the query needs spatial detail the field does not provide, you may also rely on the image.
 
 5. ANSWER STRUCTURE:
    - Your answer must focus on answering the user's query.
@@ -534,7 +536,7 @@ CRITICAL RULES:
 
 2. IF THE OBJECT IS FOUND:
    - State clearly that the object is present
-   - Give its location by using the "position_description" field DIRECTLY
+   - Give its location, using the "position_description" field as the default reference. If the user asked about its position relative to another object (e.g. which side of the table), answer that from the image instead of forcing the egocentric phrase
    - Use the IMAGE to add some visual details that help the user confirm they found it (color, shape, notable feature)
 
 3. IF THE OBJECT IS NOT FOUND:
@@ -542,7 +544,7 @@ CRITICAL RULES:
    - Do NOT guess or invent a position
    - You may suggest a visually similar object from the JSON if one exists
 
-4. SPATIAL LANGUAGE: Copy the "position_description" of the target object directly. Never invent or deduce spatial relations. Do NOT mention meters, numbers, or coordinates.
+4. SPATIAL LANGUAGE: The "position_description" of the target object is your default for where it is relative to the user. If the query asks about its position relative to another object, answer that from the image instead of forcing the egocentric phrase. Do NOT mention meters, numbers, or coordinates.
 
 5. ANSWER STRUCTURE:
    - Your answer must focus on answering the user's query.
@@ -691,7 +693,7 @@ CRITICAL: Output your response in ENGLISH""",
     "C4": """You are an accessibility assistant providing detailed information about a specific object to a blind user in a VR scene.
 
 USER QUERY: "{texto_usuario}"
-YOUR TASK: Answer the user's specific query above. They want to know more about a particular object, so let the wording of their query decide which aspects you describe: its color, its material, its condition, what is inside it, whether it looks usable, etc. 
+YOUR TASK: Answer the user's specific query above. They want to know more about a particular object, so let the wording of their query decide which aspects you describe: its color, its material, its condition, what is inside it, whether it looks usable, etc.
 
 SCENE OBJECTS (ground truth — fully reliable, sorted nearest first):
 {contexto_json}
@@ -725,7 +727,7 @@ CRITICAL RULES:
    - Do NOT invent details
 
 5. SPATIAL LANGUAGE (only if needed for context):
-   - Copy the "position_description" field of the object. Never deduce positions.
+   - Use the "position_description" field as the default location reference; if the query asks about a detail it does not cover, answer that from the image.
    - Do NOT mention meters or numbers.
 
 6. ANSWER STRUCTURE:
@@ -907,7 +909,7 @@ CRITICAL RULES:
    - If the target is already "is_in_front": true, say the path is direct
 
 3. WARN ABOUT OBSTACLES:
-   - Check other objects whose "direction" is the same as the target's and whose "horizontal_distance_m" is smaller than the target's.
+   - Check other objects whose "direction" is the same as the target's and whose "distance_m" is smaller than the target's.
    - Those are potential obstacles on the way. Mention them so the user can avoid them.
 
 4. SPATIAL LANGUAGE:
@@ -990,7 +992,7 @@ SCENE OBJECTS (ground truth — fully reliable, sorted nearest first):
 
 {spatial_docs}
 
-Use the "position_description" field directly whenever you describe where something is. Do NOT compute positions from numbers. Do NOT mention meters or coordinates.
+When the user asks where something is relative to themselves, use the "position_description" field directly. For any other kind of question, answer what was asked (reading visual details from the IMAGE) instead of defaulting to a position. Do NOT compute positions from numbers. Do NOT mention meters or coordinates.
 Do NOT mention "video game", "virtual scenario", or "game scene".
 
 CRITICAL: Output your response in ENGLISH. The translation to Spanish will be done automatically.""",

@@ -2,6 +2,8 @@
 
 import os
 import base64
+import time
+from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -11,7 +13,7 @@ import json
 
 # Importa la clase del pipeline desde el paquete core
 from core.query_processor import QueryProcessor
-from paths import CURRENT_INPUT, FRONTEND_DIR
+from paths import FRONTEND_DIR, SESSION_LOGS_DIR
 
 app = FastAPI()
 origins = ["*"]
@@ -21,6 +23,10 @@ origins = ["*"]
 print("🚀 Iniciando Servidor de Asistencia VR...")
 query_processor = QueryProcessor(modelo_vision="qwen2.5vl:latest")
 print("-" * 50)
+
+# Carpeta de log de esta sesión (una por arranque del servidor) y contador de consultas
+SESSION_DIR = SESSION_LOGS_DIR / datetime.now().strftime("sesion_%Y%m%d_%H%M%S")
+contador_consultas = 0
 
 app.add_middleware(
     CORSMiddleware,
@@ -37,33 +43,48 @@ class Consulta(BaseModel):
     objetos_visibles: list = []
     camara: dict = {}
 
+# Escribe el registro JSON de una consulta en la carpeta de la sesión
+def guardar_registro(prefijo: str, registro: dict):
+    file_path = SESSION_DIR / f"{prefijo}.json"
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(registro, f, ensure_ascii=False, indent=4)
+
 @app.post("/api/procesar-consulta")
 async def procesar_consulta(datos: Consulta):
+    global contador_consultas
+    contador_consultas += 1
+    prefijo = f"consulta_{contador_consultas:03d}"
+    inicio = time.perf_counter()
+
+    registro = {
+        "timestamp": datetime.now().isoformat(timespec="seconds"),
+        "consulta": datos.texto,
+        "objetos_visibles": datos.objetos_visibles,
+        "intencion": None,
+        "respuesta": None,
+        "latencia_segundos": None,
+        "error": None,
+    }
+
     try:
         print("\n" + "=" * 80)
         print(f"➡️  Recibida consulta del usuario: '{datos.texto}'")
         print("=" * 80)
 
-        # 1. Guardar archivos (lógica de I/O se queda en la API)
-        folder = str(CURRENT_INPUT)
-        os.makedirs(folder, exist_ok=True)
+        # 1. Guardar la imagen en el log de la sesión (lógica de I/O se queda en la API)
+        os.makedirs(SESSION_DIR, exist_ok=True)
 
         if "," in datos.imagen:
             _, encoded = datos.imagen.split(",", 1)
         else:
             encoded = datos.imagen
-        
+
         image_data = base64.b64decode(encoded)
-        file_path_img = os.path.join(folder, datos.nombre)
+        file_path_img = str(SESSION_DIR / f"{prefijo}.jpg")
         with open(file_path_img, "wb") as f:
             f.write(image_data)
 
-        nombre_json = datos.nombre.replace(".jpg", ".json").replace(".png", ".json")
-        file_path_json = os.path.join(folder, nombre_json)
-        with open(file_path_json, "w", encoding="utf-8") as f:
-            json.dump({"objetos_visibles": datos.objetos_visibles}, f, indent=4)
-        
-        print(f"✅ Archivos guardados: {datos.nombre}")
+        print(f"✅ Imagen guardada: {file_path_img}")
 
         # 2. Delegar todo el procesamiento a la clase QueryProcessor
         resultado = query_processor.process(
@@ -76,7 +97,13 @@ async def procesar_consulta(datos: Consulta):
         print("📢 DESCRIPCIÓN FINAL (Español):\n")
         print(resultado["descripcion"])
         print("-" * 80)
-        
+
+        # 3. Completar y guardar el registro de la consulta
+        registro["intencion"] = resultado["intencion"]
+        registro["respuesta"] = resultado["descripcion"]
+        registro["latencia_segundos"] = round(time.perf_counter() - inicio, 2)
+        guardar_registro(prefijo, registro)
+
         return {
             "mensaje": "OK",
             "intencion": resultado["intencion"],
@@ -85,6 +112,14 @@ async def procesar_consulta(datos: Consulta):
 
     except Exception as e:
         print(f"❌ Error grave en el endpoint: {e}")
+        # Las consultas fallidas también se registran, son datos útiles del estudio
+        registro["error"] = str(e)
+        registro["latencia_segundos"] = round(time.perf_counter() - inicio, 2)
+        try:
+            os.makedirs(SESSION_DIR, exist_ok=True)
+            guardar_registro(prefijo, registro)
+        except Exception as log_err:
+            print(f"⚠️ No se pudo guardar el registro de la consulta fallida: {log_err}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # El mount en "/" debe registrarse después de las rutas /api para no eclipsarlas

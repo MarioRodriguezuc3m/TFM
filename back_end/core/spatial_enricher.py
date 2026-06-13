@@ -166,7 +166,9 @@ def enrich_objects(objetos_visibles: List[Dict[str, Any]]) -> List[Dict[str, Any
             "angular_sector":        "NE",
             "vertical_position":     "eye_level",
             "is_in_front":           true,
-            "horizontal_distance_m": 3.21,
+            "distance_m":            3.21,   # distancia radial √(x²+z²)
+            "lateral_distance_m":    3.20,   # |x|: cuánto a un lado
+            "depth_distance_m":      0.50,   # |z|: cuánto adelante/atrás
             "contained_objects":     [ ... ]    # opcional, si venía en la entrada
         }
     """
@@ -199,7 +201,9 @@ def enrich_objects(objetos_visibles: List[Dict[str, Any]]) -> List[Dict[str, Any
             "angular_sector": _COMPASS_MAP[direction],
             "vertical_position": vert_pos,
             "is_in_front": direction in _FRONT_DIRECTIONS,
-            "horizontal_distance_m": round(horizontal_dist, 2),
+            "distance_m": round(horizontal_dist, 2),
+            "lateral_distance_m": round(abs(x), 2),
+            "depth_distance_m": round(abs(z), 2),
         }
 
         # Conservamos los sub-objetos (heredan la posición del padre)
@@ -213,5 +217,5 @@ def enrich_objects(objetos_visibles: List[Dict[str, Any]]) -> List[Dict[str, Any
         enriched.append(enriched_obj)
 
     # Ordenar por distancia horizontal (más cerca primero)
-    enriched.sort(key=lambda o: o.get("horizontal_distance_m", float("inf")))
+    enriched.sort(key=lambda o: o.get("distance_m", float("inf")))
     return enriched

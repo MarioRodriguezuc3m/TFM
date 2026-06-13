@@ -29,6 +29,9 @@ RESULTADOS_COMPARATIVA_DIR = ROOT / "resultados_comparativa"
 # I/O temporal del servidor
 CURRENT_INPUT = ROOT / "current_input"
 
+# Logs de sesión (una carpeta por arranque del servidor, una entrada por consulta)
+SESSION_LOGS_DIR = ROOT / "session_logs"
+
 # Frontend (escena A-Frame) servido como estáticos por el backend
 FRONTEND_DIR = ROOT.parent / "front_end"
 

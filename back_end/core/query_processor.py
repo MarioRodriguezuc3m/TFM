@@ -246,7 +246,7 @@ class QueryProcessor:
     def _translate(self, texto_ingles: str) -> str:
         print("🌐 Traduciendo al español...")
         try:
-            return self._translator(texto_ingles, max_length=512)[0]["translation_text"]
+            return self._translator(texto_ingles, max_length=1024)[0]["translation_text"]
         except Exception as e:
             print(f"⚠️  Error en traducción: {e}")
             return texto_ingles

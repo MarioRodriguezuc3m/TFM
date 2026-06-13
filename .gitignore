@@ -3,6 +3,7 @@ venv/
 *.pyc
 __pycache__/
 current_input/
+session_logs/
 modelo_vr_guardado/
 resultados/
 resultados_comparativa/
