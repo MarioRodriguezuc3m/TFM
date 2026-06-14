@@ -1,20 +1,135 @@
+// ===================================================================
+// ESTADO GLOBAL Y HELPERS COMPARTIDOS
+// ===================================================================
+
+// Flags del flujo de carga / audio. El navegador bloquea el audio hasta el
+// primer gesto del usuario, así que se coordina la bienvenida con estos flags.
+let escenaCargada = false;     // true cuando <a-scene> dispara 'loaded'
+let audioDesbloqueado = false; // true tras la primera pulsación de tecla
+let bienvenidaDicha = false;   // el mensaje de cargado+instrucciones ya se dijo
+let ultimaDescripcion = '';    // última respuesta del backend (para repetir con R)
+let ultimoAvisoCargando = 0;   // throttle del aviso "cargando escenario"
+
+const MENSAJE_BIENVENIDA =
+  'Escenario cargado. Ya puedes explorar. Usa las flechas para mirar alrededor, ' +
+  'las teclas W A S D para moverte, mantén pulsada la tecla Q para hablar ' +
+  'y pulsa R para repetir la última descripcion.';
+
+// --- Síntesis de voz (TTS) unificada ---
+function hablar(texto, cancelar) {
+  const u = new SpeechSynthesisUtterance(texto);
+  u.lang = 'es-ES';
+  if (cancelar) window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+// Marca que ya ha habido un gesto del usuario (necesario para que el navegador
+// permita reproducir la síntesis de voz por su política de autoplay).
+function desbloquearAudio() {
+  audioDesbloqueado = true;
+}
+
+// --- Orientación: helpers reutilizados por la captura y por el giro de cámara ---
+// Devuelve el punto cardinal o intercardinal (Norte/Noreste/Este/Sureste/Sur/
+// Suroeste/Oeste/Noroeste) a partir del ángulo de guiñada (yaw) en grados,
+// en sectores de 45°. Normaliza el ángulo al rango (-180, 180].
+function orientacionCardinal(yawDeg) {
+  let y = yawDeg % 360;
+  if (y > 180) y -= 360;
+  if (y <= -180) y += 360;
+  if (y > -22.5 && y <= 22.5)   return 'Norte';
+  if (y > 22.5 && y <= 67.5)    return 'Noreste';
+  if (y > 67.5 && y <= 112.5)   return 'Este';
+  if (y > 112.5 && y <= 157.5)  return 'Sureste';
+  if (y > 157.5 || y <= -157.5) return 'Sur';
+  if (y > -157.5 && y <= -112.5) return 'Suroeste';
+  if (y > -112.5 && y <= -67.5)  return 'Oeste';
+  return 'Noroeste'; // (-67.5, -22.5]
+}
+
+// Descripción cualitativa de la vertical (pitch). Vacío si mira al frente.
+function verticalCualitativa(pitchDeg) {
+  if (pitchDeg > 15) return 'hacia arriba';
+  if (pitchDeg < -15) return 'hacia abajo';
+  return '';
+}
+
+// --- Flujo de bienvenida / aviso de carga ---
+function reproducirBienvenida() {
+  if (bienvenidaDicha) return;
+  bienvenidaDicha = true;
+  hablar(MENSAJE_BIENVENIDA, true);
+}
+
+function avisarCargando() {
+  const now = Date.now();
+  if (now - ultimoAvisoCargando > 3000) {
+    ultimoAvisoCargando = now;
+    hablar('Cargando escenario, espere unos segundos.', true);
+  }
+}
+
+// Listener "portero": se ejecuta en el primer gesto de teclado de cada pulsación,
+// en fase de captura sobre window, ANTES que el resto de manejadores. Desbloquea
+// el audio y coordina los avisos hablados de carga/bienvenida.
+function onPrimerGesto(e) {
+  desbloquearAudio();
+  if (!escenaCargada) {
+    // Mientras carga, las teclas funcionales están inertes (cada manejador
+    // comprueba 'escenaCargada' y se anula); solo disparan este aviso.
+    avisarCargando();
+    return;
+  }
+  if (!bienvenidaDicha) {
+    // Primera pulsación tras la carga: se consume para reproducir la bienvenida
+    // y que no dispare además una acción funcional.
+    reproducirBienvenida();
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+}
+window.addEventListener('keydown', onPrimerGesto, true);
+
+// Aviso de escenario cargado. Si el audio ya está desbloqueado (el usuario pulsó
+// alguna tecla durante la carga), se anuncia en el momento; si no, queda pendiente
+// hasta la primera pulsación posterior (gestionada por onPrimerGesto).
+function onEscenaCargada() {
+  escenaCargada = true;
+  // Enfocar el elemento oculto dentro de la región role="application": los lectores
+  // de pantalla (NVDA/JAWS) entran en modo foco y dejan pasar las teclas a los
+  // listeners en lugar de interceptarlas, sin anunciar nada (no tiene nombre).
+  const foco = document.getElementById('foco-teclado');
+  if (foco) foco.focus();
+  if (audioDesbloqueado && !bienvenidaDicha) reproducirBienvenida();
+}
+(function registrarCargaEscena() {
+  const sceneEl = document.querySelector('a-scene');
+  if (!sceneEl) return;
+  if (sceneEl.hasLoaded) onEscenaCargada();
+  else sceneEl.addEventListener('loaded', onEscenaCargada);
+})();
+
+
+// ===================================================================
+// COMPONENTE: LÍMITES Y COLISIONES
+// ===================================================================
 AFRAME.registerComponent('boundary-checker', {
-  
+
   init: function () {
     // Límites de la isla
     this.bounds = {
       x_min: -15, x_max: 15,
       z_min: -22.5, z_max: 2.5
     };
-    
+
     // DETECCIÓN DE OBSTÁCULOS
     this.obstacles =[];
     // Se seleccionan todos los elementos con clase 'obstaculo'
     const els = document.querySelectorAll('.obstaculo');
-    
+
     els.forEach(el => {
       this.obstacles.push({
-        object3D: el.object3D, 
+        object3D: el.object3D,
         radius: parseFloat(el.getAttribute('data-radio')) || 1.0,
         el: el  // Guardamos referencia al elemento para acceder a data-label
       });
@@ -58,8 +173,8 @@ AFRAME.registerComponent('boundary-checker', {
     const currentPosition = this.el.object3D.position;
 
     // 2. COMPROBAMOS SI ESA POSICIÓN ESTÁ FUERA DE LOS LÍMITES
-    const isOutOfBounds = 
-          currentPosition.x < this.bounds.x_min || 
+    const isOutOfBounds =
+          currentPosition.x < this.bounds.x_min ||
           currentPosition.x > this.bounds.x_max ||
           currentPosition.z < this.bounds.z_min ||
           currentPosition.z > this.bounds.z_max;
@@ -77,7 +192,7 @@ AFRAME.registerComponent('boundary-checker', {
 
     for (let i = 0; i < this.obstacles.length; i++) {
       const obs = this.obstacles[i];
-      
+
       // se obtiene la posición del obstáculo
       const obsPos = new THREE.Vector3();
       obs.object3D.getWorldPosition(obsPos);
@@ -120,14 +235,123 @@ AFRAME.registerComponent('boundary-checker', {
   }
 });
 
+
+// ===================================================================
+// COMPONENTE: CONTROL DE CÁMARA POR TECLADO (GIRO + MOVIMIENTO)
+// ===================================================================
+// Flechas izq/dcha → guiñada (yaw) sobre el rig; flechas arriba/abajo → cabeceo
+// (pitch) sobre la cámara, con tope. W/A/S/D → mover el rig en la dirección de
+// mirada. Todo se maneja con UN listener en fase de captura sobre window, así que
+// es independiente del foco del DOM (a diferencia del keyboard-controls de
+// aframe-extras, que se descuelga cuando el micrófono mueve el foco y deja al
+// lector de pantalla interceptando las teclas). Por eso este componente sustituye
+// por completo a movement-controls para el teclado.
+AFRAME.registerComponent('keyboard-camera-controls', {
+
+  init: function () {
+    this.camera = this.el.querySelector('[camera]');
+    this.yawSpeed = THREE.MathUtils.degToRad(60);   // rad/s
+    this.pitchSpeed = THREE.MathUtils.degToRad(45);  // rad/s
+    this.pitchLimit = THREE.MathUtils.degToRad(50);  // tope de cabeceo
+    this.moveSpeed = 4;                              // m/s
+    this.keys = {
+      left: false, right: false, up: false, down: false,   // giro (flechas)
+      fwd: false, back: false, strafeL: false, strafeR: false // movimiento (WASD)
+    };
+    this.anuncioTimeout = null;
+
+    // Mapa de tecla → acción. Solo estas teclas se gestionan/bloquean.
+    this.mapa = {
+      ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down',
+      KeyW: 'fwd', KeyS: 'back', KeyA: 'strafeL', KeyD: 'strafeR'
+    };
+    this.esGiro = (code) =>
+      code === 'ArrowLeft' || code === 'ArrowRight' ||
+      code === 'ArrowUp' || code === 'ArrowDown';
+
+    this.onKeyDown = (e) => {
+      const accion = this.mapa[e.code];
+      if (!accion) return;
+      e.preventDefault();   // evita scroll de página
+      e.stopPropagation();  // evita que otros manejadores procesen la tecla
+      if (!escenaCargada) return;
+      this.keys[accion] = true;
+    };
+
+    this.onKeyUp = (e) => {
+      const accion = this.mapa[e.code];
+      if (!accion) return;
+      e.preventDefault();
+      e.stopPropagation();
+      this.keys[accion] = false;
+      if (this.esGiro(e.code)) this.programarAnuncio();
+    };
+
+    window.addEventListener('keydown', this.onKeyDown, true);
+    window.addEventListener('keyup', this.onKeyUp, true);
+  },
+
+  remove: function () {
+    window.removeEventListener('keydown', this.onKeyDown, true);
+    window.removeEventListener('keyup', this.onKeyUp, true);
+    if (this.anuncioTimeout) clearTimeout(this.anuncioTimeout);
+  },
+
+  // Anuncia la orientación cuando el usuario deja de girar (con un pequeño
+  // debounce para no anunciar a mitad de un giro encadenado).
+  programarAnuncio: function () {
+    if (this.anuncioTimeout) clearTimeout(this.anuncioTimeout);
+    this.anuncioTimeout = setTimeout(() => {
+      if (this.keys.left || this.keys.right || this.keys.up || this.keys.down) return;
+      const yawDeg = THREE.MathUtils.radToDeg(this.el.object3D.rotation.y);
+      const pitchDeg = this.camera ? THREE.MathUtils.radToDeg(this.camera.object3D.rotation.x) : 0;
+      const card = orientacionCardinal(yawDeg);
+      const vert = verticalCualitativa(pitchDeg);
+      hablar(vert ? `Mirando al ${card}, ${vert}` : `Mirando al ${card}`, true);
+    }, 150);
+  },
+
+  tick: function (t, dt) {
+    if (!escenaCargada || !dt) return;
+    const seg = dt / 1000;
+
+    // --- GIRO ---
+    if (this.keys.left)  this.el.object3D.rotation.y += this.yawSpeed * seg;
+    if (this.keys.right) this.el.object3D.rotation.y -= this.yawSpeed * seg;
+
+    if (this.camera) {
+      const camRot = this.camera.object3D.rotation;
+      if (this.keys.up)   camRot.x = Math.min(this.pitchLimit, camRot.x + this.pitchSpeed * seg);
+      if (this.keys.down) camRot.x = Math.max(-this.pitchLimit, camRot.x - this.pitchSpeed * seg);
+    }
+
+    // --- MOVIMIENTO (en el plano, según la guiñada actual) ---
+    // Con yaw=0 se mira hacia -Z: adelante=(-sinY,0,-cosY), derecha=(cosY,0,-sinY).
+    const yaw = this.el.object3D.rotation.y;
+    const sinY = Math.sin(yaw), cosY = Math.cos(yaw);
+    let dx = 0, dz = 0;
+    if (this.keys.fwd)     { dx += -sinY; dz += -cosY; }
+    if (this.keys.back)    { dx +=  sinY; dz +=  cosY; }
+    if (this.keys.strafeR) { dx +=  cosY; dz += -sinY; }
+    if (this.keys.strafeL) { dx += -cosY; dz +=  sinY; }
+
+    if (dx !== 0 || dz !== 0) {
+      const len = Math.hypot(dx, dz);
+      const pos = this.el.object3D.position;
+      pos.x += (dx / len) * this.moveSpeed * seg;
+      pos.z += (dz / len) * this.moveSpeed * seg;
+    }
+  }
+});
+
+
+// ===================================================================
+// COMPONENTE: CAPTURA DE ESCENA
+// ===================================================================
 // Captura la escena, detecta objetos visibles y envía imagen + metadatos al servidor.
 AFRAME.registerComponent('captura-escena', {
   init: function () {
     this.scene = this.el.sceneEl;
-    
-    // Enlaza el botón de captura con tomarFoto()
-    // (Mantenemos el comentario original, pero el código del botón manual ha sido retirado 
-    // para que se ejecute automáticamente desde la voz)
   },
 
   remove: function() {
@@ -139,15 +363,15 @@ AFRAME.registerComponent('captura-escena', {
     if (!screenshotComponent) return;
 
     const camera = this.scene.camera;
-    
+
     camera.updateMatrix();
     camera.updateMatrixWorld();
 
     const frustum = new THREE.Frustum();
-    
+
     const projScreenMatrix = new THREE.Matrix4();
     projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
-    
+
     frustum.setFromProjectionMatrix(projScreenMatrix);
 
     // Obtener posición mundial de la cámara
@@ -157,20 +381,20 @@ AFRAME.registerComponent('captura-escena', {
     // Obtener rotación y dirección mundial
     const worldQuaternion = new THREE.Quaternion();
     camera.getWorldQuaternion(worldQuaternion);
-    
+
     const worldRotation = new THREE.Euler();
     worldRotation.setFromQuaternion(worldQuaternion, 'YXZ');
-    
+
     const cameraDirection = new THREE.Vector3(0, 0, -1);
     cameraDirection.applyQuaternion(worldQuaternion);
     cameraDirection.normalize();
-    
+
     // Lista de objetos visibles
     const objetosVisibles =[];
 
     // 1. PROCESAR GRUPOS (entidades con data-tipo="grupo")
     const gruposEtiquetados = document.querySelectorAll('[data-tipo="grupo"]');
-    
+
     gruposEtiquetados.forEach(grupo => {
         const objWorldPos = new THREE.Vector3();
         grupo.object3D.getWorldPosition(objWorldPos);
@@ -181,7 +405,7 @@ AFRAME.registerComponent('captura-escena', {
 
         const estaEnVision = frustum.containsPoint(objWorldPos);
         const distancia = objWorldPos.distanceTo(cameraPosWorld);
-        
+
         // Umbral de distancia para grupos
         let distanciaMaxima = 25;
 
@@ -189,7 +413,7 @@ AFRAME.registerComponent('captura-escena', {
             // Procesar sub-objetos
             const subObjetos = [];
             const hijosConSubLabel = grupo.querySelectorAll('[data-sublabel]');
-            
+
             hijosConSubLabel.forEach(hijo => {
                 subObjetos.push({
                     label: hijo.dataset.sublabel,
@@ -203,7 +427,7 @@ AFRAME.registerComponent('captura-escena', {
                 relative_position: {
                     x: parseFloat(localPos.x.toFixed(2)),
                     y: parseFloat(localPos.y.toFixed(2)),
-                    z: parseFloat(localPos.z.toFixed(2)) 
+                    z: parseFloat(localPos.z.toFixed(2))
                 },
                 contained_objects: subObjetos.length > 0 ? subObjetos : undefined
             });
@@ -222,11 +446,11 @@ AFRAME.registerComponent('captura-escena', {
 
         const estaEnVision = frustum.containsPoint(objWorldPos);
         const distancia = objWorldPos.distanceTo(cameraPosWorld);
-        
+
         // Criterio de distancia para objetos pequeños (Arbustos/Rocas)
         let distanciaMaxima = 15; // Smaller to avoid unnecessary decoration clutter
         if (obj.dataset.label === "Pirate Ship") {
-            distanciaMaxima = 40; 
+            distanciaMaxima = 40;
         }
 
         // Include object in metadata only if in vision and within max distance
@@ -255,13 +479,9 @@ AFRAME.registerComponent('captura-escena', {
         y: THREE.MathUtils.radToDeg(worldRotation.y).toFixed(1),
         z: THREE.MathUtils.radToDeg(worldRotation.z).toFixed(1)
     });
-    
+
     const yRotation = THREE.MathUtils.radToDeg(worldRotation.y);
-    let orientacion = '';
-    if (yRotation > -45 && yRotation <= 45) orientacion = 'Norte';
-    else if (yRotation > 45 && yRotation <= 135) orientacion = 'Este';
-    else if (yRotation > 135 || yRotation <= -135) orientacion = 'Sur';
-    else orientacion = 'Oeste';
+    const orientacion = orientacionCardinal(yRotation);
     console.log(`🧭 Mirando hacia: ${orientacion} (${yRotation.toFixed(1)}°)`);
 
     console.log('📦 Objetos detectados:', JSON.stringify(objetosVisibles, null, 2));
@@ -270,13 +490,6 @@ AFRAME.registerComponent('captura-escena', {
     const canvas = screenshotComponent.getCanvas('perspective');
     const dataURL = canvas.toDataURL('image/jpeg', 0.8);
     const nombreArchivo = `captura_escena.jpg`;
-
-    // Aviso por voz para que la persona no espere en silencio si algo falla
-    const avisar = (texto) => {
-        const utterance = new SpeechSynthesisUtterance(texto);
-        utterance.lang = 'es-ES';
-        window.speechSynthesis.speak(utterance);
-    };
 
     fetch('/api/procesar-consulta', {
         method: 'POST',
@@ -294,54 +507,73 @@ AFRAME.registerComponent('captura-escena', {
             return res.json();
         }
         console.error("❌ Error en servidor.");
-        avisar("Ha ocurrido un error al procesar la consulta. Inténtalo de nuevo.");
+        hablar("Ha ocurrido un error al procesar la consulta. Inténtalo de nuevo.");
     })
     .then(data => {
         if(data && data.descripcion) {
             console.log("📢 Descripción generada:");
             console.log(data.descripcion);
 
+            // Guardamos la última descripción para poder repetirla (tecla R)
+            ultimaDescripcion = data.descripcion;
+
             // Leemos la respuesta con TTS
-            avisar(data.descripcion);
+            hablar(data.descripcion);
         }
     })
     .catch(err => {
         console.error("❌ Error conexión:", err);
-        avisar("No se ha podido conectar con el servidor. Inténtalo de nuevo.");
+        hablar("No se ha podido conectar con el servidor. Inténtalo de nuevo.");
     });
   }
 });
 
-// --- FUNCIONALIDAD DE STT CON WEB SPEECH API (PUSH-TO-TALK) ---
+
+// ===================================================================
+// RECONOCIMIENTO DE VOZ (STT) — PUSH-TO-TALK CON BARRA ESPACIADORA
+// ===================================================================
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 if (!SpeechRecognition) {
   console.warn("⚠️ Este navegador no soporta la Web Speech API.");
 } else {
   const recognition = new SpeechRecognition();
-  recognition.lang = 'es-ES';        
-  
-  // CRÍTICO PARA PTT: continuous = true. 
+  recognition.lang = 'es-ES';
+
+  // CRÍTICO PARA PTT: continuous = true.
   // Esto evita que el navegador corte el micro si el usuario hace una pausa mientras mantiene el botón pulsado.
-  recognition.continuous = true;     
-  recognition.interimResults = true; 
+  recognition.continuous = true;
+  recognition.interimResults = true;
 
   let isListening = false;
-  let finalTranscript = ''; 
+  let finalTranscript = '';
+  let focoRafId = null;
 
-  const btn = document.getElementById('btn-stt');
-  
-  // Función para la síntesis de voz (TTS)
-  const speak = (text) => {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'es-ES'; 
-    window.speechSynthesis.speak(utterance);
+  // Devuelve el foco a la escena (región role="application"). Al arrancar el
+  // micrófono el foco puede irse de la escena; si eso pasa, el lector de pantalla
+  // sale del modo foco, empieza a leer la página y deja de pasar las teclas.
+  const reenfocarEscena = () => {
+    const foco = document.getElementById('foco-teclado');
+    if (foco && document.activeElement !== foco) foco.focus();
+  };
+
+  // Reclama el foco frame a frame durante 'durMs'. El foco se pierde un instante
+  // DESPUÉS de arrancar el micro, así que lo recuperamos en cuanto pase, antes de
+  // que el lector de pantalla llegue a leer nada.
+  const mantenerFocoEscena = (durMs) => {
+    const t0 = performance.now();
+    const paso = () => {
+      reenfocarEscena();
+      if (performance.now() - t0 < durMs) focoRafId = requestAnimationFrame(paso);
+      else focoRafId = null;
+    };
+    if (focoRafId) cancelAnimationFrame(focoRafId);
+    paso();
   };
 
   // --- LÓGICA DE INICIO (PULSAR) ---
   const startListening = (e) => {
-    // Evitar múltiples activaciones si ya está pulsado
-    if (e) e.preventDefault(); 
+    if (e) e.preventDefault();
     if (isListening) return;
 
     finalTranscript = ''; // Limpiamos la frase anterior
@@ -350,10 +582,9 @@ if (!SpeechRecognition) {
     } catch(err) {
       // Ignorar error si el reconocimiento ya estaba iniciado internamente
     }
-    
-    btn.innerHTML = "🎙️ ESCUCHANDO... (Suelta para enviar)";
-    btn.style.backgroundColor = "#ffcccc";
-    btn.style.transform = "scale(0.95)"; // Efecto visual de pulsado
+    // Mantener el foco en la escena mientras arranca el micro: el cambio de foco
+    // que dispararía al lector de pantalla ocurre en estos primeros instantes.
+    mantenerFocoEscena(700);
   };
 
   // --- LÓGICA DE FIN (SOLTAR) ---
@@ -362,29 +593,36 @@ if (!SpeechRecognition) {
     if (!isListening) return;
 
     recognition.stop(); // Detenemos el micro al soltar
-    btn.innerHTML = "🎙️ Mantén pulsado para hablar";
-    btn.style.backgroundColor = "#ffffff";
-    btn.style.transform = "scale(1)"; // Restaurar tamaño original
   };
 
-  // 1. Eventos de Ratón
-  btn.addEventListener('mousedown', startListening);
-  btn.addEventListener('mouseup', stopListening);
-  btn.addEventListener('mouseleave', stopListening); // Por si el ratón sale del botón mientras pulsa
+  // Tecla Q = pulsar para hablar. Inerte hasta que la escena cargue.
+  // (Se usa Q en vez de la barra espaciadora porque el navegador / el lector de
+  // pantalla suelen interceptar el Espacio sobre el elemento enfocado.)
+  // Se maneja en fase de CAPTURA sobre window con preventDefault + stopPropagation,
+  // igual que las flechas de giro, para que el lector de pantalla no la procese.
+  window.addEventListener('keydown', (e) => {
+    if (e.code !== 'KeyQ') return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.repeat || !escenaCargada) return;
+    startListening();
+  }, true);
+  window.addEventListener('keyup', (e) => {
+    if (e.code !== 'KeyQ') return;
+    e.preventDefault();
+    e.stopPropagation();
+    stopListening();
+  }, true);
 
-  // 2. Eventos Táctiles (Móviles / Tablets)
-  btn.addEventListener('touchstart', startListening, {passive: false});
-  btn.addEventListener('touchend', stopListening);
-
-  // 3. Evento de Teclado (Barra Espaciadora) para accesibilidad web
+  // Tecla R = repetir la última descripción generada por el modelo.
   document.addEventListener('keydown', (e) => {
-    if (e.code === 'Space' && !e.repeat) {
-      startListening();
-    }
-  });
-  document.addEventListener('keyup', (e) => {
-    if (e.code === 'Space') {
-      stopListening();
+    if (e.code === 'KeyR' && !e.repeat) {
+      if (!escenaCargada || isListening) return;
+      if (ultimaDescripcion) {
+        hablar(ultimaDescripcion, true);
+      } else {
+        hablar("Todavía no hay ninguna descripción que repetir.", true);
+      }
     }
   });
 
@@ -392,38 +630,40 @@ if (!SpeechRecognition) {
   recognition.onstart = () => {
     isListening = true;
     console.log("✅ Micrófono abierto. Mantén pulsado para hablar.");
-    // Opcional: speak("Escuchando"); // Podría pisar la voz del usuario, mejor un sonido corto (beep) si lo tienes
+    reenfocarEscena();
+    hablar("Comience a hablar", true); // confirma por voz que ya puede hablar
   };
 
   recognition.onend = () => {
     isListening = false;
     console.log("🛑 Micrófono cerrado.");
-    
+    mantenerFocoEscena(700); // al cerrar el micro el foco también puede moverse
+
     // Al soltar el botón y cerrarse el micro, procesamos todo el texto acumulado
     let textoProcesado = finalTranscript.trim();
-    
+
     if (textoProcesado.length > 0) {
       console.log(`%c🗣️ Consulta finalizada: "${textoProcesado}"`,
         'color: #0088cc; font-size: 16px; font-weight: bold; background-color: #f0f8ff; padding: 4px; border-radius: 4px;'
       );
-      
-      speak("Procesando tu consulta...");
-      
+
+      hablar("Procesando tu consulta...");
+
       // Capturamos y procesamos automáticamente usando la frase dicha
       const camara = document.querySelector('[captura-escena]');
       if (camara && camara.components['captura-escena']) {
         camara.components['captura-escena'].procesar(textoProcesado);
       }
-      
+
     } else {
       console.log("🔇 No se detectó ninguna palabra.");
-      speak("No se ha detectado ninguna consulta. Mantén pulsado el botón y habla.");
+      hablar("No se ha detectado ninguna consulta. Mantén pulsado el botón y habla.");
     }
   };
 
   recognition.onresult = (event) => {
     let interimTranscript = '';
-    
+
     for (let i = event.resultIndex; i < event.results.length; i++) {
       const transcript = event.results[i][0].transcript;
       if (event.results[i].isFinal) {
@@ -432,7 +672,7 @@ if (!SpeechRecognition) {
         interimTranscript += transcript;
       }
     }
-    
+
     if (interimTranscript) {
       console.log(`💬 (parcial): "${interimTranscript.trim()}"`);
     }
@@ -443,15 +683,12 @@ if (!SpeechRecognition) {
     if (event.error === 'network') {
       // Brave/Firefox/Safari exponen la API pero no tienen el servicio de
       // reconocimiento en la nube: start() siempre falla con 'network'.
-      speak("El reconocimiento de voz no está disponible en este navegador. Por favor, abre este enlace en Google Chrome o Microsoft Edge.");
+      hablar("El reconocimiento de voz no está disponible en este navegador. Por favor, abre este enlace en Google Chrome o Microsoft Edge.");
     } else if (event.error === 'not-allowed') {
-      speak("No hay permiso para usar el micrófono. Actívalo en el navegador y recarga la página.");
+      hablar("No hay permiso para usar el micrófono. Actívalo en el navegador y recarga la página.");
     } else if (event.error !== 'no-speech' && event.error !== 'aborted') {
-      speak("Error al escuchar. Por favor, intenta de nuevo.");
+      hablar("Error al escuchar. Por favor, intenta de nuevo.");
     }
-    stopListening(); // Resetea el botón en caso de error
+    stopListening(); // Resetea el estado en caso de error
   };
-  
-  // Ajuste inicial del texto del botón
-  btn.innerHTML = "🎙️ Mantén pulsado para hablar";
 }

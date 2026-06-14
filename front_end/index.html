@@ -1,12 +1,15 @@
-<html>
+<html lang="es">
   <head>
     <title>Pirate Ship Island with JavaScript</title>
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
   </head>
   <body>
-    <a-scene fog="type: exponential; color: #87CEEB; density: 0.0075;" 
-         renderer="preserveDrawingBuffer: true">
+    <a-scene fog="type: exponential; color: #87CEEB; density: 0.0075;"
+         renderer="preserveDrawingBuffer: true"
+         role="application"
+         tabindex="0"
+         aria-label="Escena virtual interactiva. Usa el teclado para explorar.">
 
       <a-assets>
         <a-asset-item id="barco-pirata-modelo" src="3d-models/pirate_ship.glb"></a-asset-item>
@@ -372,17 +375,11 @@
       <a-entity light="type: ambient; color: #BBB; intensity: 0.8"></a-entity>
       <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-1 1 1"></a-entity>
 
-      <a-entity id="cameraRig" position="0 0 -10" movement-controls boundary-checker>
-        <a-camera wasd-controls="enabled: false" captura-escena></a-camera>
+      <a-entity id="cameraRig" position="0 0 -10" keyboard-camera-controls boundary-checker>
+        <a-camera wasd-controls="enabled: false" look-controls="enabled: false" captura-escena></a-camera>
       </a-entity>
 
     </a-scene>
-    <!-- Button to simulate scene capture-->
-    <div style="position: fixed; bottom: 20px; left: 20px; z-index: 9999;">
-      <button id="btn-stt" style="padding: 10px 20px; font-size: 16px; cursor: pointer; background-color: #ffffff; border: 2px solid #333; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0,0,0,0.3);">
-        🎙️ Activar Micrófono
-      </button>
-    </div>
     <script src="script.js"></script>
   </body>
 </html>
