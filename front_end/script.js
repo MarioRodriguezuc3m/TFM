@@ -9,24 +9,167 @@ let audioDesbloqueado = false; // true tras la primera pulsación de tecla
 let bienvenidaDicha = false;   // el mensaje de cargado+instrucciones ya se dijo
 let ultimaDescripcion = '';    // última respuesta del backend (para repetir con R)
 let ultimoAvisoCargando = 0;   // throttle del aviso "cargando escenario"
+let vozPausada = false;        // estado propio de pausa del TTS (toggle con Espacio)
 
 const MENSAJE_BIENVENIDA =
   'Escenario cargado. Ya puedes explorar. Usa las flechas para mirar alrededor, ' +
-  'las teclas W A S D para moverte, mantén pulsada la tecla Q para hablar ' +
-  'y pulsa R para repetir la última descripcion.';
+  'las teclas W A S D para moverte, mantén pulsada la tecla Q para hablar, ' +
+  'pulsa R para repetir la última descripción ' +
+  'y la barra espaciadora para pausar o reanudar la descripción.';
 
-// --- Síntesis de voz (TTS) unificada ---
+// --- Síntesis de voz (TTS) para avisos cortos (no pausables) ---
 function hablar(texto, cancelar) {
+  lectura.detener(); // un aviso corto supersede a la descripción pausable
   const u = new SpeechSynthesisUtterance(texto);
   u.lang = 'es-ES';
   if (cancelar) window.speechSynthesis.cancel();
   window.speechSynthesis.speak(u);
 }
 
-// Marca que ya ha habido un gesto del usuario (necesario para que el navegador
-// permita reproducir la síntesis de voz por su política de autoplay).
+// --- Lectura de la DESCRIPCIÓN, pausable de forma INSTANTÁNEA ---
+// La pausa nativa (speechSynthesis.pause) tiene un retardo perceptible porque deja
+// terminar el audio ya almacenado en buffer. Para que la pausa sea inmediata usamos
+// cancel() (corte al instante) y reanudamos desde la última palabra leída, que
+// conocemos por el evento 'boundary'.
+const lectura = {
+  texto: '', pos: 0, activa: false, gen: 0,
+  hablar(texto) {
+    this.texto = texto; this.pos = 0; this.activa = true; vozPausada = false;
+    this._speak(0);
+  },
+  _speak(idx) {
+    const g = ++this.gen; // token: ignora callbacks de utterances ya superadas
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(this.texto.slice(idx));
+    u.lang = 'es-ES';
+    u.onboundary = (e) => { if (g === this.gen) this.pos = idx + (e.charIndex || 0); };
+    u.onend = () => { if (g === this.gen && !vozPausada) this.activa = false; };
+    window.speechSynthesis.speak(u);
+  },
+  pausar() {
+    if (!this.activa || vozPausada) return;
+    vozPausada = true;
+    this.gen++;                       // invalida el onend de la utterance que cortamos
+    window.speechSynthesis.cancel();  // corte instantáneo
+  },
+  reanudar() {
+    if (!this.activa || !vozPausada) return;
+    vozPausada = false;
+    this._speak(this.pos);            // continúa desde la última palabra leída
+  },
+  detener() { this.activa = false; vozPausada = false; this.gen++; }
+};
+
+// ===================================================================
+// MOTOR DE AUDIO (efectos de pasos y cámara, con paneo estéreo)
+// ===================================================================
+let audioCtx = null;
+const buffers = { hierba: null, arena: null, camara: null };
+
+function getAudioCtx() {
+  if (!audioCtx) {
+    // Compartir el MISMO contexto que A-Frame/THREE (el de los sonidos
+    // posicionales). Si hay dos contextos distintos, reanudar uno no reanuda el
+    // otro y los ambientales se quedan mudos.
+    try {
+      audioCtx = THREE.AudioContext.getContext();
+    } catch (e) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) audioCtx = new AC();
+    }
+  }
+  return audioCtx;
+}
+
+// Carga y decodifica un fichero de sonido en un AudioBuffer. Degrada sin error:
+// si el fichero no está, ese efecto simplemente no suena.
+async function cargarSonido(clave, url) {
+  const ctx = getAudioCtx();
+  if (!ctx) return;
+  try {
+    const resp = await fetch(url);
+    if (!resp.ok) return;
+    buffers[clave] = await ctx.decodeAudioData(await resp.arrayBuffer());
+  } catch (e) {
+    console.warn(`🔇 No se pudo cargar ${url}: ${e.message}`);
+  }
+}
+
+let sonidosCargados = false;
+function cargarSonidos() {
+  if (sonidosCargados) return;
+  sonidosCargados = true;
+  cargarSonido('hierba', 'sounds/pasos_hierba.mp3');
+  cargarSonido('arena',  'sounds/pasos_arena.mp3');
+  cargarSonido('camara', 'sounds/camara.mp3');
+}
+
+// Bucle de audio con volumen y paneo controlables. El AudioBufferSourceNode no se
+// puede reiniciar tras stop(), así que se recrea en cada start().
+function crearBucle(volumen) {
+  return {
+    source: null, gain: null, panner: null, bufferActual: null,
+    start(buffer) {
+      const ctx = getAudioCtx();
+      if (!ctx || !buffer) return;
+      if (this.source && this.bufferActual === buffer) return; // ya suena ese buffer
+      this.stop();
+      this.gain = ctx.createGain();
+      this.gain.gain.value = volumen;
+      this.panner = ctx.createStereoPanner();
+      this.source = ctx.createBufferSource();
+      this.source.buffer = buffer;
+      this.source.loop = true;
+      this.source.connect(this.panner);
+      this.panner.connect(this.gain);
+      this.gain.connect(ctx.destination);
+      this.source.start();
+      this.bufferActual = buffer;
+    },
+    stop() {
+      if (this.source) {
+        try { this.source.stop(); } catch (e) {}
+        this.source.disconnect();
+        this.source = null;
+      }
+      this.bufferActual = null;
+    },
+    setPan(p) {
+      if (this.panner) this.panner.pan.value = Math.max(-1, Math.min(1, p));
+    }
+  };
+}
+
+const sonidoMovimiento = crearBucle(0.4); // pasos (hierba/arena)
+const sonidoCamara = crearBucle(0.3);     // ajuste de cámara al girar
+
+// Arranca los sonidos ambientales posicionales (hoguera, palmeras) anclados a
+// objetos con el componente `sound` de A-Frame. Necesita un gesto del usuario
+// (autoplay) y que la escena esté cargada; si aún no hay emisores, no marca como
+// iniciado y se reintenta en el siguiente gesto.
+let ambientesIniciados = false;
+function iniciarAmbientes() {
+  if (ambientesIniciados) return;
+  // Reanudar el contexto de audio compartido (el mismo de A-Frame/THREE).
+  const ctx = getAudioCtx();
+  if (ctx && ctx.state === 'suspended') ctx.resume();
+  const emisores = document.querySelectorAll('[sound]');
+  if (!emisores.length) return; // escena aún sin emisores: se reintenta luego
+  ambientesIniciados = true;
+  emisores.forEach(el => {
+    const s = el.components && el.components.sound;
+    if (s) { try { s.playSound(); } catch (e) {} }
+  });
+}
+
+// Marca que ya ha habido un gesto del usuario (necesario por la política de
+// autoplay), crea/reanuda el AudioContext, carga los efectos y arranca ambientes.
 function desbloquearAudio() {
   audioDesbloqueado = true;
+  const ctx = getAudioCtx();
+  if (ctx && ctx.state === 'suspended') ctx.resume();
+  cargarSonidos();
+  iniciarAmbientes();
 }
 
 // --- Orientación: helpers reutilizados por la captura y por el giro de cámara ---
@@ -101,6 +244,9 @@ function onEscenaCargada() {
   const foco = document.getElementById('foco-teclado');
   if (foco) foco.focus();
   if (audioDesbloqueado && !bienvenidaDicha) reproducirBienvenida();
+  // Si el usuario ya interactuó durante la carga, arrancar los ambientes ahora
+  // que la escena (y sus emisores) ya existen.
+  if (audioDesbloqueado) iniciarAmbientes();
 }
 (function registrarCargaEscena() {
   const sceneEl = document.querySelector('a-scene');
@@ -156,7 +302,8 @@ AFRAME.registerComponent('boundary-checker', {
       const utterance = new SpeechSynthesisUtterance(message);
       utterance.lang = 'es-ES';
       utterance.rate = 1.1;
-      // Cancelamos cualquier TTS en curso para que el aviso sea inmediato
+      // Un aviso supersede la descripción pausable y corta el TTS en curso.
+      lectura.detener();
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(utterance);
     }
@@ -341,6 +488,26 @@ AFRAME.registerComponent('keyboard-camera-controls', {
       pos.x += (dx / len) * this.moveSpeed * seg;
       pos.z += (dz / len) * this.moveSpeed * seg;
     }
+
+    // --- SONIDO DE PASOS (terreno por la z del rig, paneado por A/D) ---
+    const moviendo = this.keys.fwd || this.keys.back || this.keys.strafeL || this.keys.strafeR;
+    if (moviendo) {
+      // Límite hierba/arena en z=-10 (planos suelo-cesped y suelo-arena de index.html)
+      const terreno = this.el.object3D.position.z >= -10 ? 'hierba' : 'arena';
+      if (buffers[terreno]) sonidoMovimiento.start(buffers[terreno]);
+      sonidoMovimiento.setPan((this.keys.strafeR ? 1 : 0) - (this.keys.strafeL ? 1 : 0));
+    } else {
+      sonidoMovimiento.stop();
+    }
+
+    // --- SONIDO DE CÁMARA (mientras se gira, paneado por ←/→) ---
+    const girando = this.keys.left || this.keys.right || this.keys.up || this.keys.down;
+    if (girando) {
+      if (buffers.camara) sonidoCamara.start(buffers.camara);
+      sonidoCamara.setPan((this.keys.right ? 1 : 0) - (this.keys.left ? 1 : 0));
+    } else {
+      sonidoCamara.stop();
+    }
   }
 });
 
@@ -435,7 +602,9 @@ AFRAME.registerComponent('captura-escena', {
     });
 
     // 2. PROCESAR OBJETOS INDIVIDUALES (Decorados, elementos sueltos)
-    const objetosIndividuales = document.querySelectorAll('[data-label]:not([data-tipo="grupo"])');
+    // Se excluyen los elementos con data-no-enviar: detalles puramente decorativos
+    // (p. ej. la piedra pequeña) que no aportan a la descripción de la escena.
+    const objetosIndividuales = document.querySelectorAll('[data-label]:not([data-tipo="grupo"]):not([data-no-enviar])');
 
     objetosIndividuales.forEach(obj => {
         const objWorldPos = new THREE.Vector3();
@@ -517,8 +686,8 @@ AFRAME.registerComponent('captura-escena', {
             // Guardamos la última descripción para poder repetirla (tecla R)
             ultimaDescripcion = data.descripcion;
 
-            // Leemos la respuesta con TTS
-            hablar(data.descripcion);
+            // Leemos la respuesta con TTS (pausable con la barra espaciadora)
+            lectura.hablar(data.descripcion);
         }
     })
     .catch(err => {
@@ -614,12 +783,23 @@ if (!SpeechRecognition) {
     stopListening();
   }, true);
 
+  // Barra espaciadora = pausar / reanudar la descripción en curso.
+  // En captura sobre window (como Q) para que el lector de pantalla no la procese.
+  window.addEventListener('keydown', (e) => {
+    if (e.code !== 'Space') return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.repeat || !escenaCargada) return;
+    if (vozPausada) lectura.reanudar();
+    else lectura.pausar();
+  }, true);
+
   // Tecla R = repetir la última descripción generada por el modelo.
   document.addEventListener('keydown', (e) => {
     if (e.code === 'KeyR' && !e.repeat) {
       if (!escenaCargada || isListening) return;
       if (ultimaDescripcion) {
-        hablar(ultimaDescripcion, true);
+        lectura.hablar(ultimaDescripcion); // pausable con la barra espaciadora
       } else {
         hablar("Todavía no hay ninguna descripción que repetir.", true);
       }

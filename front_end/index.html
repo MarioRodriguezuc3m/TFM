@@ -86,21 +86,23 @@
                 data-desc="Small campsite with campfire, chest and palm tree."
                 data-tipo="grupo">
 
-        <a-gltf-model src="#fogata-modelo" 
+        <a-gltf-model src="#fogata-modelo"
                       class="obstaculo" data-radio="0.6"
-                      position="0 0 0" 
-                      rotation="0 -27.5 0" 
+                      position="0 0 0"
+                      rotation="0 -27.5 0"
                       scale="0.1 0.1 0.1"
+                      sound="src: url(sounds/campfire.mp3); loop: true; autoplay: false; positional: true; volume: 0.6; distanceModel: linear; refDistance: 3; maxDistance: 28; rolloffFactor: 1"
                       data-sublabel="Campfire"
                       data-sublabel-es="Hoguera"
                       data-subdesc="Campfire with flames and burning logs">
         </a-gltf-model>
 
-        <a-gltf-model src="#palmera-modelo" 
+        <a-gltf-model src="#palmera-modelo"
                       class="obstaculo" data-radio="0.5"
-                      position="1 0 -2" 
-                      rotation="0 150 0" 
+                      position="1 0 -2"
+                      rotation="0 150 0"
                       scale="0.03 0.03 0.03"
+                      sound="src: url(sounds/leaves_rustling.mp3); loop: true; autoplay: false; positional: true; volume: 0.75; distanceModel: linear; refDistance: 2; maxDistance: 14; rolloffFactor: 1"
                       data-sublabel="Palm tree"
                       data-sublabel-es="Palmera"
                       data-subdesc="Tropical palm tree with long fan-shaped leaves">
@@ -238,20 +240,22 @@
                     data-label-es="Arbusto"
                     data-desc="Low green bush with round leaves"></a-gltf-model>
       
-      <a-gltf-model src="#palmera-modelo" 
-                    class="obstaculo" data-radio="0.5" 
-                    position="-8 0 -5" 
-                    rotation="0 60 0" 
+      <a-gltf-model src="#palmera-modelo"
+                    class="obstaculo" data-radio="0.5"
+                    position="-8 0 -5"
+                    rotation="0 60 0"
                     scale="0.03 0.03 0.03"
+                    sound="src: url(sounds/leaves_rustling.mp3); loop: true; autoplay: false; positional: true; volume: 0.75; distanceModel: linear; refDistance: 2; maxDistance: 14; rolloffFactor: 1"
                     data-label="Palm tree"
                     data-label-es="Palmera"
                     data-desc="Tall tropical palm tree with fan-shaped leaves"></a-gltf-model>
 
-      <a-gltf-model src="#palmera-modelo" 
-                    class="obstaculo" data-radio="0.5" 
-                    position="-14 0 -5" 
-                    rotation="0 90 0" 
+      <a-gltf-model src="#palmera-modelo"
+                    class="obstaculo" data-radio="0.5"
+                    position="-14 0 -5"
+                    rotation="0 90 0"
                     scale="0.025 0.025 0.025"
+                    sound="src: url(sounds/leaves_rustling.mp3); loop: true; autoplay: false; positional: true; volume: 0.75; distanceModel: linear; refDistance: 2; maxDistance: 14; rolloffFactor: 1"
                     data-label="Palm tree"
                     data-label-es="Palmera"
                     data-desc="Tall tropical palm tree with fan-shaped leaves"></a-gltf-model>
@@ -292,11 +296,12 @@
                       data-label-es="Piedra"
                       data-desc="Small gray stone"></a-dodecahedron>
 
-      <a-dodecahedron position="11.5 0 -3.2" 
-                      color="#696969" 
-                      radius="0.2" 
-                      scale="1 0.4 1" 
+      <a-dodecahedron position="11.5 0 -3.2"
+                      color="#696969"
+                      radius="0.2"
+                      scale="1 0.4 1"
                       roughness="1"
+                      data-no-enviar
                       data-label="Small stone"
                       data-label-es="Piedra pequeña"
                       data-desc="Very small gray stone"></a-dodecahedron>
