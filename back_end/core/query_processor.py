@@ -87,7 +87,8 @@ class QueryProcessor:
     def _validate_prompts() -> None:
         """
         Fail-fast: comprueba al arrancar que cada categoría operativa tiene los
-        4 niveles definidos en core/prompts.py. 'fallback' también debe estar.
+        4 niveles definidos en core/prompts.py, y que cada nivel define tanto la
+        parte 'system' como la 'user'. 'fallback' también debe estar.
         """
         requeridas = set(INTENT_TO_PROMPT.values()) | {"fallback"}
         for cat in requeridas:
@@ -99,6 +100,13 @@ class QueryProcessor:
                     f"La categoría '{cat}' no define los niveles {sorted(faltan)} "
                     f"en core/prompts.py"
                 )
+            for lvl in CONTEXT_LEVELS:
+                par = PROMPTS[cat][lvl]
+                if not isinstance(par, dict) or "system" not in par or "user" not in par:
+                    raise KeyError(
+                        f"'{cat}'/{lvl} debe definir las claves 'system' y 'user' "
+                        f"en core/prompts.py"
+                    )
 
     # -----------------------------------------------------------------
     # PASO 1: CLASIFICACIÓN DE INTENCIÓN (con umbral OOD)
@@ -181,42 +189,45 @@ class QueryProcessor:
         texto_usuario: str,
         objetos_visibles: List[Dict[str, Any]],
         level: str,
-    ) -> Tuple[str, str]:
+    ) -> Tuple[str, str, str]:
         """
-        Selecciona el prompt completo de (categoría, nivel) y lo rellena solo
-        con los placeholders que ese nivel usa. Devuelve (prompt, categoria).
+        Selecciona el par (system, user) de (categoría, nivel). El 'system' no
+        lleva placeholders (rol + reglas + consideraciones). El 'user' se rellena
+        con la consulta y los datos del nivel. Devuelve (system, user, categoria).
         """
         categoria = INTENT_TO_PROMPT.get(intencion, "fallback")
-        template = PROMPTS[categoria][level]
+        par = PROMPTS[categoria][level]
 
-        # Construir solo los placeholders que el prompt de este nivel necesita.
+        # Solo el 'user' lleva placeholders; construir los que usa el nivel.
         fmt: Dict[str, str] = {"texto_usuario": texto_usuario}
         if level in _LEVELS_WITH_CONTEXT:
             fmt["contexto_json"] = self._build_context_json(objetos_visibles, level)
         if level in _LEVELS_WITH_SPATIAL_DOCS:
             fmt["spatial_docs"] = self._spatial_docs
 
+        system = par["system"]          # sin placeholders
+        user = par["user"].format(**fmt)
+
         print(f"📝 Prompt: {categoria} ({level})")
-        # format_map ignora placeholders ausentes en el texto, y como solo
-        # pasamos los que el nivel usa, no hay riesgo de KeyError.
-        prompt = template.format(**fmt)
-        print(prompt)
-        return prompt, categoria
+        print("----- SYSTEM -----")
+        print(system)
+        print("----- USER -----")
+        print(user)
+        return system, user, categoria
 
     # -----------------------------------------------------------------
     # PASO 4: CONSULTA AL MLLM
     # -----------------------------------------------------------------
 
-    def _query_mllm(self, prompt: str, ruta_imagen: str, temperature: float, seed: int) -> str:
+    def _query_mllm(self, system: str, user: str, ruta_imagen: str, temperature: float, seed: int) -> str:
         print(f"🧠 Consultando {self.modelo_vision}...")
         try:
             response = ollama.chat(
                 model=self.modelo_vision,
-                messages=[{
-                    "role": "user",
-                    "content": prompt,
-                    "images": [ruta_imagen],
-                }],
+                messages=[
+                    {"role": "system", "content": system},
+                    {"role": "user", "content": user, "images": [ruta_imagen]},
+                ],
                 options={"temperature": temperature, "seed": seed},
             )
             return response["message"]["content"]
@@ -234,7 +245,7 @@ class QueryProcessor:
         ruta_imagen: str,
         objetos_visibles: list,
         context_level: str = DEFAULT_CONTEXT_LEVEL,
-        temperature: float = 0.1,
+        temperature: float = 0.05,
         seed: int = 42,
     ) -> dict:
         if context_level not in CONTEXT_LEVELS:
@@ -258,13 +269,13 @@ class QueryProcessor:
                 "prompt_template": None,
             }
 
-        # 3-4. Prompt completo del nivel + render
-        prompt, categoria = self._build_prompt(
+        # 3-4. Par (system, user) del nivel + render
+        system, user, categoria = self._build_prompt(
             intencion, texto_usuario, objetos_visibles, context_level
         )
 
         # 5. MLLM (genera la respuesta directamente en español)
-        descripcion = self._query_mllm(prompt, ruta_imagen, temperature, seed)
+        descripcion = self._query_mllm(system, user, ruta_imagen, temperature, seed)
 
         return {
             "descripcion": descripcion,

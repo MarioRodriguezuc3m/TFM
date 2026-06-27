@@ -15,6 +15,23 @@ import json
 from core.query_processor import QueryProcessor
 from paths import FRONTEND_DIR, SESSION_LOGS_DIR
 
+
+class NoCacheStaticFiles(StaticFiles):
+    """StaticFiles que desactiva la caché del navegador para el HTML y el JS.
+
+    Así, al iterar (mismo origen, p. ej. localhost), el navegador NO sirve un
+    index.html/script.js viejo de su caché tras editar el código. Los assets
+    pesados (modelos GLB, imágenes, sonidos) sí se siguen cacheando."""
+
+    async def get_response(self, path, scope):
+        response = await super().get_response(path, scope)
+        if path in ("", ".", "index.html") or path.endswith((".html", ".js")):
+            response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response.headers["Pragma"] = "no-cache"
+            response.headers["Expires"] = "0"
+        return response
+
+
 app = FastAPI()
 origins = ["*"]
 
@@ -123,7 +140,7 @@ async def procesar_consulta(datos: Consulta):
         raise HTTPException(status_code=500, detail=str(e))
 
 # El mount en "/" debe registrarse después de las rutas /api para no eclipsarlas
-app.mount("/", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
+app.mount("/", NoCacheStaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
 
 if __name__ == "__main__":
     print("🌐 Servidor disponible en http://localhost:3000")

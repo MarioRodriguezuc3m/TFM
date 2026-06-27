@@ -515,6 +515,35 @@ AFRAME.registerComponent('keyboard-camera-controls', {
 // ===================================================================
 // COMPONENTE: CAPTURA DE ESCENA
 // ===================================================================
+// Visibilidad por CAJA envolvente (THREE.Box3), no solo por el origen/pivote.
+// Un objeto (o grupo) cuenta como visible si CUALQUIER parte de su volumen entra
+// en el frustum de la cámara, y la distancia se mide al punto más cercano de la
+// caja. Esto evita perder objetos que se ven en pantalla pero cuyo pivote queda
+// fuera del encuadre (p. ej. un barril de un grupo cuyo origen está a un lado).
+// 'local' se deja como el origen en coords de cámara para no alterar los campos
+// espaciales enriquecidos (C4), que se calculan a partir de relative_position.
+function analizarVisibilidad(el, frustum, camera, cameraPosWorld) {
+    const origen = new THREE.Vector3();
+    el.object3D.getWorldPosition(origen);
+    const local = origen.clone();
+    camera.worldToLocal(local);
+
+    const box = new THREE.Box3().setFromObject(el.object3D);
+    if (box.isEmpty()) {
+        // Sin geometría todavía: caer al comportamiento por origen.
+        return {
+            enVision: frustum.containsPoint(origen),
+            distancia: origen.distanceTo(cameraPosWorld),
+            local,
+        };
+    }
+    return {
+        enVision: frustum.intersectsBox(box),
+        distancia: box.distanceToPoint(cameraPosWorld), // 0 si la cámara está dentro
+        local,
+    };
+}
+
 // Captura la escena, detecta objetos visibles y envía imagen + metadatos al servidor.
 AFRAME.registerComponent('captura-escena', {
   init: function () {
@@ -563,15 +592,13 @@ AFRAME.registerComponent('captura-escena', {
     const gruposEtiquetados = document.querySelectorAll('[data-tipo="grupo"]');
 
     gruposEtiquetados.forEach(grupo => {
-        const objWorldPos = new THREE.Vector3();
-        grupo.object3D.getWorldPosition(objWorldPos);
-
-        // Transformar posición del mundo a posición LOCAL respecto a la cámara
-        const localPos = objWorldPos.clone();
-        camera.worldToLocal(localPos);
-
-        const estaEnVision = frustum.containsPoint(objWorldPos);
-        const distancia = objWorldPos.distanceTo(cameraPosWorld);
+        // Visibilidad por caja envolvente: el grupo cuenta si CUALQUIER parte de
+        // su volumen entra en cámara (p. ej. un barril del almacén, aunque el
+        // origen del grupo quede fuera del encuadre).
+        const vis = analizarVisibilidad(grupo, frustum, camera, cameraPosWorld);
+        const localPos = vis.local;
+        const estaEnVision = vis.enVision;
+        const distancia = vis.distancia;
 
         // Umbral de distancia para grupos
         let distanciaMaxima = 25;
@@ -583,13 +610,15 @@ AFRAME.registerComponent('captura-escena', {
 
             hijosConSubLabel.forEach(hijo => {
                 subObjetos.push({
-                    label: hijo.dataset.sublabel,
+                    // Nombre en español del HTML (data-sublabel-es), con respaldo
+                    // al inglés, para que el modelo no tenga que traducir.
+                    label: hijo.dataset.sublabelEs || hijo.dataset.sublabel,
                     description: hijo.dataset.subdesc
                 });
             });
 
             objetosVisibles.push({
-                label: grupo.dataset.label,
+                label: grupo.dataset.labelEs || grupo.dataset.label,
                 description: grupo.dataset.desc,
                 relative_position: {
                     x: parseFloat(localPos.x.toFixed(2)),
@@ -607,25 +636,34 @@ AFRAME.registerComponent('captura-escena', {
     const objetosIndividuales = document.querySelectorAll('[data-label]:not([data-tipo="grupo"]):not([data-no-enviar])');
 
     objetosIndividuales.forEach(obj => {
+        // Para objetos SUELTOS se usa el test por ORIGEN (como antes): su caja
+        // envolvente (p. ej. palmeras altas/anchas o el barco) es tan grande que
+        // intersectaría el frustum aunque el objeto esté en la periferia, colando
+        // objetos que no se ven realmente. La caja solo se usa para grupos.
         const objWorldPos = new THREE.Vector3();
         obj.object3D.getWorldPosition(objWorldPos);
 
         const localPos = objWorldPos.clone();
         camera.worldToLocal(localPos);
 
-        const estaEnVision = frustum.containsPoint(objWorldPos);
+        let estaEnVision = frustum.containsPoint(objWorldPos);
         const distancia = objWorldPos.distanceTo(cameraPosWorld);
 
         // Criterio de distancia para objetos pequeños (Arbustos/Rocas)
         let distanciaMaxima = 15; // Smaller to avoid unnecessary decoration clutter
         if (obj.dataset.label === "Pirate Ship") {
             distanciaMaxima = 40;
+            // El barco es un hito grande y lejano: más permisivo con el centrado
+            // (caja envolvente, lo capta aunque su pivote no esté centrado), pero
+            // conservando su criterio de lejanía (distancia por origen, máx 40).
+            const box = new THREE.Box3().setFromObject(obj.object3D);
+            if (!box.isEmpty()) estaEnVision = frustum.intersectsBox(box);
         }
 
         // Include object in metadata only if in vision and within max distance
         if (estaEnVision && distancia < distanciaMaxima) {
             objetosVisibles.push({
-                label: obj.dataset.label,
+                label: obj.dataset.labelEs || obj.dataset.label,
                 description: obj.dataset.desc,
                 relative_position: {
                     x: parseFloat(localPos.x.toFixed(2)),

@@ -37,6 +37,16 @@ DIST_MEDIUM = 20.0      # distancia media
 Y_ABOVE = 1.5           # por encima de la cabeza
 Y_BELOW = -0.8          # en el suelo
 
+# Semiángulo (en grados) del sector "front". Cuanto mayor, más ancho es "delante"
+# y más lateral hay que estar para que algo cuente como front-left / front-right.
+# Con 35°, un objeto a ~25° del centro (p. ej. el cañón) se considera "front".
+FRONT_HALF_DEG = 35.0
+
+# Ángulo a partir del cual algo deja de ser diagonal (front-right/front-left) y
+# pasa a ser lateral puro (right/left). Más bajo => banda diagonal más estrecha y
+# "right"/"left" más amplios. Con 55°, un objeto a ~58° (p. ej. el barco) es "right".
+DIAG_SIDE_DEG = 55.0
+
 
 # =====================================================================
 # MAPEOS DE DIRECCIÓN / DISTANCIA / VERTICAL → FRASE NATURAL
@@ -95,11 +105,18 @@ def compute_direction(x: float, z: float) -> str:
     """
     angle = math.degrees(math.atan2(x, -z))
 
-    if -22.5 <= angle < 22.5:
+    # El sector frontal es ±FRONT_HALF_DEG (más ancho que los 45° uniformes) y la
+    # banda diagonal front-right/front-left va de FRONT_HALF_DEG a DIAG_SIDE_DEG;
+    # más allá ya es lateral puro (right/left). Así los diagonales solo aplican en
+    # una franja estrecha y "delante" / "a un lado" son más amplios.
+    F = FRONT_HALF_DEG
+    D = DIAG_SIDE_DEG
+
+    if -F <= angle < F:
         return "front"
-    if 22.5 <= angle < 67.5:
+    if F <= angle < D:
         return "front-right"
-    if 67.5 <= angle < 112.5:
+    if D <= angle < 112.5:
         return "right"
     if 112.5 <= angle < 157.5:
         return "back-right"
@@ -107,9 +124,9 @@ def compute_direction(x: float, z: float) -> str:
         return "behind"
     if -157.5 <= angle < -112.5:
         return "back-left"
-    if -112.5 <= angle < -67.5:
+    if -112.5 <= angle < -D:
         return "left"
-    return "front-left"  # -67.5 <= angle < -22.5
+    return "front-left"  # -D <= angle < -F
 
 
 def compute_distance_bucket(horizontal_dist: float) -> str:
