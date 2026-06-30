@@ -58,6 +58,7 @@ class Consulta(BaseModel):
     imagen: str
     nombre: str
     objetos_visibles: list = []
+    nearest_object: dict | None = None
     camara: dict = {}
 
 # Escribe el registro JSON de una consulta en la carpeta de la sesión
@@ -77,6 +78,7 @@ async def procesar_consulta(datos: Consulta):
         "timestamp": datetime.now().isoformat(timespec="seconds"),
         "consulta": datos.texto,
         "objetos_visibles": datos.objetos_visibles,
+        "nearest_object": datos.nearest_object,
         "intencion": None,
         "respuesta": None,
         "latencia_segundos": None,
@@ -107,7 +109,8 @@ async def procesar_consulta(datos: Consulta):
         resultado = query_processor.process(
             texto_usuario=datos.texto,
             ruta_imagen=file_path_img,
-            objetos_visibles=datos.objetos_visibles
+            objetos_visibles=datos.objetos_visibles,
+            nearest_object=datos.nearest_object
         )
 
         print("-" * 80)

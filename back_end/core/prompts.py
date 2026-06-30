@@ -58,6 +58,8 @@ ADDITIONAL CONSIDERATIONS (always apply, above everything else):
 - NEVER quote the underlying data or talk like a lookup. Avoid phrases such as "the object you refer to is 'Pirate Ship'", "according to the list/JSON", "the label says...", "in the data...". Just describe things naturally.
 - Do NOT mention the data, the labels, the list, JSON, fields, coordinates, meters or numbers. Do NOT say this is a video game, a virtual/3D scene, a simulation, a render or anything similar (the user already knows where they are).
 - Do NOT invent. Mention only objects you can clearly see in the image or that appear in the provided data. Never make up objects, visual details or positions. If you are not sure, leave it out.
+- When mentioning objects, always descibe their position with detail, describing if they are far, close, or left/right/front/behind, and if they are above or below the user's eye level. Use natural visual language.
+- Never use distance in numbers or meters in your answer, remember you are an assistant for blind users, so you must describe distances in natural visual language.
 
 CRITICAL: Output your response in SPANISH (en español)."""
 
@@ -201,11 +203,14 @@ OBJETOS_CERCANOS = _pack(
         "C4": """CRITICAL RULES:
 
 1. SELECT ONLY THE NEAREST OBJECTS
-   - The JSON is already sorted by proximity. Focus on the FIRST 3–4 objects.
+   - The "objects" list is already sorted by proximity. Focus on the FIRST 3–4 objects.
    - Consider an object "near" if its "distance_bucket" is within_arm_reach, very_close, or close.
    - You may mention an object with distance_bucket = "medium" only if there are fewer than 2 nearer objects.
    - IGNORE objects with distance_bucket = "far".
-   - Use "is_in_front" to PRIORITISE what is ahead, but do NOT discard a close object just because it is to the side or behind. In particular, if the user asks which object is CLOSEST/nearest, answer with the FIRST object in the list (smallest "distance_m"), whatever its direction.
+   - Use "is_in_front" to PRIORITISE what is ahead, but do NOT discard a close object just because it is to the side or behind.
+   - IMPORTANT: "nearest_object" (at the END of the data) is NOT your answer. It is a separate, optional hint with the single closest item, which may be just ONE sub-piece of a group. Use it ONLY if the user LITERALLY asks "what is the closest/nearest thing". For EVERY other nearby query — including "what do I have in front of me", "what is around me", "what is on my left" — IGNORE "nearest_object" completely and answer from the "objects" list.
+   - When a nearby thing is a GROUP (it has "contained_objects", e.g. "Cañón pirata"), describe the GROUP as a whole and briefly what it contains (its cannon, a barrel, a pile of cannonballs). NEVER answer with only one of its pieces (e.g. only the cannonballs) when the user asked what is there.
+   - INCLUDE nearby rocks and palm trees among the things you mention if they are close to the user.
 
 2. FOR EACH NEARBY OBJECT:
    - State its name and its location using the "position_description" field
@@ -727,6 +732,7 @@ NAVEGACION = _pack(
 3. WARN ABOUT OBSTACLES:
    - Check other objects whose "direction" is the same as the target's and whose "distance_m" is smaller than the target's.
    - Those are potential obstacles on the way. Mention them so the user can avoid them.
+   - "nearest_object" is the closest thing to the user (it may be a specific item inside a group, with its "group"). If it is NOT the place/object they want to reach AND it lies roughly in the direction they must move, warn them to be careful not to bump into it. If it is the destination itself, or clearly off to a side and not in the way, do NOT mention it.
 
 4. SPATIAL LANGUAGE:
    - Translate "direction" into natural instructions: e.g. "front-left" -> "turn slightly left and walk forward".

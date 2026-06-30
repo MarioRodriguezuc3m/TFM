@@ -9,13 +9,14 @@ let audioDesbloqueado = false; // true tras la primera pulsación de tecla
 let bienvenidaDicha = false;   // el mensaje de cargado+instrucciones ya se dijo
 let ultimaDescripcion = '';    // última respuesta del backend (para repetir con R)
 let ultimoAvisoCargando = 0;   // throttle del aviso "cargando escenario"
-let vozPausada = false;        // estado propio de pausa del TTS (toggle con Espacio)
+let vozPausada = false;        // estado propio de pausa del TTS (toggle con la tecla E)
 
 const MENSAJE_BIENVENIDA =
   'Escenario cargado. Ya puedes explorar. Usa las flechas para mirar alrededor, ' +
   'las teclas W A S D para moverte, mantén pulsada la tecla Q para hablar, ' +
-  'pulsa R para repetir la última descripción ' +
-  'y la barra espaciadora para pausar o reanudar la descripción.';
+  'pulsa R para repetir la última descripción, ' +
+  'pulsa la barra espaciadora para que te describa la escena que estás viendo ' +
+  'y pulsa la tecla E para pausar o reanudar la descripción.';
 
 // --- Síntesis de voz (TTS) para avisos cortos (no pausables) ---
 function hablar(texto, cancelar) {
@@ -515,28 +516,31 @@ AFRAME.registerComponent('keyboard-camera-controls', {
 // ===================================================================
 // COMPONENTE: CAPTURA DE ESCENA
 // ===================================================================
-// Visibilidad por CAJA envolvente (THREE.Box3), no solo por el origen/pivote.
-// Un objeto (o grupo) cuenta como visible si CUALQUIER parte de su volumen entra
-// en el frustum de la cámara, y la distancia se mide al punto más cercano de la
-// caja. Esto evita perder objetos que se ven en pantalla pero cuyo pivote queda
-// fuera del encuadre (p. ej. un barril de un grupo cuyo origen está a un lado).
-// 'local' se deja como el origen en coords de cámara para no alterar los campos
-// espaciales enriquecidos (C4), que se calculan a partir de relative_position.
+// Visibilidad de GRUPOS por una caja AJUSTADA A LOS ORÍGENES del grupo y de sus
+// sub-objetos (NO a su geometría completa). Un grupo cuenta como visible si esa
+// caja entra en el frustum, y la distancia se mide a su punto más cercano. Usar
+// los orígenes (y no la geometría) evita que un objeto alto/ancho como la palmera
+// del campamento infle la caja y cuele el grupo en cámara aunque sus objetos
+// reales queden muy a un lado (a ~77º del centro y a ~19 m). A la vez, la caja
+// sigue cubriendo el hueco ENTRE piezas, así que un grupo cercano pero lateral
+// (p. ej. el almacén, pegado a un costado) se mantiene si alguna de sus piezas
+// entra en el encuadre. 'local' se deja como el origen del grupo en coords de
+// cámara para no alterar los campos enriquecidos (C4).
 function analizarVisibilidad(el, frustum, camera, cameraPosWorld) {
     const origen = new THREE.Vector3();
     el.object3D.getWorldPosition(origen);
     const local = origen.clone();
     camera.worldToLocal(local);
 
-    const box = new THREE.Box3().setFromObject(el.object3D);
-    if (box.isEmpty()) {
-        // Sin geometría todavía: caer al comportamiento por origen.
-        return {
-            enVision: frustum.containsPoint(origen),
-            distancia: origen.distanceTo(cameraPosWorld),
-            local,
-        };
-    }
+    // Caja que abarca el origen del grupo y el de cada sub-objeto etiquetado.
+    const box = new THREE.Box3();
+    box.expandByPoint(origen);
+    el.querySelectorAll('[data-sublabel]').forEach(hijo => {
+        const p = new THREE.Vector3();
+        hijo.object3D.getWorldPosition(p);
+        box.expandByPoint(p);
+    });
+
     return {
         enVision: frustum.intersectsBox(box),
         distancia: box.distanceToPoint(cameraPosWorld), // 0 si la cámara está dentro
@@ -588,6 +592,30 @@ AFRAME.registerComponent('captura-escena', {
     // Lista de objetos visibles
     const objetosVisibles =[];
 
+    // Objeto más cercano de toda la escena, BAJANDO al sub-objeto concreto dentro
+    // de los grupos (para poder señalar "la pila de cajas" en vez de "el almacén").
+    // Se calcula aquí porque el navegador es quien tiene las posiciones de los
+    // sub-objetos; al backend se le envía solo el resultado (campo nearest_object),
+    // sin ensuciar contained_objects con posiciones por pieza.
+    let nearestObject = null;
+    let nearestDist = Infinity;
+    const considerarNearest = (label, description, group, localPos) => {
+        const d = Math.hypot(localPos.x, localPos.z);
+        if (d < nearestDist) {
+            nearestDist = d;
+            nearestObject = {
+                label,
+                description,
+                relative_position: {
+                    x: parseFloat(localPos.x.toFixed(2)),
+                    y: parseFloat(localPos.y.toFixed(2)),
+                    z: parseFloat(localPos.z.toFixed(2))
+                }
+            };
+            if (group) nearestObject.group = group;
+        }
+    };
+
     // 1. PROCESAR GRUPOS (entidades con data-tipo="grupo")
     const gruposEtiquetados = document.querySelectorAll('[data-tipo="grupo"]');
 
@@ -615,6 +643,28 @@ AFRAME.registerComponent('captura-escena', {
                     label: hijo.dataset.sublabelEs || hijo.dataset.sublabel,
                     description: hijo.dataset.subdesc
                 });
+
+                // Candidato a "objeto más cercano": cada sub-objeto compite con su
+                // PROPIA posición, para poder señalar la pieza concreta del grupo y
+                // no el grupo entero. Excepciones pedidas: el grupo mesa no participa,
+                // y en el almacén las botellas se omiten. La posición NO se envía por
+                // sub-objeto; solo se usa aquí para elegir el más cercano.
+                const esMesa = grupo.id === 'grupo-mesa';
+                const esBotellaAlmacen =
+                    grupo.id === 'grupo-almacen' && hijo.dataset.sublabel === 'Bottle';
+
+                if (!esMesa && !esBotellaAlmacen) {
+                    const subWorldPos = new THREE.Vector3();
+                    hijo.object3D.getWorldPosition(subWorldPos);
+                    const subLocal = subWorldPos.clone();
+                    camera.worldToLocal(subLocal);
+                    considerarNearest(
+                        hijo.dataset.sublabelEs || hijo.dataset.sublabel,
+                        hijo.dataset.subdesc,
+                        grupo.dataset.labelEs || grupo.dataset.label,
+                        subLocal
+                    );
+                }
             });
 
             objetosVisibles.push({
@@ -671,6 +721,8 @@ AFRAME.registerComponent('captura-escena', {
                     z: parseFloat(localPos.z.toFixed(2))
                 }
             });
+            // Objeto suelto: también compite por ser el más cercano (sin grupo).
+            considerarNearest(obj.dataset.labelEs || obj.dataset.label, obj.dataset.desc, null, localPos);
         }
     });
 
@@ -705,7 +757,8 @@ AFRAME.registerComponent('captura-escena', {
             texto: textoUsuario,
             imagen: dataURL,
             nombre: nombreArchivo,
-            objetos_visibles: objetosVisibles
+            objetos_visibles: objetosVisibles,
+            nearest_object: nearestObject
         })
     })
     .then(res => {
@@ -821,15 +874,31 @@ if (!SpeechRecognition) {
     stopListening();
   }, true);
 
-  // Barra espaciadora = pausar / reanudar la descripción en curso.
+  // Tecla E = pausar / reanudar la descripción en curso.
   // En captura sobre window (como Q) para que el lector de pantalla no la procese.
   window.addEventListener('keydown', (e) => {
-    if (e.code !== 'Space') return;
+    if (e.code !== 'KeyE') return;
     e.preventDefault();
     e.stopPropagation();
     if (e.repeat || !escenaCargada) return;
     if (vozPausada) lectura.reanudar();
     else lectura.pausar();
+  }, true);
+
+  // Barra espaciadora = lanzar una consulta predefinida de descripción de la
+  // escena (equivale a decir por voz "Descríbeme la escena que estoy viendo").
+  // En captura sobre window (como Q) para que el lector de pantalla no la procese.
+  window.addEventListener('keydown', (e) => {
+    if (e.code !== 'Space') return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.repeat || !escenaCargada || isListening) return;
+
+    hablar("Procesando su consulta de descripción general");
+    const camara = document.querySelector('[captura-escena]');
+    if (camara && camara.components['captura-escena']) {
+      camara.components['captura-escena'].procesar("Descríbeme la escena que estoy viendo.");
+    }
   }, true);
 
   // Tecla R = repetir la última descripción generada por el modelo.

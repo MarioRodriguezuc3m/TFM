@@ -236,3 +236,36 @@ def enrich_objects(objetos_visibles: List[Dict[str, Any]]) -> List[Dict[str, Any
     # Ordenar por distancia horizontal (más cerca primero)
     enriched.sort(key=lambda o: o.get("distance_m", float("inf")))
     return enriched
+
+
+def enrich_nearest_object(nearest: Dict[str, Any] | None) -> Dict[str, Any] | None:
+    """
+    Enriquece el OBJETO más cercano que YA ha elegido el front-end (es quien tiene
+    las posiciones de los sub-objetos dentro de la escena 3D). El front envía un
+    dict con `label`, `description`, `relative_position` y, si la pieza pertenece a
+    un grupo, `group`. Aquí solo se le añaden los campos espaciales (frase de
+    posición, dirección, distancia). Devuelve None si no llega ninguno.
+    """
+    if not nearest or "relative_position" not in nearest:
+        return None
+
+    p = nearest["relative_position"]
+    x = float(p.get("x", 0.0))
+    y = float(p.get("y", 0.0))
+    z = float(p.get("z", 0.0))
+    d = math.sqrt(x * x + z * z)
+    direction = compute_direction(x, z)
+
+    out: Dict[str, Any] = {
+        "label": nearest.get("label", "unknown"),
+        "description": nearest.get("description", ""),
+        "position_description": build_position_description(
+            direction, compute_distance_bucket(d), compute_vertical_position(y)
+        ),
+        "direction": direction,
+        "distance_bucket": compute_distance_bucket(d),
+        "distance_m": round(d, 2),
+    }
+    if nearest.get("group"):
+        out["group"] = nearest["group"]
+    return out

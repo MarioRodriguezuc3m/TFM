@@ -135,6 +135,8 @@ class QueryProcessor:
         self,
         objetos_visibles: List[Dict[str, Any]],
         level: str,
+        nearest_object: Dict[str, Any] | None = None,
+        categoria: str | None = None,
     ) -> str:
         """
         Devuelve el string JSON de objetos que se inyecta en {contexto_json}.
@@ -172,6 +174,19 @@ class QueryProcessor:
 
         if level == "C4":
             enriquecidos = spatial_enricher.enrich_objects(objetos_visibles)
+            # nearest_object SOLO para las intenciones que lo aprovechan:
+            # objetos_cercanos (qué tiene más cerca) y navegacion (posible obstáculo
+            # en el camino). En el resto, el JSON es la lista de siempre.
+            if categoria in ("objetos_cercanos", "navegacion"):
+                payload = {
+                    "objects": enriquecidos,
+                    # Pista OPCIONAL al final (deliberadamente poco prominente): así
+                    # el modelo construye la respuesta desde "objects" y no se ancla
+                    # solo en el más cercano. El front ya eligió la pieza concreta del
+                    # grupo; aquí solo se enriquece su posición.
+                    "nearest_object": spatial_enricher.enrich_nearest_object(nearest_object),
+                }
+                return json.dumps(payload, indent=2, ensure_ascii=False)
             return json.dumps(enriquecidos, indent=2, ensure_ascii=False)
 
         raise ValueError(
@@ -189,6 +204,7 @@ class QueryProcessor:
         texto_usuario: str,
         objetos_visibles: List[Dict[str, Any]],
         level: str,
+        nearest_object: Dict[str, Any] | None = None,
     ) -> Tuple[str, str, str]:
         """
         Selecciona el par (system, user) de (categoría, nivel). El 'system' no
@@ -201,7 +217,9 @@ class QueryProcessor:
         # Solo el 'user' lleva placeholders; construir los que usa el nivel.
         fmt: Dict[str, str] = {"texto_usuario": texto_usuario}
         if level in _LEVELS_WITH_CONTEXT:
-            fmt["contexto_json"] = self._build_context_json(objetos_visibles, level)
+            fmt["contexto_json"] = self._build_context_json(
+                objetos_visibles, level, nearest_object, categoria
+            )
         if level in _LEVELS_WITH_SPATIAL_DOCS:
             fmt["spatial_docs"] = self._spatial_docs
 
@@ -247,6 +265,7 @@ class QueryProcessor:
         context_level: str = DEFAULT_CONTEXT_LEVEL,
         temperature: float = 0.05,
         seed: int = 42,
+        nearest_object: Dict[str, Any] | None = None,
     ) -> dict:
         if context_level not in CONTEXT_LEVELS:
             raise ValueError(
@@ -271,7 +290,7 @@ class QueryProcessor:
 
         # 3-4. Par (system, user) del nivel + render
         system, user, categoria = self._build_prompt(
-            intencion, texto_usuario, objetos_visibles, context_level
+            intencion, texto_usuario, objetos_visibles, context_level, nearest_object
         )
 
         # 5. MLLM (genera la respuesta directamente en español)
